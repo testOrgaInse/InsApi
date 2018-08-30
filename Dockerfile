@@ -1,7 +1,5 @@
 FROM node:6.7
 
-MAINTAINER BibCNRS <bibcnrs@inist.fr>
-
 ADD ./.babelrc /app/.babelrc
 ADD ./bin /app/bin
 ADD ./config /app/config

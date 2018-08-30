@@ -1,4 +1,4 @@
-# BibApi
+# InsApi
 
 ## Installation
 
@@ -10,7 +10,7 @@
 - and set the correct configuration value
 - then `make run-dev`
 
-BibApi webserver is listening here: http://localhost:3000
+InsApi webserver is listening here: http://localhost:3000
 
 To create an admin user:
 ```

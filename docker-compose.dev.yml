@@ -8,11 +8,11 @@ postgres-dev:
     environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: secret
-        POSTGRES_DB: bibapi-dev
+        POSTGRES_DB: insapi-dev
         PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
         - ./backups:/backups
-        - /applis/bibapi/home/postgresql-dev:/var/lib/postgresql/data/pgdata
+        - /applis/insapi/home/postgresql-dev:/var/lib/postgresql/data/pgdata
     ports:
         - 5432:5432
 
@@ -26,7 +26,7 @@ server:
         https_proxy: ${https_proxy}
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: secret
-        POSTGRES_DB: bibapi-dev
+        POSTGRES_DB: insapi-dev
         POSTGRES_HOST: postgres-dev
     links:
         - redis

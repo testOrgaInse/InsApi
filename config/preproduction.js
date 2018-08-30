@@ -1,3 +1,3 @@
 module.exports = {
-    bibadmin_host: 'https://bib-preprod.cnrs.fr/admin',
+    insadmin_host: 'https://insermbiblio-preprod.inserm.fr/admin',
 };

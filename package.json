@@ -1,5 +1,5 @@
 {
-  "name": "BibApi",
+  "name": "InsApi",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BibCnrs/BibApi.git"
+    "url": "git+https://github.com/InsermBiblio/InsApi.git"
   },
   "author": "",
   "license": "CeCILL",
   "bugs": {
-    "url": "https://github.com/BibCnrs/BibApi/issues"
+    "url": "https://github.com/InsermBiblio/InsApi/issues"
   },
-  "homepage": "https://github.com/BibCnrs/BibApi#readme",
+  "homepage": "https://github.com/InsermBiblio/InsApi#readme",
   "dependencies": {
     "babel-eslint": "8.2.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.16.0",

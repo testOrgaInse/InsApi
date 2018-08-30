@@ -23,5 +23,5 @@ module.exports = {
         host: 'maildev-test',
         port: 25,
     },
-    bibadmin_host: 'https://bibadmin_url',
+    insadmin_host: 'https://insadmin_url',
 };

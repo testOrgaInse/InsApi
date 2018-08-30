@@ -1,3 +1,3 @@
 module.exports = {
-    bibadmin_host: 'https://bib.cnrs.fr/admin',
+    insadmin_host: 'https://insermbiblio.inserm.fr/admin',
 };

@@ -17,5 +17,5 @@ module.exports = {
         host: process.env.MAILDEV_1_PORT_25_TCP_ADDR,
         port: process.env.MAILDEV_1_PORT_25_TCP_PORT,
     },
-    bibadmin_host: 'http://localhost:3011/public',
+    insadmin_host: 'http://localhost:3011/public',
 };
