@@ -61,12 +61,12 @@ else
 endif
 
 _restore_db_dev: save-db-dev
-	docker exec bibapi_postgres-dev_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
-	docker exec bibapi_postgres-dev_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
-	docker exec bibapi_postgres-dev_1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:5432/$$POSTGRES_DB'
+	docker exec insapi_postgres-dev_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
+	docker exec insapi_postgres-dev_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
+	docker exec insapi_postgres-dev_1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:5432/$$POSTGRES_DB'
 
 save-db-prod: ## create postgres dump for prod database in backups directory with given name or default to current date
-	docker exec bibapi_postgres-prod_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
+	docker exec insapi_postgres-prod_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
 
 restore-db-prod:  ## restore a given dump to the postgres database list all dump if none specified
 ifdef COMMAND_ARGS
@@ -77,51 +77,51 @@ else
 endif
 
 _restore_db_prod: save-db-prod
-	docker exec bibapi_postgres-prod_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
-	docker exec bibapi_postgres-prod_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
-	docker exec bibapi_postgres-prod_1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:5432/$$POSTGRES_DB'
+	docker exec insapi_postgres-prod_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
+	docker exec insapi_postgres-prod_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
+	docker exec insapi_postgres-prod_1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:5432/$$POSTGRES_DB'
 
-cleanup-docker: ## remove all bibapi docker image
-	test -z "$$(docker ps -a | grep bibapi)" || \
-            docker rm --force $$(docker ps -a | grep bibapi | awk '{ print $$1 }')
+cleanup-docker: ## remove all insapi docker image
+	test -z "$$(docker ps -a | grep insapi)" || \
+            docker rm --force $$(docker ps -a | grep insapi | awk '{ print $$1 }')
 
 stop: ## stop all bibapi docker image
-	test -z "$$(docker ps | grep bibapi)" || \
-            docker stop $$(docker ps -a | grep bibapi | awk '{ print $$1 }')
+	test -z "$$(docker ps | grep insapi)" || \
+            docker stop $$(docker ps -a | grep insapi | awk '{ print $$1 }')
 
-build: ## args: <version> build bibcnrs/bibapi:<version> docker image default <version> to latest
+build: ## args: <version> build insermbiblio/insapi:<version> docker image default <version> to latest
 ifdef COMMAND_ARGS
-	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/bibcnrs/bibapi:$(COMMAND_ARGS)' .
+	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/insermbiblio/insapi:$(COMMAND_ARGS)' .
 else
-	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/bibcnrs/bibapi:latest' .
+	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/insermbiblio/insapi:latest' .
 endif
 
 connect-postgres-test: ## connect to postgres for test environment
-	docker exec -it bibapi_postgres-test_1 psql -d bibapi-test -U postgres
+	docker exec -it insapi_postgres-test_1 psql -d insapi-test -U postgres
 
 connect-postgres-dev: ## connect to postgres for dev environment
-	docker exec -it bibapi_postgres-dev_1 psql -d bibapi-dev -U postgres
+	docker exec -it insapi_postgres-dev_1 psql -d insapi-dev -U postgres
 
 connect-postgres-prod: ## connect to postgres for prod environment
-	docker exec -it bibapi_postgres-prod_1 psql -d bibapi-prod -U postgres
+	docker exec -it insapi_postgres-prod_1 psql -d insapi-prod -U postgres
 
 import_units: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it bibapi_server_1 node ./bin/parseFedeAdminUnitsCSV.js $(COMMAND_ARGS)
+	docker exec -it insapi_server_1 node ./bin/parseFedeAdminUnitsCSV.js $(COMMAND_ARGS)
 
 import_users: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it bibapi_server_1 node ./bin/parseFedeAdminUsersCSV.js $(COMMAND_ARGS)
+	docker exec -it insapi_server_1 node ./bin/parseFedeAdminUsersCSV.js $(COMMAND_ARGS)
 
 clear_history: ## Clear search history entries older than 2 months
-	docker exec bibapi_server_1 node ./bin/cleanOldHistoryEntries.js
+	docker exec insapi_server_1 node ./bin/cleanOldHistoryEntries.js
 
 import_sections: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it bibapi_server_1 node ./bin/importSectionCN.js $(COMMAND_ARGS)
+	docker exec -it insapi_server_1 node ./bin/importSectionCN.js $(COMMAND_ARGS)
 
 import_unit_sections: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it bibapi_server_1 node ./bin/assignSectionToUnit.js $(COMMAND_ARGS)
+	docker exec -it insapi_server_1 node ./bin/assignSectionToUnit.js $(COMMAND_ARGS)
 
 search_alert: ## search alert cron command
-	docker exec bibapi_server_1 node bin/searchAlert.js
+	docker exec insapi_server_1 node bin/searchAlert.js
 
 create-test-alert: ## args: <user uid> create alert for every search in <user> history
-	docker exec -it bibapi_server_1 node bin/createAlertForTest.js $(COMMAND_ARGS)
+	docker exec -it insapi_server_1 node bin/createAlertForTest.js $(COMMAND_ARGS)
