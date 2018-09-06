@@ -85,7 +85,7 @@ cleanup-docker: ## remove all insapi docker image
 	test -z "$$(docker ps -a | grep insapi)" || \
             docker rm --force $$(docker ps -a | grep insapi | awk '{ print $$1 }')
 
-stop: ## stop all bibapi docker image
+stop: ## stop all insapi docker image
 	test -z "$$(docker ps | grep insapi)" || \
             docker stop $$(docker ps -a | grep insapi | awk '{ print $$1 }')
 
