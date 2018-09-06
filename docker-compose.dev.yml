@@ -1,7 +1,10 @@
-redis:
+version: "2"
+ 
+services:
+  redis:
     image: redis:3.2
 
-postgres-dev:
+  postgres-dev:
     image: postgres:9.5
     volumes:
         - ./backups:/backups
@@ -16,7 +19,7 @@ postgres-dev:
     ports:
         - 5432:5432
 
-server:
+  server:
     extends:
         file: ./docker-compose.yml
         service: node
@@ -36,7 +39,7 @@ server:
         - 3000:3000
     command: node launcher.js
 
-maildev:
+  maildev:
     image: djfarrelly/maildev
     ports:
         - 1080:80
