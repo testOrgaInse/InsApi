@@ -50,7 +50,7 @@ add-admin-prod: ## create admin user
 	docker-compose -f docker-compose.prod.yml run --rm server node bin/addAdminUser.js
 
 save-db-dev: ## create postgres dump for prod database in backups directory with given name or default to current date
-	docker exec bibapi_postgres-dev_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
+	docker exec insapi_postgres-dev_1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
 
 restore-db-dev:  ## restore a given dump to the postgres database list all dump if none specified
 ifdef COMMAND_ARGS
