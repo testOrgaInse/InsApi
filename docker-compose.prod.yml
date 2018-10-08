@@ -1,8 +1,11 @@
-redis:
+version: "2"
+ 
+services:
+  redis:
     image: redis:3.2
     restart: always
 
-postgres-prod:
+  postgres-prod:
     image: postgres:9.5
     restart: always
     volumes:
@@ -16,7 +19,7 @@ postgres-prod:
         - ./backups:/backups
         - /applis/insapi/home/postgresql:/var/lib/postgresql/data/pgdata
 
-server:
+  server:
     image: vsnexus.intra.inist.fr:8083/insermbiblio/insapi:${insapi_version}
     volumes:
         - ./logs:/app/logs

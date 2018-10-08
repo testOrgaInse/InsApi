@@ -1,10 +1,13 @@
-node:
+version: "2"
+ 
+services:
+  node:
     image: node:8.9.1
     volumes:
         - .:/app
     working_dir: /app
 
-npm:
+  npm:
     extends:
         file: ./docker-compose.yml
         service: node
@@ -14,7 +17,7 @@ npm:
         no_proxy: "localhost,127.0.0.1,"
     entrypoint: ['npm']
 
-server:
+  server:
     extends:
         file: ./docker-compose.yml
         service: node
