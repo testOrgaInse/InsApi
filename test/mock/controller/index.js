@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-import koaRouter from 'koa-router';
-import session from './session';
+import koaRouter from "koa-router";
+import session from "./session";
 
 const router = koaRouter();
 
-router.post('/edsapi/rest/CreateSession', session);
+router.post("/edsapi/rest/CreateSession", session);
 
 export default router;

@@ -1,5 +1,6 @@
 node_modules
 .currentCommit
 backups/*
-logs/*
 .migratdb
+.DS_STORE
+postgresql-dev/*

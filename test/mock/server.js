@@ -1,8 +1,6 @@
-'use strict';
-
-import koa from 'koa';
-import bodyParser from 'koa-bodyparser';
-import controller from './controller';
+import koa from "koa";
+import bodyParser from "koa-bodyparser";
+import controller from "./controller";
 const app = koa();
 
 app.use(bodyParser());
