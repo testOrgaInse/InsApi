@@ -1,4 +1,4 @@
-FROM node:6.7
+FROM node:8.12.0-alpine
 
 ADD ./.babelrc /app/.babelrc
 ADD ./bin /app/bin
