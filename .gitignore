@@ -3,4 +3,4 @@ node_modules
 backups/*
 .migratdb
 .DS_STORE
-postgresql-dev/*
+postgresql-dev
