@@ -1,6 +1,9 @@
 var postgres = require("migrat-postgres");
 var config = require("config");
 
+console.log(config.postgres);
+console.log("==========");
+
 module.exports = {
   migrationsDir: "./migrations",
 
