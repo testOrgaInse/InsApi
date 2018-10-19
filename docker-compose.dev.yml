@@ -5,7 +5,7 @@ services:
     image: redis:3.2
 
   postgres-dev:
-    image: postgres:10-alpine
+    image: postgres:10
     volumes:
         - ./backups:/backups
     environment:

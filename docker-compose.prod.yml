@@ -6,7 +6,7 @@ services:
     restart: always
 
   postgres-prod:
-    image: postgres:10-alpine
+    image: postgres:10
     restart: always
     volumes:
         - ./backups:/backups
