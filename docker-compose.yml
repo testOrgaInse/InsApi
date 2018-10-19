@@ -1,26 +1,26 @@
 version: "2"
- 
+
 services:
   node:
-    image: node:8.12.0-alpine
+    image: node:8.12.0
     volumes:
-        - .:/app
+      - .:/app
     working_dir: /app
 
   npm:
     extends:
-        file: ./docker-compose.yml
-        service: node
+      file: ./docker-compose.yml
+      service: node
     environment:
-        http_proxy: ${http_proxy}
-        https_proxy: ${https_proxy}
-        no_proxy: "localhost,127.0.0.1,"
-    entrypoint: ['npm']
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: "localhost,127.0.0.1,"
+    entrypoint: ["npm"]
 
   server:
     extends:
-        file: ./docker-compose.yml
-        service: node
+      file: ./docker-compose.yml
+      service: node
     ports:
-        - 3000:3000
+      - 3000:3000
     command: node launcher.js

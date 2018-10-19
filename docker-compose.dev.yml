@@ -44,7 +44,7 @@ services:
         - maildev
     ports:
         - 3000:3000
-    command: node launcher.js
+    command: npm run dev
 
   maildev:
     image: djfarrelly/maildev
