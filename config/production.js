@@ -1,3 +1,3 @@
 module.exports = {
-    insadmin_host: 'https://insermbiblio.inserm.fr/admin',
+  insadmin_host: "https://insermbiblio.inserm.fr/admin"
 };

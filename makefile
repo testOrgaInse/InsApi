@@ -97,10 +97,10 @@ else
 endif
 
 connect-postgres-test: ## connect to postgres for test environment
-	docker exec -it insapi_postgres-test_1 psql -d insapi-test -U insapi
+	docker exec -it insapi_postgres-test_1 psql -d insapi-test -U postgres
 
 connect-postgres-dev: ## connect to postgres for dev environment
-	docker exec -it insapi_postgres-dev_1 psql -d insapi-dev -U insapi
+	docker exec -it insapi_postgres-dev_1 psql -d insapi-dev -U postgres
 
 connect-postgres-prod: ## connect to postgres for prod environment
 	docker exec -it insapi_postgres-prod_1 psql -d insapi-prod -U insapi
