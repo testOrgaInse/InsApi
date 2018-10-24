@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS regionals_delegations (
     rri              varchar(255) NOT NULL,
     rri_mail         varchar(255) NOT NULL,
     website          varchar(255) NOT NULL,
-    dr               varchar(255) NOT NULL,
+    code             varchar(255) NOT NULL,
 
     CONSTRAINT unique_regionals_delegations_name UNIQUE (name)
 );
