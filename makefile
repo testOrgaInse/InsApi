@@ -83,7 +83,7 @@ _restore_db_prod: save-db-prod
 
 cleanup-docker: ## remove all insapi docker image
 	test -z "$$(docker ps -a | grep insapi)" || \
-            docker rm --force $$(docker ps -a | grep insapi | awk '{ print $$1 }')
+            docker rm --force $$(docker ps -a | grep insapi | awk '{ print $$1 }') && docker rmi --force $$(docker images | grep insapi | awk '{ print $$1 }') 
 
 stop: ## stop all insapi docker image
 	test -z "$$(docker ps | grep insapi)" || \
@@ -95,6 +95,8 @@ ifdef COMMAND_ARGS
 else
 	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/insermbiblio/insapi:latest' .
 endif
+
+update: stop cleanup-docker install build
 
 connect-postgres-test: ## connect to postgres for test environment
 	docker exec -it insapi_postgres-test_1 psql -d insapi-test -U postgres
