@@ -107,23 +107,5 @@ connect-postgres-dev: ## connect to postgres for dev environment
 connect-postgres-prod: ## connect to postgres for prod environment
 	docker exec -it insapi_postgres-prod_1 psql -d insapi-prod -U insapi
 
-import_units: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it insapi_server_1 node ./bin/parseFedeAdminUnitsCSV.js $(COMMAND_ARGS)
-
-import_users: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it insapi_server_1 node ./bin/parseFedeAdminUsersCSV.js $(COMMAND_ARGS)
-
-clear_history: ## Clear search history entries older than 2 months
-	docker exec insapi_server_1 node ./bin/cleanOldHistoryEntries.js
-
-import_sections: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it insapi_server_1 node ./bin/importSectionCN.js $(COMMAND_ARGS)
-
-import_unit_sections: ## args: <file> import units from given csv <file> will update existiong units with same code
-	docker exec -it insapi_server_1 node ./bin/assignSectionToUnit.js $(COMMAND_ARGS)
-
-search_alert: ## search alert cron command
-	docker exec insapi_server_1 node bin/searchAlert.js
-
-create-test-alert: ## args: <user uid> create alert for every search in <user> history
-	docker exec -it insapi_server_1 node bin/createAlertForTest.js $(COMMAND_ARGS)
+import-all: ## import data for all table
+	docker exec -it insapi_server_1 node ./bin/startImport.js
