@@ -1,0 +1,19 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS fede_account (
+
+);
+
+-- down:
+
+DROP TABLE fede_account;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'fede_account'
+);

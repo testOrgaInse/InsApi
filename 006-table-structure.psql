@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS structure (
     nb_teams_account                        smallint,
     nb_personal_accounts                    smallint,
     active                                  varchar(255),
+    
     CONSTRAINT unique_structure_name UNIQUE (name)
 );
 
