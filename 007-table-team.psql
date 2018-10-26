@@ -1,0 +1,82 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS teams (
+    id                                      serial primary key,
+    comment                                 varchar(65535),
+    type_of_structure                       serial REFERENCES structure(id) ON DELETE CASCADE,
+    iunop_code                              varchar(255),
+    structure_code                          varchar(255),
+    structure_name                          varchar(255),
+    regional_delegation                     varchar(255),
+    site                                    varchar(255),
+    city                                    varchar(255),
+    documentary_correspondent_name          varchar(255),
+    documentary_correspondent_first_name    varchar(255),
+    documentary_correspondent_phone         smallint,
+    documentary_correspondent_email         varchar(255),
+    -- team_number                             ,
+    team_name                               varchar(255),
+    team_leader_name                        varchar(255),
+    team_leader_first_name                  varchar(255),
+    team_leader_email                       varchar(255),
+    -- mixt_university                         ,
+    cnrs_mixity                             varchar(255),
+    -- other_mixity                            ,
+    -- principal_it                            ,
+    specialized_commission                  varchar(255),
+    nb_researchers_inserm_pp                smallint,
+    nb_researchers_inserm_etp               smallint,
+    nb_researchers_crns_pp                  smallint,
+    nb_researchers_crns_etp                 smallint,
+    nb_researchers_other_pp                 smallint,
+    nb_researchers_other_etp                smallint,
+    nb_post_phd_student_pp                  smallint,
+    nb_post_phd_student_etp                 smallint,
+    nb_phd_student_pp                       smallint,
+    nb_phd_student_etp                      smallint,
+    nb_cdi_researchers_pp                   smallint,
+    nb_cdi_researchers_etp                  smallint,
+    nb_cdd_researchers_pp                   smallint,
+    nb_cdd_researchers_etp                  smallint,
+    nb_teacher_researchers_pp               smallint,
+    nb_teacher_researchers_etp              smallint,
+    nb_pu_ph_pp                             smallint,
+    nb_pu_ph_etp                            smallint,
+    nb_host_others_pp                       smallint,
+    nb_host_others_etp                      smallint,
+    nb_ir_inserm_pp                         smallint,
+    nb_ir_inserm_etp                        smallint,
+    nb_ir_non_inserm_pp                     smallint,
+    nb_ir_non_inserm_etp                    smallint,
+    nb_ita_others_pp                        smallint,
+    nb_ita_others_etp                       smallint,
+    nb_cdd_ir_pp                            smallint,
+    nb_cdd_ir_etp                           smallint,
+    nb_cdd_others_pp                        smallint,
+    nb_cdd_others_etp                       smallint,
+    nb_admin_pp                             smallint,
+    nb_admin_etp                            smallint,
+    -- community                               ,
+    nb_structures_accounts                  smallint,
+    nb_teams_account                        smallint,
+    nb_personal_accounts                    smallint,
+    active                                  varchar(255),
+
+    CONSTRAINT unique_team_name UNIQUE (team_name)
+);
+
+
+
+-- down:
+
+DROP TABLE teams;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'teams'
+);

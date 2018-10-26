@@ -8,6 +8,7 @@ import Database from "../../lib/models/Database";
 import History from "../../lib/models/History";
 import SectionCN from "../../lib/models/SectionCN";
 import Revue from "../../lib/models/Revue";
+import RegionalsDelegations from "../../lib/models/RegionalsDelegations";
 
 export default function(postgres) {
   const adminUserQueries = AdminUser(postgres);
@@ -20,6 +21,7 @@ export default function(postgres) {
   const historyQueries = History(postgres);
   const sectionCNQueries = SectionCN(postgres);
   const revueQueries = Revue(postgres);
+  const regionalsDelegationsQueries = RegionalsDelegations(postgres);
 
   function* createAdminUser(data) {
     return yield adminUserQueries.insertOne(data);
@@ -141,6 +143,10 @@ export default function(postgres) {
     });
   }
 
+  function* createRegionalsDelegations(data) {
+    return yield regionalsDelegationsQueries.insertOne(data);
+  }
+
   function* clear() {
     yield postgres.query({ sql: "DELETE FROM admin_user" });
     yield postgres.query({ sql: "DELETE FROM community CASCADE" });
@@ -152,6 +158,7 @@ export default function(postgres) {
     yield postgres.query({ sql: "DELETE FROM history CASCADE" });
     yield postgres.query({ sql: "DELETE FROM section_cn CASCADE" });
     yield postgres.query({ sql: "DELETE FROM revue CASCADE" });
+    yield postgres.query({ sql: "DELETE FROM regionals_delegations CASCADE" });
   }
 
   return {
@@ -165,6 +172,7 @@ export default function(postgres) {
     createHistory,
     createSectionCN,
     createRevue,
+    createRegionalsDelegations,
     clear
   };
 }

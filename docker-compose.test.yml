@@ -1,4 +1,5 @@
 version: "2"
+
 services:
   redis-test:
     image: redis:3.2
@@ -12,7 +13,8 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./backups:/backups
-      - /applis/insapi/home/postgresql-test:/var/lib/postgresql/data/pgdata
+      - ./postgresql-dev:/var/lib/postgresql/data/pgdata
+
   server:
     image: node:8.12.0
     volumes:
@@ -33,6 +35,7 @@ services:
       - postgres-test
       - maildev-test
     command: node_modules/mocha/bin/mocha test/mocha test/mocha/**/*.js
+
   maildev-test:
     image: djfarrelly/maildev
     ports:

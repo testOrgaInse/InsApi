@@ -1,0 +1,86 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS structure (
+    id                                      serial primary key,
+    comment                                 varchar(65535),
+    -- type_of_structure                       ,
+    iunop_code                              smallint,
+    code                                    varchar(255),
+    name                                    varchar(255),
+    number_of_team_certified                smallint,
+    -- regional_delegation                     ,
+    site                                    varchar(255),
+    street                                  varchar(255),
+    address_supplement                      varchar(255),
+    postal_code                             varchar(255),
+    city                                    varchar(255),
+    country                                 varchar(255),
+    director_name                           varchar(255),
+    director_first_name                     varchar(255),
+    director_email                          varchar(255),
+    structure_email                         varchar(255),
+    documentary_correspondent_name          varchar(255),
+    documentary_correspondent_first_name    varchar(255),
+    documentary_correspondent_phone         smallint,
+    documentary_correspondent_email         varchar(255),
+    team_number                             serial REFERENCES team(id) ON DELETE CASCADE,
+    -- mixt_university                         ,
+    cnrs_mixity                             varchar(255),
+    -- other_mixity                            ,
+    -- principal_it                            ,
+    -- second_it                               ,
+    -- specialized_commission                  ,
+    total_etp_effectiv                      smallint,
+    nb_researchers_inserm_pp                smallint,
+    nb_researchers_inserm_etp               smallint,
+    nb_researchers_crns_pp                  smallint,
+    nb_researchers_crns_etp                 smallint,
+    nb_researchers_other_pp                 smallint,
+    nb_researchers_other_etp                smallint,
+    nb_post_phd_student_pp                  smallint,
+    nb_post_phd_student_etp                 smallint,
+    nb_phd_student_pp                       smallint,
+    nb_phd_student_etp                      smallint,
+    nb_cdi_researchers_pp                   smallint,
+    nb_cdi_researchers_etp                  smallint,
+    nb_cdd_researchers_pp                   smallint,
+    nb_cdd_researchers_etp                  smallint,
+    nb_teacher_researchers_pp               smallint,
+    nb_teacher_researchers_etp              smallint,
+    nb_pu_ph_pp                             smallint,
+    nb_pu_ph_etp                            smallint,
+    nb_host_others_pp                       smallint,
+    nb_host_others_etp                      smallint,
+    nb_ir_inserm_pp                         smallint,
+    nb_ir_inserm_etp                        smallint,
+    nb_ir_non_inserm_pp                     smallint,
+    nb_ir_non_inserm_etp                    smallint,
+    nb_ita_others_pp                        smallint,
+    nb_ita_others_etp                       smallint,
+    nb_cdd_ir_pp                            smallint,
+    nb_cdd_ir_etp                           smallint,
+    nb_cdd_others_pp                        smallint,
+    nb_cdd_others_etp                       smallint,
+    nb_admin_pp                             smallint,
+    nb_admin_etp                            smallint,
+    community                               varchar(255),
+    nb_structures_accounts                  smallint,
+    nb_teams_account                        smallint,
+    nb_personal_accounts                    smallint,
+    active                                  varchar(255),
+    CONSTRAINT unique_structure_name UNIQUE (name)
+);
+
+-- down:
+
+DROP TABLE structure;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'structure'
+);
