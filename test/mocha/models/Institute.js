@@ -8,30 +8,12 @@ describe("model Institute", function() {
   });
 
   describe("selectOne", function() {
-    let institute, vie, shs;
+    let institute;
 
     before(function*() {
-      vie = yield fixtureLoader.createCommunity({
-        name: "vie",
-        gate: "insb"
-      });
-      shs = yield fixtureLoader.createCommunity({
-        name: "shs",
-        gate: "inshs"
-      });
-      yield fixtureLoader.createCommunity({
-        name: "nuclear",
-        gate: "in2p3"
-      });
-      yield fixtureLoader.createCommunity({
-        name: "universe",
-        gate: "insu"
-      });
-
       institute = yield fixtureLoader.createInstitute({
         name: "biology",
-        code: "insb",
-        communities: [vie.id, shs.id]
+        code: "insb"
       });
     });
 
@@ -39,8 +21,7 @@ describe("model Institute", function() {
       assert.deepEqual(yield instituteQueries.selectOne({ id: institute.id }), {
         id: institute.id,
         name: "biology",
-        code: "insb",
-        communities: [vie.id, shs.id]
+        code: "insb"
       });
     });
 
@@ -50,38 +31,19 @@ describe("model Institute", function() {
   });
 
   describe("selectPage", function() {
-    let biology, chemestry, humanity, vie, shs, universe, nuclear;
+    let biology, chemestry, humanity;
     before(function*() {
-      vie = yield fixtureLoader.createCommunity({
-        name: "vie",
-        gate: "insb"
-      });
-      shs = yield fixtureLoader.createCommunity({
-        name: "shs",
-        gate: "inshs"
-      });
-      universe = yield fixtureLoader.createCommunity({
-        name: "universe",
-        gate: "insu"
-      });
-      nuclear = yield fixtureLoader.createCommunity({
-        name: "nuclear",
-        gate: "in2p3"
-      });
       chemestry = yield fixtureLoader.createInstitute({
         name: "chemestry",
-        code: "52",
-        communities: [vie.id, shs.id]
+        code: "52"
       });
       biology = yield fixtureLoader.createInstitute({
         name: "biology",
-        code: "53",
-        communities: [vie.id, nuclear.id]
+        code: "53"
       });
       humanity = yield fixtureLoader.createInstitute({
         name: "humanity",
-        code: "54",
-        communities: [universe.id, nuclear.id]
+        code: "54"
       });
     });
 
@@ -91,22 +53,19 @@ describe("model Institute", function() {
           id: chemestry.id,
           totalcount: "3",
           name: "chemestry",
-          code: "52",
-          communities: [vie.id, shs.id]
+          code: "52"
         },
         {
           id: biology.id,
           totalcount: "3",
           name: "biology",
-          code: "53",
-          communities: [vie.id, nuclear.id]
+          code: "53"
         },
         {
           id: humanity.id,
           totalcount: "3",
           name: "humanity",
-          code: "54",
-          communities: [universe.id, nuclear.id]
+          code: "54"
         }
       ]);
     });
@@ -117,73 +76,12 @@ describe("model Institute", function() {
   });
 
   describe("updateOne", function() {
-    let institute, insb, inc, inshs;
+    let institute;
 
     beforeEach(function*() {
-      [insb, inc, inshs] = yield ["insb", "inc", "inshs"].map(name =>
-        fixtureLoader.createCommunity({ name })
-      );
-
       institute = yield fixtureLoader.createInstitute({
-        name: "biology",
-        communities: [insb.id, inc.id]
+        name: "biology"
       });
-    });
-
-    it("should throw an error if trying to add a community which does not exists and abort modification", function*() {
-      let error;
-      try {
-        yield instituteQueries.updateOne(institute.id, {
-          communities: ["nemo", inshs.id]
-        });
-      } catch (e) {
-        error = e.message;
-      }
-
-      assert.equal(error, "Communities nemo does not exists");
-
-      const instituteCommunities = yield postgres.query({
-        sql: "SELECT * FROM institute_community WHERE institute_id=$id",
-        parameters: { id: institute.id }
-      });
-      assert.deepEqual(instituteCommunities, [
-        { institute_id: institute.id, community_id: insb.id, index: 0 },
-        { institute_id: institute.id, community_id: inc.id, index: 1 }
-      ]);
-    });
-
-    it("should add given new community", function*() {
-      yield instituteQueries.updateOne(institute.id, {
-        communities: [insb.id, inc.id, inshs.id]
-      });
-
-      const instituteCommunities = yield postgres.query({
-        sql: "SELECT * FROM institute_community WHERE institute_id=$id",
-        parameters: { id: institute.id }
-      });
-      assert.deepEqual(instituteCommunities, [
-        { institute_id: institute.id, community_id: insb.id, index: 0 },
-        { institute_id: institute.id, community_id: inc.id, index: 1 },
-        {
-          institute_id: institute.id,
-          community_id: inshs.id,
-          index: 2
-        }
-      ]);
-    });
-
-    it("should remove missing community", function*() {
-      yield instituteQueries.updateOne(institute.id, {
-        communities: [insb.id]
-      });
-
-      const instituteCommunities = yield postgres.query({
-        sql: "SELECT * FROM institute_community WHERE institute_id=$id",
-        parameters: { id: institute.id }
-      });
-      assert.deepEqual(instituteCommunities, [
-        { institute_id: institute.id, community_id: insb.id, index: 0 }
-      ]);
     });
 
     afterEach(function*() {
@@ -192,50 +90,12 @@ describe("model Institute", function() {
   });
 
   describe("insertOne", function() {
-    let insb, inc;
+    let institute;
 
     beforeEach(function*() {
-      [insb, inc] = yield ["insb", "inc"].map(name =>
-        fixtureLoader.createCommunity({ name })
-      );
-    });
-
-    it("should add given communities if they exists", function*() {
-      const institute = yield instituteQueries.insertOne({
-        name: "biology",
-        code: "53",
-        communities: [inc.id, insb.id]
+      institute = yield fixtureLoader.createInstitute({
+        name: "biology"
       });
-
-      const instituteCommunities = yield postgres.query({
-        sql:
-          "SELECT * FROM institute_community WHERE institute_id=$id ORDER BY index",
-        parameters: { id: institute.id }
-      });
-      assert.deepEqual(instituteCommunities, [
-        { institute_id: institute.id, community_id: inc.id, index: 0 },
-        { institute_id: institute.id, community_id: insb.id, index: 1 }
-      ]);
-    });
-
-    it("should throw an error if trying to insert an institute with community that do not exists", function*() {
-      let error;
-      try {
-        yield instituteQueries.insertOne({
-          name: "biology",
-          code: "53",
-          communities: [insb.id, "nemo"]
-        });
-      } catch (e) {
-        error = e;
-      }
-      assert.equal(error.message, "Communities nemo does not exists");
-
-      const insertedInstitute = yield postgres.queryOne({
-        sql: "SELECT * from institute WHERE name=$name",
-        parameters: { name: "biology" }
-      });
-      assert.isUndefined(insertedInstitute);
     });
 
     afterEach(function*() {
@@ -264,7 +124,7 @@ describe("model Institute", function() {
 
     it("should update existing institute with the same code", function*() {
       const previousInstitute = yield fixtureLoader.createInstitute({
-        name: "bilogy",
+        name: "biology",
         code: "53"
       });
       const institute = yield instituteQueries.upsertOnePerCode({
