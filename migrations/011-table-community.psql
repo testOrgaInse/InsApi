@@ -4,10 +4,6 @@ CREATE TABLE IF NOT EXISTS community (
     id          serial primary key,
     name        varchar(40) NOT NULL,
     gate        varchar(40) NOT NULL,
-    user_id     varchar(40) NOT NULL,
-    profile     varchar(40) NOT NULL,
-    password    varchar(40) NOT NULL,
-    ebsco       BOOLEAN DEFAULT TRUE,
     
     CONSTRAINT unique_community_name UNIQUE (name)
 );

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS structure (
     code                                    varchar(255) NOT NULL,
     name                                    varchar(255) NOT NULL,
     number_of_certified_team                smallint,
-    regional_delegation                     int REFERENCES regionals_delegations(id) ON DELETE SET NULL,
+    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE SET NULL,
     site                                    varchar(255),
     street                                  varchar(255),
     address_supplement                      varchar(255),
@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS structure (
     mixt_university                         varchar(255),
     cnrs_mixity                             varchar(255),
     other_mixity                            varchar(255),
-    principal_it                            int REFERENCES institute(id) ON DELETE SET NULL,
-    specialized_commission                  int REFERENCES section_cn(id) ON DELETE SET NULL,
-    total_etp_effectiv                      smallint,
+    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE SET NULL,
+    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE SET NULL,
+    total_etp_effectiv                      float,
     nb_researchers_inserm_pp                smallint,
     nb_researchers_inserm_etp               smallint,
     nb_researchers_crns_pp                  smallint,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS structure (
     active                                  BOOLEAN DEFAULT TRUE,
     comment                                 varchar(65535),
     
-    CONSTRAINT unique_structure_name UNIQUE (name)
+    CONSTRAINT unique_structure_id UNIQUE (id)
 );
 
 -- down:

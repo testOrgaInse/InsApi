@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS structure_community_add (
     id                serial primary key,
     structure         int REFERENCES structure(id) ON DELETE SET NULL,
-    community         int REFERENCES community(id) ON DELETE SET NULL
+    community         varchar(255) REFERENCES community(name) ON DELETE SET NULL
 );
 
 -- down:
