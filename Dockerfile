@@ -10,6 +10,7 @@ ADD ./server.js /app/server.js
 ADD ./package.json /app/package.json
 ADD ./migrat.config.js /app/migrat.config.js
 ADD ./migrations /app/migrations
+ADD ./imports /app/imports
 
 WORKDIR /app
 
