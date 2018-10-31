@@ -1,5 +1,4 @@
 "use strict";
-import fs from "fs";
 import csv from "csvtojson";
 import config from "config";
 import { PgPool } from "co-postgres-queries";
@@ -43,20 +42,18 @@ const fields = [
   // commentaire_unité
 ];
 
-console.log("======IMPORT STRUCTURES======");
-
 const csvFilePath = "./imports/structures.csv";
 
-if (!fs.existsSync(csvFilePath)) {
-  console.error(fs.existsSync(csvFilePath));
-  console.error(`unable to find the file => ${csvFilePath}`);
-} else {
-  (async () => {
+(async () => {
+  try {
     let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
     data = changeCSV(data);
     await importData(data, 0);
-  })();
-}
+  } catch (err) {
+    console.log("Catch ERR");
+    console.error(err);
+  }
+})();
 
 async function importData(data, i) {
   if (i >= data.length) return;
