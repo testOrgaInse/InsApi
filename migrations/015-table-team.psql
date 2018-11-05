@@ -2,16 +2,16 @@
 
 CREATE TABLE IF NOT EXISTS teams (
     id                                      serial primary key,
-    id_structure                            int REFERENCES structure(id) ON DELETE SET NULL,
+    id_structure                            varchar(255) REFERENCES structures(code) ON DELETE CASCADE,
     code                                    varchar(255) UNIQUE NOT NULL,
-    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE SET NULL,
+    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE CASCADE,
     site                                    varchar(255),
     team_number                             varchar(255),
     principal_lastname                      varchar(255),
     principal_firstname                     varchar(255),
     principal_email                         varchar(255),
-    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE SET NULL,
-    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE SET NULL,
+    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE CASCADE,
     nb_researchers_inserm_pp                smallint,
     nb_researchers_inserm_etp               smallint,
     nb_researchers_crns_pp                  smallint,
@@ -44,13 +44,14 @@ CREATE TABLE IF NOT EXISTS teams (
     nb_cdd_others_etp                       smallint,
     nb_admin_pp                             smallint,
     nb_admin_etp                            smallint,
-    community                               varchar(255) REFERENCES community(name) ON DELETE SET NULL,
+    community                               varchar(255) REFERENCES community(name) ON DELETE CASCADE,
     nb_personal_accounts                    smallint,
     active                                  BOOLEAN DEFAULT TRUE,
     comment                                 varchar(65535),
 
 
-    CONSTRAINT unique_team_name UNIQUE (team_number)
+    CONSTRAINT unique_team_name UNIQUE (team_number),
+    CONSTRAINT unique_team_id UNIQUE (id)
 );
 
 

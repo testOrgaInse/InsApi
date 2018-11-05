@@ -44,21 +44,16 @@ const fields = [
 
 const csvFilePath = "./imports/structures.csv";
 
-(async () => {
-  try {
-    let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-    data = changeCSV(data);
-    await importData(data, 0);
-  } catch (err) {
-    console.log("Catch ERR");
-    console.error(err);
-  }
-})();
+export const importStructures = async () => {
+  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
+  data = changeCSV(data);
+  return importData(data, 0);
+};
 
 async function importData(data, i) {
   if (i >= data.length) return;
   const result = await pool.query({
-    sql: `INSERT INTO structure (structure_type, iunop_code, code, name, number_of_certified_team, regional_delegation, site, street, address_supplement,
+    sql: `INSERT INTO structures (structure_type, iunop_code, code, name, number_of_certified_team, regional_delegation, site, street, address_supplement,
        postal_code, city, country, director_lastname, director_firstname, director_email, email, dc_lastname, dc_firstname, dc_phone, dc_email,
         mixt_university, cnrs_mixity, other_mixity, principal_it, specialized_commission, total_etp_effectiv) VALUES ($structure_type, $iunop_code, $code, $name,
            $number_of_certified_team, $regional_delegation, $site, $street, $address_supplement, $postal_code, $city, $country, $director_lastname, $director_firstname,
@@ -94,7 +89,7 @@ async function importData(data, i) {
     }
   });
   i++;
-  importData(data, i);
+  await importData(data, i);
 }
 
 function changeCSV(data) {
@@ -158,8 +153,9 @@ function changeCSV(data) {
     element.specialized_commission = element.CSS1;
     delete element.CSS1;
     delete element.CSS2;
-    if (element.etp_total != undefined)
+    if (element.etp_total) {
       element.total_etp_effectiv = element.etp_total.replace(",", ".");
+    }
     delete element.etp_total;
     //add IT2
     delete element.IT2;

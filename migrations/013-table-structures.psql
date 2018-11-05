@@ -1,13 +1,13 @@
 -- up:
 
-CREATE TABLE IF NOT EXISTS structure (
+CREATE TABLE IF NOT EXISTS structures (
     id                                      serial primary key,
     structure_type                          varchar(25) NOT NULL,
     iunop_code                              varchar(25),
     code                                    varchar(255) NOT NULL,
     name                                    varchar(255) NOT NULL,
     number_of_certified_team                smallint,
-    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE SET NULL,
+    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE CASCADE,
     site                                    varchar(255),
     street                                  varchar(255),
     address_supplement                      varchar(255),
@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS structure (
     mixt_university                         varchar(255),
     cnrs_mixity                             varchar(255),
     other_mixity                            varchar(255),
-    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE SET NULL,
-    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE SET NULL,
+    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE CASCADE,
     total_etp_effectiv                      float,
     nb_researchers_inserm_pp                smallint,
     nb_researchers_inserm_etp               smallint,
@@ -66,12 +66,13 @@ CREATE TABLE IF NOT EXISTS structure (
     active                                  BOOLEAN DEFAULT TRUE,
     comment                                 varchar(65535),
     
+    CONSTRAINT unique_structure_code UNIQUE (code),
     CONSTRAINT unique_structure_id UNIQUE (id)
 );
 
 -- down:
 
-DROP TABLE structure;
+DROP TABLE structures;
 
 -- check:
 
@@ -80,5 +81,5 @@ SELECT EXISTS(
     FROM information_schema.tables
     WHERE
         table_schema = 'public' AND
-        table_name = 'structure'
+        table_name = 'structures'
 );
