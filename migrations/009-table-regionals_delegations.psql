@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS regionals_delegations (
     website           varchar(255),
     code              varchar(255) NOT NULL,
 
-    CONSTRAINT unique_regionals_delegations_name UNIQUE (name)
+    CONSTRAINT unique_regionals_delegations_code UNIQUE (code)
 );
 
 -- down:

@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS institute (
     mail              varchar(60),
     director          varchar(60),
     mail_director     varchar(60),
-    code              varchar(255) NOT NULL
+    code              varchar(255) NOT NULL,
+
+    CONSTRAINT unique_institute_code UNIQUE (code)
 );
 
 -- down:

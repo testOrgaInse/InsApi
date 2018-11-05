@@ -1,0 +1,15 @@
+id,name,code,director,address,phone,mail,director_mail,rh,rri,rh_mail,website
+1,Administration du Siège,DG,Nicolas Pesnel,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+3,Nouvelle-Aquitaine,BORDEAUX,Richard Salives,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+4,Auvergne Rhône-Alpes,LYON,Dominique Pella,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+5,Nord Ouest,LILLE,Samir Ould Ali,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+6,Grand Ouest,NANTES,Frédéric Delaleu,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+7,Provence-Alpes-Côte d'Azur et Corse,MARSEILLE,Dominique Nobile,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+8,Occitanie Méditerranée,MONTPELLIER,Jacques Cavaillé,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+9,Occitanie Pyrénées,TOULOUSE,Armelle Barelli,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+10,Est,STRASBOURG,Marie-Ange Luc,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+11,Paris 5,PARIS V,Marie-Pascale Martel,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+12,Paris 6,PARIS VI,Camille Chaudonneret,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+15,Paris 7,PARIS VII,Laurence Lomme,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+16,Paris 11,PARIS XI,Laurence Parmantier,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com
+17,Paris 12,PARIS XII,Camille Chaudonneret,14,687118616,m@m.com,A@a.com,lenom,420,rh@mail.fr,yt.com

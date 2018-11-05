@@ -13,10 +13,10 @@ const pool = new PgPool({
 const fields = ["name", "gate", "user_id", "profile", "password", "ebsco"];
 const csvFilePath = "imports/community.csv";
 
-(async () => {
+export const fedeInserm = async () => {
   const data = await csv().fromFile(csvFilePath);
   const result = await pool.query({
     sql: `INSERT INTO fede_inserm (${fields})`,
     parameters: { name: "world" }
   });
-})();
+};

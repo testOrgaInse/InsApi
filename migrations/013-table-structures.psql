@@ -1,36 +1,33 @@
 -- up:
 
-CREATE TABLE IF NOT EXISTS structure (
+CREATE TABLE IF NOT EXISTS structures (
     id                                      serial primary key,
-    comment                                 varchar(65535),
-    -- type_of_structure                       ,
-    iunop_code                              smallint,
-    code                                    varchar(255),
-    name                                    varchar(255),
-    number_of_team_certified                smallint,
-    -- regional_delegation                     ,
+    structure_type                          varchar(25) NOT NULL,
+    iunop_code                              varchar(255),
+    code                                    varchar(255) NOT NULL,
+    name                                    varchar(255) NOT NULL,
+    number_of_certified_team                smallint,
+    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE CASCADE,
     site                                    varchar(255),
     street                                  varchar(255),
     address_supplement                      varchar(255),
     postal_code                             varchar(255),
     city                                    varchar(255),
     country                                 varchar(255),
-    director_name                           varchar(255),
-    director_first_name                     varchar(255),
+    director_lastname                       varchar(255),
+    director_firstname                      varchar(255),
     director_email                          varchar(255),
-    structure_email                         varchar(255),
-    documentary_correspondent_name          varchar(255),
-    documentary_correspondent_first_name    varchar(255),
-    documentary_correspondent_phone         smallint,
-    documentary_correspondent_email         varchar(255),
-    team_number                             serial REFERENCES team(id) ON DELETE CASCADE,
-    -- mixt_university                         ,
+    email                                   varchar(255),
+    dc_lastname                             varchar(255),
+    dc_firstname                            varchar(255),
+    dc_phone                                varchar(25),
+    dc_email                                varchar(255),
+    mixt_university                         varchar(255),
     cnrs_mixity                             varchar(255),
-    -- other_mixity                            ,
-    -- principal_it                            ,
-    -- second_it                               ,
-    -- specialized_commission                  ,
-    total_etp_effectiv                      smallint,
+    other_mixity                            varchar(255),
+    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE CASCADE,
+    total_etp_effectiv                      float,
     nb_researchers_inserm_pp                smallint,
     nb_researchers_inserm_etp               smallint,
     nb_researchers_crns_pp                  smallint,
@@ -49,8 +46,8 @@ CREATE TABLE IF NOT EXISTS structure (
     nb_teacher_researchers_etp              smallint,
     nb_pu_ph_pp                             smallint,
     nb_pu_ph_etp                            smallint,
-    nb_host_others_pp                       smallint,
-    nb_host_others_etp                      smallint,
+    nb_hosp_others_pp                       smallint,
+    nb_hosp_others_etp                      smallint,
     nb_ir_inserm_pp                         smallint,
     nb_ir_inserm_etp                        smallint,
     nb_ir_non_inserm_pp                     smallint,
@@ -63,18 +60,19 @@ CREATE TABLE IF NOT EXISTS structure (
     nb_cdd_others_etp                       smallint,
     nb_admin_pp                             smallint,
     nb_admin_etp                            smallint,
-    community                               varchar(255),
     nb_structures_accounts                  smallint,
     nb_teams_account                        smallint,
     nb_personal_accounts                    smallint,
-    active                                  varchar(255),
+    active                                  BOOLEAN DEFAULT TRUE,
+    comment                                 varchar(65535),
     
-    CONSTRAINT unique_structure_name UNIQUE (name)
+    CONSTRAINT unique_structure_code UNIQUE (code),
+    CONSTRAINT unique_structure_id UNIQUE (id)
 );
 
 -- down:
 
-DROP TABLE structure;
+DROP TABLE structures;
 
 -- check:
 
@@ -83,5 +81,5 @@ SELECT EXISTS(
     FROM information_schema.tables
     WHERE
         table_schema = 'public' AND
-        table_name = 'structure'
+        table_name = 'structures'
 );

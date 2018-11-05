@@ -1,0 +1,21 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS structure_institute_add (
+    id                serial primary key,
+    structure         varchar(255) REFERENCES structures(code) ON DELETE CASCADE,
+    institute         varchar(255) REFERENCES institute(code) ON DELETE CASCADE
+);
+
+-- down:
+
+DROP TABLE structure_institute_add;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'structure_institute_add'
+);
