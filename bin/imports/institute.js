@@ -29,7 +29,7 @@ export const importInstitute = async () => {
 };
 
 async function importData(data, i) {
-  if (i == data.length - 1) return Promise.resolve;
+  if (i == data.length) return Promise.resolve;
   const result = await pool.query({
     sql: `INSERT INTO institute (code, name, address, phone, mail, director, mail_director)
      VALUES ($code, $name, $address, $phone, $mail, $director, $mail_director)`,

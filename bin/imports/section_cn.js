@@ -25,7 +25,7 @@ export const importSectionCn = async () => {
 };
 
 async function importData(data, i) {
-  if (i == data.length - 1) return Promise.resolve;
+  if (i == data.length) return Promise.resolve;
   const result = await pool.query({
     sql: `INSERT INTO section_cn (code, name, comment)
      VALUES ($code, $name, $comment)`,

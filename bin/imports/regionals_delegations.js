@@ -34,7 +34,7 @@ export const importRegionalsDelegations = async () => {
 };
 
 async function importData(data, i) {
-  if (i == data.length - 1) return Promise.resolve;
+  if (i == data.length) return Promise.resolve;
   const result = await pool.query({
     sql: `INSERT INTO regionals_delegations (name, address, phone, mail, director, director_mail, rh, rri, rh_mail, website, code)
      VALUES ($name, $address, $phone, $mail, $director, $director_mail, $rh, $rri, $rh_mail, $website, $code)`,

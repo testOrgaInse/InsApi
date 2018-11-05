@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS structures (
     id                                      serial primary key,
     structure_type                          varchar(25) NOT NULL,
-    iunop_code                              varchar(25),
+    iunop_code                              varchar(255),
     code                                    varchar(255) NOT NULL,
     name                                    varchar(255) NOT NULL,
     number_of_certified_team                smallint,
