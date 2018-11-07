@@ -110,11 +110,13 @@ async function changeCSV(data, data2) {
     delete element.Mixité_autres_3;
     element.principal_it = element.IT1;
     delete element.IT1;
-    element.secondary_it = [];
-    element.secondary_it.push(element.IT2);
-    element.secondary_it.push(element.IT3);
-    element.secondary_it.push(element.IT4);
-    element.secondary_it.push(element.IT5);
+    if (element.IT2 != "") {
+      element.secondary_it = [];
+      element.secondary_it.push(element.IT2);
+      element.secondary_it.push(element.IT3);
+      element.secondary_it.push(element.IT4);
+      element.secondary_it.push(element.IT5);
+    }
     delete element.IT2;
     delete element.IT3;
     delete element.IT4;
@@ -347,7 +349,7 @@ async function importData(data, i) {
       cnrs_mixity: data[i].cnrs_mixity,
       other_mixity: data[i].other_mixity,
       principal_it: data[i].principal_it,
-      secondary_it: data[i].secondary_it,
+      // secondary_it: data[i].secondary_it,
       specialized_commission: data[i].specialized_commission,
       total_etp_effectiv: data[i].total_etp_effectiv,
       nb_researchers_inserm_pp: data[i].nb_researchers_inserm_pp,
@@ -384,7 +386,8 @@ async function importData(data, i) {
       nb_admin_etp: data[i].nb_admin_etp
     }
   });
-  if (data[i].secondary_it[0] != "") await importSecondaryData(data[i]);
+  if (data[i].secondary_it && data[i].secondary_it[0] != "")
+    await importSecondaryData(data[i]);
   i++;
   await importData(data, i);
 }
@@ -393,10 +396,10 @@ async function importSecondaryData(data) {
   for (let count = 0; count < data.secondary_it.length; count++) {
     if (data.secondary_it[count] != "") {
       let secondary = await pool.query({
-        sql: `INSERT INTO secondary_it (structure, secondary_it, position) VALUES ($structure, $secondary_it, $position)`,
+        sql: `INSERT INTO secondary_it (structure, it, position) VALUES ($structure, $it, $position)`,
         parameters: {
           structure: data.code,
-          secondary_it: data.secondary_it[count],
+          it: data.secondary_it[count],
           position: count
         }
       });

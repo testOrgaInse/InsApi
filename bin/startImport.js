@@ -11,7 +11,7 @@ const { importTeams } = require("./imports/teams");
 
 (async () => {
   try {
-    console.log("====DROP TABLE====");
+    console.log("====TRUNCATE TABLE====");
     await dropTables();
     console.log("====REGIONALS DELEGATIONS====");
     await importRegionalsDelegations();
