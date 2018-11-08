@@ -7,10 +7,11 @@ const {
 const { importSectionCn } = require("./imports/section_cn");
 const { importInstitute } = require("./imports/institute");
 const { importStructures } = require("./imports/structures");
+const { importTeams } = require("./imports/teams");
 
 (async () => {
   try {
-    console.log("====DROP TABLE====");
+    console.log("====TRUNCATE TABLE====");
     await dropTables();
     console.log("====REGIONALS DELEGATIONS====");
     await importRegionalsDelegations();
@@ -20,6 +21,8 @@ const { importStructures } = require("./imports/structures");
     await importInstitute();
     console.log("====STRUCTURE====");
     await importStructures();
+    console.log("====TEAM====");
+    await importTeams();
     console.log("====END====");
   } catch (error) {
     console.error(error);

@@ -1,0 +1,26 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS secondary_it (
+    id                  serial primary key,
+    structure           varchar(255) REFERENCES structures(code) ON DELETE CASCADE,
+    it                  varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    position            numeric DEFAULT 0,
+    
+    CONSTRAINT unique_structure_secondary_it_id UNIQUE (id)
+);
+
+-- down:
+INSERT INTO structures
+SELECT  * 
+FROM secondary_it JOIN structures ON (structures.code = secondary_it.structure);
+DROP TABLE secondary_it;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'secondary_it'
+);
