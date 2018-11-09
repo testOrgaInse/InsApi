@@ -1,46 +1,5 @@
-"use strict";
 import csv from "csvtojson";
-import config from "config";
-import { PgPool } from "co-postgres-queries";
-
-const pool = new PgPool({
-  user: config.postgres.user,
-  password: config.postgres.password,
-  host: config.postgres.host,
-  port: config.postgres.port,
-  database: config.postgres.database
-});
-
-const fields = [
-  "structure_type", // StructureT
-  "iunop_code", // iunop
-  "code", // StructureT + StructureC
-  "name", // Intitulé_structure
-  "number_of_certified_team", // nb_eq_label
-  "regional_delegation", // DR
-  "site", // Localisation
-  "street", // adresse1 + adresse2
-  "address_supplement", // complementAdresse + complementEtranger
-  "postal_code", // CP
-  "city", // ville
-  "country", // pays
-  "director_lastname", // directeur_nom
-  "director_firstname", // directeur_prénom
-  "director_email", // directeur_email
-  "email", // email_structure
-  "dc_lastname", // Nom_CD
-  "dc_firstname", // Prénom_CD
-  "dc_phone", // Tel_CD
-  "dc_email", // Courriel_CD
-  "mixt_university", // Université de mixité
-  "cnrs_mixity", // Mixité CNRS
-  "other_mixity", // Mixité-autres_1 + Mixité-autres_2 + Mixité-autres_3
-  "principal_it", // IT1
-  "secondary_it", // IT2 + IT3 + IT4 + IT5
-  "specialized_commission", // CSS1 + CSS2
-  "total_etp_effectiv" // etp_total
-  // commentaire_unité
-];
+import pool from "./connexion_database";
 
 const csvFilePath = "./imports/structures.csv";
 const csvFilePath2 = "./imports/structures2.csv";

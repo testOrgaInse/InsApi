@@ -1,15 +1,6 @@
-"use strict";
 import csv from "csvtojson";
-import config from "config";
-import { PgPool } from "co-postgres-queries";
+import pool from "./connexion_database";
 
-const pool = new PgPool({
-  user: config.postgres.user,
-  password: config.postgres.password,
-  host: config.postgres.host,
-  port: config.postgres.port,
-  database: config.postgres.database
-});
 const csvFilePath = "./imports/teams.csv";
 const csvFilePath2 = "./imports/teams2.csv";
 

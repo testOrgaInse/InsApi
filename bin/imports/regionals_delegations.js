@@ -1,30 +1,5 @@
-"use strict";
 import csv from "csvtojson";
-import config from "config";
-import { PgPool } from "co-postgres-queries";
-
-const pool = new PgPool({
-  user: config.postgres.user,
-  password: config.postgres.password,
-  host: config.postgres.host,
-  port: config.postgres.port,
-  database: config.postgres.database
-});
-
-const fields = [
-  "name", // StructureT
-  "address", // iunop
-  "phone", // StructureT + StructureC
-  "mail", // Intitulé_structure
-  "director", // nb_eq_label
-  "director_mail", // DR
-  "rh", // Localisation
-  "rh_mail", // adresse1 + adresse2
-  "rri", // complementAdresse + complementEtranger
-  "rri_mail", // CP
-  "website", // ville
-  "code"
-];
+import pool from "./connexion_database";
 
 const csvFilePath = "./imports/regionals_delegations.csv";
 
