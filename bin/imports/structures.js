@@ -68,7 +68,7 @@ async function changeCSV(data, data2) {
     delete element.DR;
     element.site = element.Localisation;
     delete element.Localisation;
-    element.street = element.adresse1 + element.adresse2;
+    element.street = element.adresse1 + " " + element.adresse2;
     delete element.adresse1;
     delete element.adresse2;
     element.address_supplement =
