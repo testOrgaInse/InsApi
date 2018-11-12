@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS teams (
     principal_firstname                     varchar(255),
     principal_email                         varchar(255),
     principal_it                            varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE CASCADE,
     total_etp_effectiv                      float,
     nb_researchers_inserm_pp                float,
     nb_researchers_inserm_etp               float,

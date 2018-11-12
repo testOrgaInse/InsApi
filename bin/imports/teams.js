@@ -34,8 +34,10 @@ async function changeCSV(data, data2) {
     element.principal_it = element["IT_principal équipe"];
     if (element.principal_it == "") element.principal_it = null;
     delete element["IT_principal équipe"];
-    // element.specialized_commission = element["CSS_équipe 1"] + '-' + element["CSS_équipe 2"];
-    // element.specialized_commission = element["CSS_équipe 1"];
+    if (element["CSS_équipe 1"] != "")
+      element.specialized_commission = element["CSS_équipe 1"];
+    // element.specialized_commission =
+    // element["CSS_équipe 1"] + "-" + element["CSS_équipe 2"];
     delete element["CSS_équipe 1"];
     delete element["CSS_équipe 2"];
   });
@@ -226,14 +228,14 @@ async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
     sql: `INSERT INTO teams (structure_code, team_number, name, principal_lastname,
-          principal_firstname, principal_email, principal_it, total_etp_effectiv,
+          principal_firstname, principal_email, principal_it, specialized_commission, total_etp_effectiv,
           nb_researchers_inserm_pp, nb_researchers_inserm_etp, nb_researchers_crns_pp, nb_researchers_crns_etp,
           nb_researchers_other_pp, nb_researchers_other_etp, nb_post_phd_student_pp, nb_post_phd_student_etp, nb_phd_student_pp, nb_phd_student_etp, nb_cdi_researchers_pp,
           nb_cdi_researchers_etp, nb_cdd_researchers_pp, nb_cdd_researchers_etp, nb_teacher_researchers_pp, nb_teacher_researchers_etp, nb_pu_ph_pp, nb_pu_ph_etp, nb_hosp_others_pp,
           nb_hosp_others_etp, nb_ir_inserm_pp, nb_ir_inserm_etp, nb_ir_non_inserm_pp, nb_ir_non_inserm_etp, nb_ita_others_pp, nb_ita_others_etp, nb_cdd_ir_pp,
           nb_cdd_ir_etp, nb_cdd_others_pp, nb_cdd_others_etp, nb_admin_pp, nb_admin_etp)
           VALUES ($structure_code, $team_number, $name, $principal_lastname,
-            $principal_firstname, $principal_email, $principal_it, $total_etp_effectiv,
+            $principal_firstname, $principal_email, $principal_it, $specialized_commission, $total_etp_effectiv,
             $nb_researchers_inserm_pp, $nb_researchers_inserm_etp, $nb_researchers_crns_pp, $nb_researchers_crns_etp,
             $nb_researchers_other_pp, $nb_researchers_other_etp, $nb_post_phd_student_pp, $nb_post_phd_student_etp, $nb_phd_student_pp, $nb_phd_student_etp, $nb_cdi_researchers_pp,
             $nb_cdi_researchers_etp, $nb_cdd_researchers_pp, $nb_cdd_researchers_etp, $nb_teacher_researchers_pp, $nb_teacher_researchers_etp, $nb_pu_ph_pp, $nb_pu_ph_etp, $nb_hosp_others_pp,
@@ -247,7 +249,7 @@ async function importData(data, i) {
       principal_firstname: data[i].principal_firstname,
       principal_email: data[i].principal_email,
       principal_it: data[i].principal_it,
-      // specialized_commission: data[i].specialized_commission,
+      specialized_commission: data[i].specialized_commission,
       total_etp_effectiv: data[i].total_etp_effectiv,
       nb_researchers_inserm_pp: data[i].nb_researchers_inserm_pp,
       nb_researchers_inserm_etp: data[i].nb_researchers_inserm_etp,
