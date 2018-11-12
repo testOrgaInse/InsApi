@@ -50,8 +50,8 @@ async function changeCSV(data, data2) {
     delete element.email_structure;
     element.dc_lastname = element.Nom_CD;
     delete element.Nom_CD;
-    element.dc_firstname = element.directeur_prénom;
-    delete element.directeur_prénom;
+    element.dc_firstname = element.Prénom_CD;
+    delete element.Prénom_CD;
     element.dc_phone = element.Tel_CD;
     delete element.Tel_CD;
     element.dc_email = element.Courriel_CD;
@@ -60,6 +60,11 @@ async function changeCSV(data, data2) {
     delete element["Université de mixité"];
     element.cnrs_mixity = element["Mixité CNRS"];
     delete element["Mixité CNRS"];
+    if (element["Mixité-autres_1"] != "" && element.Mixité_autres_2 != "")
+      element["Mixité-autres_1"] += ";";
+    if (element.Mixité_autres_3 != "") element.Mixité_autres_2 += ";";
+    console.log(element["Mixité-autres_1"]);
+    console.log(element.Mixité_autres_2);
     element.other_mixity =
       element["Mixité-autres_1"] +
       element.Mixité_autres_2 +
@@ -296,7 +301,7 @@ async function importData(data, i) {
       postal_code: data[i].postal_code,
       city: data[i].city,
       country: data[i].country,
-      director_lastname: data[i].director_lastnamen,
+      director_lastname: data[i].director_lastname,
       director_firstname: data[i].director_firstname,
       director_email: data[i].director_email,
       email: data[i].email,
