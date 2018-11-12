@@ -63,8 +63,6 @@ async function changeCSV(data, data2) {
     if (element["Mixité-autres_1"] != "" && element.Mixité_autres_2 != "")
       element["Mixité-autres_1"] += ";";
     if (element.Mixité_autres_3 != "") element.Mixité_autres_2 += ";";
-    console.log(element["Mixité-autres_1"]);
-    console.log(element.Mixité_autres_2);
     element.other_mixity =
       element["Mixité-autres_1"] +
       element.Mixité_autres_2 +
@@ -265,6 +263,7 @@ async function changeCSV(data, data2) {
       element.nb_admin_etp = element.Admin_ETP.replace(",", ".");
     }
     delete element.Admin_ETP;
+    element.community = "INSERM";
   });
   data = await fusionByCode(data, data2);
   return data;
@@ -280,14 +279,14 @@ async function importData(data, i) {
           nb_researchers_other_pp, nb_researchers_other_etp, nb_post_phd_student_pp, nb_post_phd_student_etp, nb_phd_student_pp, nb_phd_student_etp, nb_cdi_researchers_pp,
           nb_cdi_researchers_etp, nb_cdd_researchers_pp, nb_cdd_researchers_etp, nb_teacher_researchers_pp, nb_teacher_researchers_etp, nb_pu_ph_pp, nb_pu_ph_etp, nb_hosp_others_pp,
           nb_hosp_others_etp, nb_ir_inserm_pp, nb_ir_inserm_etp, nb_ir_non_inserm_pp, nb_ir_non_inserm_etp, nb_ita_others_pp, nb_ita_others_etp, nb_cdd_ir_pp,
-          nb_cdd_ir_etp, nb_cdd_others_pp, nb_cdd_others_etp, nb_admin_pp, nb_admin_etp) VALUES ($structure_type, $iunop_code, $code, $name,
+          nb_cdd_ir_etp, nb_cdd_others_pp, nb_cdd_others_etp, nb_admin_pp, nb_admin_etp, community) VALUES ($structure_type, $iunop_code, $code, $name,
            $number_of_certified_team, $regional_delegation, $site, $street, $address_supplement, $postal_code, $city, $country, $director_lastname, $director_firstname,
             $director_email, $email, $dc_lastname, $dc_firstname, $dc_phone, $dc_email, $mixt_university, $cnrs_mixity, $other_mixity, $principal_it,
              $specialized_commission, $total_etp_effectiv, $nb_researchers_inserm_pp, $nb_researchers_inserm_etp, $nb_researchers_crns_pp, $nb_researchers_crns_etp,
              $nb_researchers_other_pp, $nb_researchers_other_etp, $nb_post_phd_student_pp, $nb_post_phd_student_etp, $nb_phd_student_pp, $nb_phd_student_etp, $nb_cdi_researchers_pp,
              $nb_cdi_researchers_etp,$nb_cdd_researchers_pp, $nb_cdd_researchers_etp, $nb_teacher_researchers_pp, $nb_teacher_researchers_etp, $nb_pu_ph_pp, $nb_pu_ph_etp, $nb_hosp_others_pp,
              $nb_hosp_others_etp, $nb_ir_inserm_pp, $nb_ir_inserm_etp, $nb_ir_non_inserm_pp, $nb_ir_non_inserm_etp, $nb_ita_others_pp, $nb_ita_others_etp, $nb_cdd_ir_pp,
-             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp)`,
+             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp, $community)`,
     parameters: {
       structure_type: data[i].structure_type,
       iunop_code: data[i].iunop_code,
@@ -347,7 +346,8 @@ async function importData(data, i) {
       nb_cdd_others_pp: data[i].nb_cdd_others_pp,
       nb_cdd_others_etp: data[i].nb_cdd_others_etp,
       nb_admin_pp: data[i].nb_admin_pp,
-      nb_admin_etp: data[i].nb_admin_etp
+      nb_admin_etp: data[i].nb_admin_etp,
+      community: data[i].community
     }
   });
   if (data[i].secondary_it && data[i].secondary_it[0] != "")
