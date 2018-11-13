@@ -6,7 +6,7 @@ const csvFilePath2 = "./imports/structures2.csv";
 
 export const importStructures = async () => {
   let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-  let data2 = await csv({ delimiter: ["|"] }).fromFile(csvFilePath2);
+  let data2 = await csv({ delimiter: [","] }).fromFile(csvFilePath2);
   data = await changeCSV(data, data2);
   return importData(data, 0);
 };
@@ -92,6 +92,7 @@ async function changeCSV(data, data2) {
     delete element.etp_total;
   });
   data2.forEach(element => {
+    console.log(element);
     if (element["Chercheurs _Inserm_PP"]) {
       element.nb_researchers_inserm_pp = element[
         "Chercheurs _Inserm_PP"
