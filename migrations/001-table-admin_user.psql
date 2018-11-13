@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS admin_user (
     password    varchar(40) NOT NULL,
     salt        varchar(40) NOT NULL,
     comment     varchar(65535),
-    community   varchar(255) REFERENCES community(name) ON DELETE CASCADE,
 
     CONSTRAINT unique_admin_username UNIQUE (username)
 );

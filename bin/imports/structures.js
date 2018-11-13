@@ -1,46 +1,5 @@
-"use strict";
 import csv from "csvtojson";
-import config from "config";
-import { PgPool } from "co-postgres-queries";
-
-const pool = new PgPool({
-  user: config.postgres.user,
-  password: config.postgres.password,
-  host: config.postgres.host,
-  port: config.postgres.port,
-  database: config.postgres.database
-});
-
-const fields = [
-  "structure_type", // StructureT
-  "iunop_code", // iunop
-  "code", // StructureT + StructureC
-  "name", // Intitulé_structure
-  "number_of_certified_team", // nb_eq_label
-  "regional_delegation", // DR
-  "site", // Localisation
-  "street", // adresse1 + adresse2
-  "address_supplement", // complementAdresse + complementEtranger
-  "postal_code", // CP
-  "city", // ville
-  "country", // pays
-  "director_lastname", // directeur_nom
-  "director_firstname", // directeur_prénom
-  "director_email", // directeur_email
-  "email", // email_structure
-  "dc_lastname", // Nom_CD
-  "dc_firstname", // Prénom_CD
-  "dc_phone", // Tel_CD
-  "dc_email", // Courriel_CD
-  "mixt_university", // Université de mixité
-  "cnrs_mixity", // Mixité CNRS
-  "other_mixity", // Mixité-autres_1 + Mixité-autres_2 + Mixité-autres_3
-  "principal_it", // IT1
-  "secondary_it", // IT2 + IT3 + IT4 + IT5
-  "specialized_commission", // CSS1 + CSS2
-  "total_etp_effectiv" // etp_total
-  // commentaire_unité
-];
+import pool from "./connexion_database";
 
 const csvFilePath = "./imports/structures.csv";
 const csvFilePath2 = "./imports/structures2.csv";
@@ -53,6 +12,18 @@ export const importStructures = async () => {
 };
 
 async function changeCSV(data, data2) {
+  const listRegionalsDelegations = await pool.query({
+    sql: `SELECT id, code FROM regionals_delegations`,
+    parameters: {}
+  });
+  const listInstitute = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
+  const listSpecializedCommission = await pool.query({
+    sql: `SELECT id, code FROM section_cn`,
+    parameters: {}
+  });
   data.forEach(element => {
     element.structure_type = element.StructureT;
     element.iunop_code = element.iunop;
@@ -64,11 +35,13 @@ async function changeCSV(data, data2) {
     delete element.Intitulé_structure;
     element.number_of_certified_team = element.nb_eq_label;
     delete element.nb_eq_label;
-    element.regional_delegation = element.DR;
+    element.regional_delegation = listRegionalsDelegations.find(
+      n => n.code === element.DR
+    ).id;
     delete element.DR;
     element.site = element.Localisation;
     delete element.Localisation;
-    element.street = element.adresse1 + element.adresse2;
+    element.street = element.adresse1 + " " + element.adresse2;
     delete element.adresse1;
     delete element.adresse2;
     element.address_supplement =
@@ -91,8 +64,8 @@ async function changeCSV(data, data2) {
     delete element.email_structure;
     element.dc_lastname = element.Nom_CD;
     delete element.Nom_CD;
-    element.dc_firstname = element.directeur_prénom;
-    delete element.directeur_prénom;
+    element.dc_firstname = element.Prénom_CD;
+    delete element.Prénom_CD;
     element.dc_phone = element.Tel_CD;
     delete element.Tel_CD;
     element.dc_email = element.Courriel_CD;
@@ -101,6 +74,9 @@ async function changeCSV(data, data2) {
     delete element["Université de mixité"];
     element.cnrs_mixity = element["Mixité CNRS"];
     delete element["Mixité CNRS"];
+    if (element["Mixité-autres_1"] != "" && element.Mixité_autres_2 != "")
+      element["Mixité-autres_1"] += ";";
+    if (element.Mixité_autres_3 != "") element.Mixité_autres_2 += ";";
     element.other_mixity =
       element["Mixité-autres_1"] +
       element.Mixité_autres_2 +
@@ -108,7 +84,7 @@ async function changeCSV(data, data2) {
     delete element["Mixité-autres_1"];
     delete element.Mixité_autres_2;
     delete element.Mixité_autres_3;
-    element.principal_it = element.IT1;
+    element.principal_it = listInstitute.find(n => n.code === element.IT1).id;
     delete element.IT1;
     if (element.IT2 != "") {
       element.secondary_it = [];
@@ -121,7 +97,9 @@ async function changeCSV(data, data2) {
     delete element.IT3;
     delete element.IT4;
     delete element.IT5;
-    element.specialized_commission = element.CSS1;
+    element.specialized_commission = listSpecializedCommission.find(
+      n => n.code === element.CSS1
+    ).id;
     delete element.CSS1;
     delete element.CSS2;
     if (element.etp_total) {
@@ -301,6 +279,7 @@ async function changeCSV(data, data2) {
       element.nb_admin_etp = element.Admin_ETP.replace(",", ".");
     }
     delete element.Admin_ETP;
+    element.community = "INSERM";
   });
   data = await fusionByCode(data, data2);
   return data;
@@ -316,14 +295,14 @@ async function importData(data, i) {
           nb_researchers_other_pp, nb_researchers_other_etp, nb_post_phd_student_pp, nb_post_phd_student_etp, nb_phd_student_pp, nb_phd_student_etp, nb_cdi_researchers_pp,
           nb_cdi_researchers_etp, nb_cdd_researchers_pp, nb_cdd_researchers_etp, nb_teacher_researchers_pp, nb_teacher_researchers_etp, nb_pu_ph_pp, nb_pu_ph_etp, nb_hosp_others_pp,
           nb_hosp_others_etp, nb_ir_inserm_pp, nb_ir_inserm_etp, nb_ir_non_inserm_pp, nb_ir_non_inserm_etp, nb_ita_others_pp, nb_ita_others_etp, nb_cdd_ir_pp,
-          nb_cdd_ir_etp, nb_cdd_others_pp, nb_cdd_others_etp, nb_admin_pp, nb_admin_etp) VALUES ($structure_type, $iunop_code, $code, $name,
+          nb_cdd_ir_etp, nb_cdd_others_pp, nb_cdd_others_etp, nb_admin_pp, nb_admin_etp, community) VALUES ($structure_type, $iunop_code, $code, $name,
            $number_of_certified_team, $regional_delegation, $site, $street, $address_supplement, $postal_code, $city, $country, $director_lastname, $director_firstname,
             $director_email, $email, $dc_lastname, $dc_firstname, $dc_phone, $dc_email, $mixt_university, $cnrs_mixity, $other_mixity, $principal_it,
              $specialized_commission, $total_etp_effectiv, $nb_researchers_inserm_pp, $nb_researchers_inserm_etp, $nb_researchers_crns_pp, $nb_researchers_crns_etp,
              $nb_researchers_other_pp, $nb_researchers_other_etp, $nb_post_phd_student_pp, $nb_post_phd_student_etp, $nb_phd_student_pp, $nb_phd_student_etp, $nb_cdi_researchers_pp,
              $nb_cdi_researchers_etp,$nb_cdd_researchers_pp, $nb_cdd_researchers_etp, $nb_teacher_researchers_pp, $nb_teacher_researchers_etp, $nb_pu_ph_pp, $nb_pu_ph_etp, $nb_hosp_others_pp,
              $nb_hosp_others_etp, $nb_ir_inserm_pp, $nb_ir_inserm_etp, $nb_ir_non_inserm_pp, $nb_ir_non_inserm_etp, $nb_ita_others_pp, $nb_ita_others_etp, $nb_cdd_ir_pp,
-             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp)`,
+             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp, $community)`,
     parameters: {
       structure_type: data[i].structure_type,
       iunop_code: data[i].iunop_code,
@@ -337,7 +316,7 @@ async function importData(data, i) {
       postal_code: data[i].postal_code,
       city: data[i].city,
       country: data[i].country,
-      director_lastname: data[i].director_lastnamen,
+      director_lastname: data[i].director_lastname,
       director_firstname: data[i].director_firstname,
       director_email: data[i].director_email,
       email: data[i].email,
@@ -383,11 +362,13 @@ async function importData(data, i) {
       nb_cdd_others_pp: data[i].nb_cdd_others_pp,
       nb_cdd_others_etp: data[i].nb_cdd_others_etp,
       nb_admin_pp: data[i].nb_admin_pp,
-      nb_admin_etp: data[i].nb_admin_etp
+      nb_admin_etp: data[i].nb_admin_etp,
+      community: data[i].community
     }
   });
-  if (data[i].secondary_it && data[i].secondary_it[0] != "")
-    await importSecondaryData(data[i]);
+  if (data[i].secondary_it && data[i].secondary_it[0] != "") {
+    // await importSecondaryData(data[i]);
+  }
   i++;
   await importData(data, i);
 }

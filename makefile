@@ -109,3 +109,6 @@ connect-postgres-prod: ## connect to postgres for prod environment
 
 import-all: ## import data for all table
 	docker exec -it insapi_server_1 node ./bin/startImport.js
+
+import: # import specific data
+	docker exec -it insapi_server_1 node ./bin/startImport.js $(COMMAND_ARGS)

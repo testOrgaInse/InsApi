@@ -14,10 +14,9 @@ services:
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_DB: insapi-prod
-        PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
         - ./backups:/backups
-        - /applis/insapi/home/postgresql:/var/lib/postgresql/data/pgdata
+        - /applis/insapi/home/postgresql:/var/lib/postgresql/data
 
   server:
     image: vsnexus.intra.inist.fr:8083/insermbiblio/insapi:${insapi_version}

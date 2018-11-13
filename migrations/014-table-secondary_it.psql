@@ -2,8 +2,8 @@
 
 CREATE TABLE IF NOT EXISTS secondary_it (
     id                  serial primary key,
-    structure           varchar(255) REFERENCES structures(code) ON DELETE CASCADE,
-    it                  varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    structure           int REFERENCES structures(id) ON DELETE CASCADE,
+    it                  int REFERENCES institute(id) ON DELETE CASCADE,
     position            numeric DEFAULT 0,
     
     CONSTRAINT unique_structure_secondary_it_id UNIQUE (id)

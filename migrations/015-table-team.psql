@@ -2,13 +2,14 @@
 
 CREATE TABLE IF NOT EXISTS teams (
     id                                      serial primary key,
-    structure_code                          varchar(255) REFERENCES structures(code) ON DELETE CASCADE,
+    structure_code                          int REFERENCES structures(id) ON DELETE CASCADE,
     team_number                             varchar(255),
     name                                    varchar(255) NOT NULL,
     principal_lastname                      varchar(255),
     principal_firstname                     varchar(255),
     principal_email                         varchar(255),
-    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
+    principal_it                            int REFERENCES institute(id) ON DELETE CASCADE,
+    specialized_commission                  int REFERENCES section_cn(id) ON DELETE CASCADE,
     total_etp_effectiv                      float,
     nb_researchers_inserm_pp                float,
     nb_researchers_inserm_etp               float,
