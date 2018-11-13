@@ -7,9 +7,9 @@ CREATE TABLE IF NOT EXISTS structures (
     code                                    varchar(255) NOT NULL,
     name                                    varchar(255) NOT NULL,
     number_of_certified_team                smallint,
-    regional_delegation                     varchar(255) REFERENCES regionals_delegations(code) ON DELETE CASCADE,
-    principal_it                            varchar(255) REFERENCES institute(code) ON DELETE CASCADE,
-    specialized_commission                  varchar(255) REFERENCES section_cn(code) ON DELETE CASCADE,
+    regional_delegation                     int REFERENCES regionals_delegations(id) ON DELETE CASCADE,
+    principal_it                            int REFERENCES institute(id) ON DELETE CASCADE,
+    specialized_commission                  int REFERENCES section_cn(id) ON DELETE CASCADE,
     community                               varchar(255) REFERENCES community(name) ON DELETE CASCADE,
     site                                    varchar(255),
     street                                  varchar(255),
@@ -67,8 +67,7 @@ CREATE TABLE IF NOT EXISTS structures (
     active                                  BOOLEAN DEFAULT TRUE,
     comment                                 varchar(65535),
     
-    CONSTRAINT unique_structure_code UNIQUE (code),
-    CONSTRAINT unique_structure_id UNIQUE (id)
+    CONSTRAINT unique_structure_code UNIQUE (code)
 );
 
 -- down:

@@ -12,10 +12,25 @@ export const importTeams = async () => {
 };
 
 async function changeCSV(data, data2) {
+  const listStructures = await pool.query({
+    sql: `SELECT id, code FROM structures`,
+    parameters: {}
+  });
+  const listInstitute = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
+  const listSpecializedCommission = await pool.query({
+    sql: `SELECT id, code FROM section_cn`,
+    parameters: {}
+  });
   data.forEach(element => {
     let cut = 0;
     while (element.StructureC[cut] == "0") cut++;
-    element.structure_code = element.structureT + element.StructureC.slice(cut);
+    const tmpStructureCode = element.structureT + element.StructureC.slice(cut);
+    element.structure_code = listStructures.find(
+      n => n.code === tmpStructureCode
+    ).id;
     delete element.StructureT;
     delete element.StructureC;
     cut = 0;
@@ -31,12 +46,19 @@ async function changeCSV(data, data2) {
     delete element.Responsable_équipe_prénom;
     element.principal_email = element.Responsable_équipe_courriel;
     delete element.Responsable_équipe_courriel;
-    element.principal_it = element["IT_principal équipe"];
-    if (element.principal_it == "") element.principal_it = null;
+    if (element["IT_principal équipe"]) {
+      element.principal_it = listInstitute.find(
+        n => n.code === element["IT_principal équipe"]
+      ).id;
+    } else {
+      element.principal_it = null;
+    }
     delete element["IT_principal équipe"];
-    if (element["CSS_équipe 1"] != "")
-      element.specialized_commission = element["CSS_équipe 1"];
-    // element.specialized_commission =
+    if (element["CSS_équipe 1"] != "") {
+      element.specialized_commission = listSpecializedCommission.find(
+        n => n.code === element["CSS_équipe 1"]
+      ).id;
+    }
     // element["CSS_équipe 1"] + "-" + element["CSS_équipe 2"];
     delete element["CSS_équipe 1"];
     delete element["CSS_équipe 2"];
