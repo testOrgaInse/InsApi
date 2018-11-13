@@ -12,6 +12,18 @@ export const importStructures = async () => {
 };
 
 async function changeCSV(data, data2) {
+  const listRegionalsDelegations = await pool.query({
+    sql: `SELECT id, code FROM regionals_delegations`,
+    parameters: {}
+  });
+  const listInstitute = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
+  const listSpecializedCommission = await pool.query({
+    sql: `SELECT id, code FROM section_cn`,
+    parameters: {}
+  });
   data.forEach(element => {
     element.structure_type = element.StructureT;
     element.iunop_code = element.iunop;
@@ -23,7 +35,9 @@ async function changeCSV(data, data2) {
     delete element.Intitulé_structure;
     element.number_of_certified_team = element.nb_eq_label;
     delete element.nb_eq_label;
-    element.regional_delegation = element.DR;
+    element.regional_delegation = listRegionalsDelegations.find(
+      n => n.code === element.DR
+    ).id;
     delete element.DR;
     element.site = element.Localisation;
     delete element.Localisation;
@@ -70,7 +84,7 @@ async function changeCSV(data, data2) {
     delete element["Mixité-autres_1"];
     delete element.Mixité_autres_2;
     delete element.Mixité_autres_3;
-    element.principal_it = element.IT1;
+    element.principal_it = listInstitute.find(n => n.code === element.IT1).id;
     delete element.IT1;
     if (element.IT2 != "") {
       element.secondary_it = [];
@@ -83,7 +97,9 @@ async function changeCSV(data, data2) {
     delete element.IT3;
     delete element.IT4;
     delete element.IT5;
-    element.specialized_commission = element.CSS1;
+    element.specialized_commission = listSpecializedCommission.find(
+      n => n.code === element.CSS1
+    ).id;
     delete element.CSS1;
     delete element.CSS2;
     if (element.etp_total) {
@@ -351,8 +367,9 @@ async function importData(data, i) {
       community: data[i].community
     }
   });
-  if (data[i].secondary_it && data[i].secondary_it[0] != "")
-    await importSecondaryData(data[i]);
+  if (data[i].secondary_it && data[i].secondary_it[0] != "") {
+    // await importSecondaryData(data[i]);
+  }
   i++;
   await importData(data, i);
 }

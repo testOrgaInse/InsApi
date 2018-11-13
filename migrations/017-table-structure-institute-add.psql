@@ -2,8 +2,8 @@
 
 CREATE TABLE IF NOT EXISTS structure_institute_add (
     id                serial primary key,
-    structure         varchar(255) REFERENCES structures(code) ON DELETE CASCADE,
-    institute         varchar(255) REFERENCES institute(code) ON DELETE CASCADE
+    structure         int REFERENCES structures(id) ON DELETE CASCADE,
+    institute         int REFERENCES institute(id) ON DELETE CASCADE
 );
 
 -- down:
