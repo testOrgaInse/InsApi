@@ -6,7 +6,7 @@ const csvFilePath2 = "./imports/teams2.csv";
 
 export const importTeams = async () => {
   let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-  let data2 = await csv({ delimiter: ["|"] }).fromFile(csvFilePath2);
+  let data2 = await csv({ delimiter: [","] }).fromFile(csvFilePath2);
   data = await changeCSV(data, data2);
   return importData(data, 0);
 };
@@ -35,8 +35,7 @@ async function changeCSV(data, data2) {
     delete element.StructureC;
     cut = 0;
     while (element.N0_équipe[cut] == "0") cut++;
-    element.team_number =
-      element.structure_code + "-" + element.N0_équipe.slice(cut);
+    element.team_number = tmpStructureCode + "-" + element.N0_équipe.slice(cut);
     delete element.N0_équipe;
     element.name = element["Intitulé équipe"];
     delete element["Intitulé équipe"];

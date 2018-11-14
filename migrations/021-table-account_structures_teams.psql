@@ -1,0 +1,45 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS account_structures_teams (
+    id                                  serial primary key,
+    login                               varchar(255) NOT NULL,
+    password                            varchar(255) NOT NULL,
+    type_of_code                        varchar(25),
+    type_of_structure                   varchar(25),
+    structure_code                      int REFERENCES structures(id) ON DELETE CASCADE,
+    team_number                         int REFERENCES teams(id) ON DELETE CASCADE,
+    regional_delegation                 int REFERENCES regionals_delegations(id) ON DELETE CASCADE,
+    team_name                           varchar(255),
+    code_type                           varchar(255),
+    researcher_lastname                 varchar(255),
+    researcher_firstname                varchar(255),
+    researcher_email                    varchar(255),
+    site                                varchar(255),
+    city                                varchar(255),
+    mixt_university                     varchar(255),
+    cnrs_mixity                         varchar(255),
+    other_mixity                        varchar(255),
+    principal_it                        varchar(255),
+    specialized_commission              varchar(255),
+    register_date                       DATE default CURRENT_DATE,
+    expiration_date                     DATE,
+    active                              BOOLEAN DEFAULT TRUE,
+    community                           varchar(255) REFERENCES community(name) ON DELETE CASCADE,
+    comment                             varchar(65535),
+
+    CONSTRAINT account_structures_team_id UNIQUE (id)
+);
+
+-- down:
+
+DROP TABLE account_structures_teams;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'account_structures_teams'
+);

@@ -108,7 +108,6 @@ async function changeCSV(data, data2) {
     delete element.etp_total;
   });
   data2.forEach(element => {
-    console.log(element);
     if (element["Chercheurs _Inserm_PP"]) {
       element.nb_researchers_inserm_pp = element[
         "Chercheurs _Inserm_PP"
