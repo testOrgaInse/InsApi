@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS account_structures_teams (
     type_of_structure                   varchar(25),
     structure_code                      int REFERENCES structures(id) ON DELETE CASCADE,
     team_number                         int REFERENCES teams(id) ON DELETE CASCADE,
-    code_type                           varchar(255),
     register_date                       DATE default CURRENT_DATE,
     expiration_date                     DATE,
     active                              BOOLEAN DEFAULT TRUE,
