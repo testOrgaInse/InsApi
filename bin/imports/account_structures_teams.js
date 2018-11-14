@@ -39,31 +39,16 @@ async function changeCSV(data) {
       n => n.team_number === element["Numéro d'Equipe"]
     ).id;
     delete element["Numéro d'Equipe"];
-    element.team_name = element["Intitulé d'Equipe"];
-    delete element["Intitulé d'Equipe"];
-    element.researcher_lastname = element["Nom du chercheur"];
-    delete element["Nom du chercheur"];
-    element.researcher_firstname = element["Prénom du chercheur"];
-    delete element["Prénom du chercheur"];
-    element.researcher_email = element["Courriel du chercheur"];
-    delete element["Courriel du chercheur"];
-    if (element.DR) {
-      element.regional_delegation = listRegionalsDelegations.find(
-        n => n.code === element.DR
-      ).id;
-    }
-    delete element.DR;
-    element.site = element.Site;
-    delete element.Site;
-    element.city = element.Ville;
-    delete element.Ville;
     element.register_date = element["Date d'inscription"];
     delete element["Date d'inscription"];
     element.expiration_date = element["Date d'expiration"];
-    if (element.expiration_date == "") element.expiration_date = null;
+    if (
+      element["Date d'expiration"] == "" ||
+      element["Date d'expiration"] == "0000-00-00"
+    )
+      element.expiration_date = null;
     delete element["Date d'expiration"];
     element.community = "INSERM";
-    console.log(element);
   });
   return data;
 }
@@ -71,8 +56,8 @@ async function changeCSV(data) {
 async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
-    sql: `INSERT INTO account_structures_teams (login, password, type_of_code, type_of_structure, structure_code, team_number, register_date, community)
-          VALUES ($login, $password, $type_of_code, $type_of_structure, $structure_code, $team_number, $register_date, $community)`,
+    sql: `INSERT INTO account_structures_teams (login, password, type_of_code, type_of_structure, structure_code, team_number, register_date, community, expiration_date)
+          VALUES ($login, $password, $type_of_code, $type_of_structure, $structure_code, $team_number, $register_date, $community, $expiration_date)`,
     parameters: {
       login: data[i].login,
       password: data[i].password,
@@ -81,8 +66,8 @@ async function importData(data, i) {
       structure_code: data[i].structure_code,
       team_number: data[i].team_number,
       register_date: data[i].register_date,
-      community: data[i].community
-      //   expiration_date: data[i].expiration_date
+      community: data[i].community,
+      expiration_date: data[i].expiration_date
     }
   });
   i++;

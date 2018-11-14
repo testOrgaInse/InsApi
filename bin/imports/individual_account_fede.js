@@ -48,8 +48,6 @@ async function changeCSV(data) {
     element.team_number ==
       listTeams.find(n => n.team_number === element["Numéro d'équipe"]).id;
     delete element["Numéro d'équipe"];
-    element.team_name = element["Intitulé d'équipe"];
-    delete element["Intitulé d'équipe"];
     element.second_team_code = element["Code équipe secondaire"];
     delete element["Code équipe secondaire"];
     element.itmo_principal = element["ITMO principal"];
@@ -85,9 +83,13 @@ async function changeCSV(data) {
     element.register_date = element["Première connexion"];
     delete element["Première connexion"];
     element.last_connection = element["Dernière connexion"];
+    if (
+      element["Dernière connexion"] == "" ||
+      element["Dernière connexion"] == "0000-00-00"
+    )
+      element.last_connection = null;
     delete element["Dernière connexion"];
     element.community = "INSERM";
-    console.log(element);
   });
   return data;
 }
@@ -96,11 +98,11 @@ async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
     sql: `INSERT INTO individual_account_fede (regional_delegation, type_of_structure, structure_code, uinop_code, structure_name, site, city,
-        team_number, team_name, second_team_code, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
-        type_of_assigned_structure, agent_status, specialized_commission, register_date, community)
+        team_number, second_team_code, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
+        type_of_assigned_structure, agent_status, specialized_commission, register_date, last_connection, community)
           VALUES ($regional_delegation, $type_of_structure, $structure_code, $uinop_code, $structure_name, $site, $city,
-            $team_number, $team_name, $second_team_code, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
-            $type_of_assigned_structure, $agent_status, $specialized_commission, $register_date, $community)`,
+            $team_number, $second_team_code, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
+            $type_of_assigned_structure, $agent_status, $specialized_commission, $register_date, $last_connection, $community)`,
     parameters: {
       regional_delegation: data[i].regional_delegation,
       structure_code: data[i].structure_code,
@@ -110,7 +112,6 @@ async function importData(data, i) {
       site: data[i].site,
       city: data[i].city,
       team_number: data[i].team_number,
-      team_name: data[i].team_name,
       second_team_code: data[i].second_team_code,
       itmo_principal: data[i].itmo_principal,
       agent_function: data[i].agent_function,
@@ -126,7 +127,7 @@ async function importData(data, i) {
       agent_status: data[i].agent_status,
       specialized_commission: data[i].specialized_commission,
       register_date: data[i].register_date,
-      //   last_connection: data[i].last_connection,
+      last_connection: data[i].last_connection,
       community: data[i].community
     }
   });
