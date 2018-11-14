@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS individual_account_fede (
     firstname                           varchar(25),
     inserm_email                        varchar(255),
     email                               varchar(255),
-    type_of_structure                   varchar(255),
+    structure_type                      varchar(255),
     structure_code                      int REFERENCES structures(id) ON DELETE CASCADE,
     community                           varchar(255) REFERENCES community(name) ON DELETE CASCADE,
     team_number                         int REFERENCES teams(id) ON DELETE CASCADE,

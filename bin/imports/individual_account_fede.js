@@ -31,7 +31,7 @@ async function changeCSV(data) {
       n => n.code === element.DR
     ).id;
     delete element.DR;
-    element.type_of_structure = element["Tpe de structure"];
+    element.structure_type = element["Tpe de structure"];
     delete element["Tpe de structure"];
     element.structure_code = listStructures.find(
       n => n.code === element["Code de la structure"]
@@ -97,16 +97,16 @@ async function changeCSV(data) {
 async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
-    sql: `INSERT INTO individual_account_fede (regional_delegation, type_of_structure, structure_code, uinop_code, structure_name, site, city,
+    sql: `INSERT INTO individual_account_fede (regional_delegation, structure_type, structure_code, uinop_code, structure_name, site, city,
         team_number, second_team_code, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
         type_of_assigned_structure, agent_status, specialized_commission, register_date, last_connection, community)
-          VALUES ($regional_delegation, $type_of_structure, $structure_code, $uinop_code, $structure_name, $site, $city,
+          VALUES ($regional_delegation, $structure_type, $structure_code, $uinop_code, $structure_name, $site, $city,
             $team_number, $second_team_code, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
             $type_of_assigned_structure, $agent_status, $specialized_commission, $register_date, $last_connection, $community)`,
     parameters: {
       regional_delegation: data[i].regional_delegation,
       structure_code: data[i].structure_code,
-      type_of_structure: data[i].type_of_structure,
+      structure_type: data[i].structure_type,
       uinop_code: data[i].uinop_code,
       structure_name: data[i].structure_name,
       site: data[i].site,

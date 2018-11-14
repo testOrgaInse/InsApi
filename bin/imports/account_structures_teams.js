@@ -29,7 +29,7 @@ async function changeCSV(data) {
     delete element["Mot de passe"];
     element.type_of_code = element["Type de code"];
     delete element["Type de code"];
-    element.type_of_structure = element["Type de structure"];
+    element.structure_type = element["Type de structure"];
     delete element["Type de structure"];
     element.structure_code = listStructures.find(
       n => n.code === element["Code Structure"]
@@ -56,13 +56,13 @@ async function changeCSV(data) {
 async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
-    sql: `INSERT INTO account_structures_teams (login, password, type_of_code, type_of_structure, structure_code, team_number, register_date, community, expiration_date)
-          VALUES ($login, $password, $type_of_code, $type_of_structure, $structure_code, $team_number, $register_date, $community, $expiration_date)`,
+    sql: `INSERT INTO account_structures_teams (login, password, type_of_code, structure_type, structure_code, team_number, register_date, community, expiration_date)
+          VALUES ($login, $password, $type_of_code, $structure_type, $structure_code, $team_number, $register_date, $community, $expiration_date)`,
     parameters: {
       login: data[i].login,
       password: data[i].password,
       type_of_code: data[i].type_of_code,
-      type_of_structure: data[i].type_of_structure,
+      structure_type: data[i].structure_type,
       structure_code: data[i].structure_code,
       team_number: data[i].team_number,
       register_date: data[i].register_date,
