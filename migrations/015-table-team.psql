@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS teams (
     nb_cdd_others_etp                       float,
     nb_admin_pp                             float,
     nb_admin_etp                            float,
-    nb_personal_accounts                    float,
     active                                  BOOLEAN DEFAULT TRUE,
     comment                                 varchar(65535),
 
