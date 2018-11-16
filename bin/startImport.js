@@ -9,7 +9,12 @@ const { importSectionCn } = require("./imports/section_cn");
 const { importInstitute } = require("./imports/institute");
 const { importStructures } = require("./imports/structures");
 const { importTeams } = require("./imports/teams");
-
+const {
+  importAccountStructuresTeams
+} = require("./imports/account_structures_teams");
+const {
+  importIndividualAccountFede
+} = require("./imports/individual_account_fede");
 if (process.argv[2]) {
 }
 
@@ -29,6 +34,10 @@ if (process.argv[2]) {
     await importStructures();
     console.log("====TEAM====");
     await importTeams();
+    console.log("====ACCOUNT STRUCTURES TEAMS====");
+    await importAccountStructuresTeams();
+    console.log("====INDIVIDUAL ACCOUNT FEDE====");
+    await importIndividualAccountFede();
     console.log("====END====");
     process.exit(0);
   } catch (error) {

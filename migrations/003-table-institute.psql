@@ -3,12 +3,12 @@
 CREATE TABLE IF NOT EXISTS institute (
     id                serial primary key,
     name              varchar(255) NOT NULL,
+    code              varchar(255) NOT NULL,
     address           varchar(255),
     phone             varchar(60),
     mail              varchar(60),
     director          varchar(60),
     mail_director     varchar(60),
-    code              varchar(255) NOT NULL,
 
     CONSTRAINT unique_institute_code UNIQUE (code)
 );

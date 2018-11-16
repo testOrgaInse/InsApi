@@ -6,7 +6,7 @@ const csvFilePath2 = "./imports/structures2.csv";
 
 export const importStructures = async () => {
   let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-  let data2 = await csv({ delimiter: ["|"] }).fromFile(csvFilePath2);
+  let data2 = await csv({ delimiter: [","] }).fromFile(csvFilePath2);
   data = await changeCSV(data, data2);
   return importData(data, 0);
 };

@@ -2,8 +2,8 @@
 
 CREATE TABLE IF NOT EXISTS teams (
     id                                      serial primary key,
-    structure_code                          int REFERENCES structures(id) ON DELETE CASCADE,
-    team_number                             varchar(255),
+    structure_code                          int NOT NULL REFERENCES structures(id) ON DELETE CASCADE,
+    team_number                             varchar(255) NOT NULL,
     name                                    varchar(255) NOT NULL,
     principal_lastname                      varchar(255),
     principal_firstname                     varchar(255),
@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS teams (
     nb_cdd_others_etp                       float,
     nb_admin_pp                             float,
     nb_admin_etp                            float,
-    nb_personal_accounts                    float,
     active                                  BOOLEAN DEFAULT TRUE,
     comment                                 varchar(65535),
 

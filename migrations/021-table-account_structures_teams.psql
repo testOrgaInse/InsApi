@@ -1,0 +1,32 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS account_structures_teams (
+    id                                  serial primary key,
+    login                               varchar(255) NOT NULL,
+    password                            varchar(255) NOT NULL,
+    type_of_code                        varchar(25),
+    structure_type                      varchar(25),
+    structure_code                      int REFERENCES structures(id) ON DELETE CASCADE,
+    team_number                         int REFERENCES teams(id) ON DELETE CASCADE,
+    register_date                       DATE default CURRENT_DATE,
+    expiration_date                     DATE,
+    active                              BOOLEAN DEFAULT TRUE,
+    community                           varchar(255) REFERENCES community(name) ON DELETE CASCADE,
+    comment                             varchar(65535),
+
+    CONSTRAINT account_structures_team_id UNIQUE (id)
+);
+
+-- down:
+
+DROP TABLE account_structures_teams;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'account_structures_teams'
+);

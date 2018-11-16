@@ -6,16 +6,6 @@ export const dropTables = async () => {
     sql: "TRUNCATE TABLE teams CASCADE;",
     parameters: {}
   });
-  console.log("TRUNCATE structure_institute_add");
-  await pool.query({
-    sql: "TRUNCATE TABLE structure_institute_add CASCADE;",
-    parameters: {}
-  });
-  console.log("TRUNCATE structure_community_add");
-  await pool.query({
-    sql: "TRUNCATE TABLE structure_community_add CASCADE;",
-    parameters: {}
-  });
   console.log("TRUNCATE structures CASCADE");
   await pool.query({
     sql: "TRUNCATE TABLE structures CASCADE;",
