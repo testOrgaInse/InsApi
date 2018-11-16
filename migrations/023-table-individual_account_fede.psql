@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS individual_account_fede (
     id                                  serial primary key,
     uid                                 varchar(255) NOT NULL,
     lastname                            varchar(255) NOT NULL,
-    firstname                           varchar(25),
+    firstname                           varchar(25) NOT NULL,
     inserm_email                        varchar(255),
     email                               varchar(255),
     structure_type                      varchar(255),

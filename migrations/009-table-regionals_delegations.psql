@@ -3,6 +3,7 @@
 CREATE TABLE IF NOT EXISTS regionals_delegations (
     id                serial primary key,
     name              varchar(255) NOT NULL,
+    code              varchar(255) NOT NULL,
     address           varchar(255),
     phone             varchar(255),
     mail              varchar(255),
@@ -13,7 +14,6 @@ CREATE TABLE IF NOT EXISTS regionals_delegations (
     rri               varchar(255),
     rri_mail          varchar(255),
     website           varchar(255),
-    code              varchar(255) NOT NULL,
 
     CONSTRAINT unique_regionals_delegations_code UNIQUE (code)
 );
