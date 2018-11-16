@@ -45,8 +45,10 @@ async function changeCSV(data) {
     delete element.Site;
     element.city = element.Ville;
     delete element.Ville;
-    element.team_number ==
-      listTeams.find(n => n.team_number === element["Numéro d'équipe"]).id;
+    const teams = listTeams.find(
+      n => n.team_number === element["Numéro d'équipe"]
+    );
+    element.team_number = teams ? teams.id : null;
     delete element["Numéro d'équipe"];
     element.second_team_code = element["Code équipe secondaire"];
     delete element["Code équipe secondaire"];
