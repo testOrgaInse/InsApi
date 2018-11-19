@@ -1,10 +1,10 @@
 import csv from "csvtojson";
 import pool from "./connexion_database";
 
-const csvFilePath = "./imports/institute.csv";
+const csvFilePath = "./imports/instituts.csv";
 
 export const importInstitute = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
   return importData(data, 0);
 };
 

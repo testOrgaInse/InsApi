@@ -4,7 +4,7 @@ import pool from "./connexion_database";
 const csvFilePath = "./imports/regionals_delegations.csv";
 
 export const importRegionalsDelegations = async () => {
-  let data = await csv({ delimiter: [","] }).fromFile(csvFilePath);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
   return importData(data, 0);
 };
 
