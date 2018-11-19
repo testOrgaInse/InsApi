@@ -86,17 +86,18 @@ async function changeCSV(data, data2) {
     delete element.Mixité_autres_3;
     element.principal_it = listInstitute.find(n => n.code === element.IT1).id;
     delete element.IT1;
-    if (element.IT2 != "") {
-      element.secondary_it = [];
-      element.secondary_it.push(element.IT2);
-      element.secondary_it.push(element.IT3);
-      element.secondary_it.push(element.IT4);
-      element.secondary_it.push(element.IT5);
+    if (element.IT2) {
+      element.secondary_it = [
+        element.IT2,
+        element.IT3,
+        element.IT4,
+        element.IT5
+      ];
+      delete element.IT2;
+      delete element.IT3;
+      delete element.IT4;
+      delete element.IT5;
     }
-    delete element.IT2;
-    delete element.IT3;
-    delete element.IT4;
-    delete element.IT5;
     element.specialized_commission = listSpecializedCommission.find(
       n => n.code === element.CSS1
     ).id;
@@ -302,7 +303,7 @@ async function importData(data, i) {
              $nb_researchers_other_pp, $nb_researchers_other_etp, $nb_post_phd_student_pp, $nb_post_phd_student_etp, $nb_phd_student_pp, $nb_phd_student_etp, $nb_cdi_researchers_pp,
              $nb_cdi_researchers_etp,$nb_cdd_researchers_pp, $nb_cdd_researchers_etp, $nb_teacher_researchers_pp, $nb_teacher_researchers_etp, $nb_pu_ph_pp, $nb_pu_ph_etp, $nb_hosp_others_pp,
              $nb_hosp_others_etp, $nb_ir_inserm_pp, $nb_ir_inserm_etp, $nb_ir_non_inserm_pp, $nb_ir_non_inserm_etp, $nb_ita_others_pp, $nb_ita_others_etp, $nb_cdd_ir_pp,
-             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp, $community)`,
+             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp, $community) RETURNING id`,
     parameters: {
       structure_type: data[i].structure_type,
       iunop_code: data[i].iunop_code,
@@ -328,7 +329,6 @@ async function importData(data, i) {
       cnrs_mixity: data[i].cnrs_mixity,
       other_mixity: data[i].other_mixity,
       principal_it: data[i].principal_it,
-      // secondary_it: data[i].secondary_it,
       specialized_commission: data[i].specialized_commission,
       total_etp_effectiv: data[i].total_etp_effectiv,
       nb_researchers_inserm_pp: data[i].nb_researchers_inserm_pp,
@@ -366,24 +366,31 @@ async function importData(data, i) {
       community: data[i].community
     }
   });
+  data[i].structure_id = structure[0].id;
   if (data[i].secondary_it && data[i].secondary_it[0] != "") {
-    // await importSecondaryData(data[i]);
+    await importSecondaryData(data[i]);
   }
   i++;
   await importData(data, i);
 }
 
-async function importSecondaryData(data) {
-  for (let count = 0; count < data.secondary_it.length; count++) {
-    if (data.secondary_it[count] != "") {
-      let secondary = await pool.query({
-        sql: `INSERT INTO secondary_it (structure, it, position) VALUES ($structure, $it, $position)`,
-        parameters: {
-          structure: data.code,
-          it: data.secondary_it[count],
-          position: count
-        }
-      });
+async function importSecondaryData({ structure_id, secondary_it }) {
+  const listInstitute = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
+  for (let count = 0; count < secondary_it.length; count++) {
+    if (secondary_it[count].length > 0) {
+      const secondary = listInstitute.find(n => n.code === secondary_it[count]);
+      if (secondary && secondary.id) {
+        await pool.query({
+          sql: `INSERT INTO secondary_it_structures(structure_id, institute_id) VALUES ($structure_id, $institute_id)`,
+          parameters: {
+            structure_id,
+            institute_id: secondary.id
+          }
+        });
+      }
     }
   }
 }

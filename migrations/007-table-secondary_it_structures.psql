@@ -1,0 +1,21 @@
+-- up:
+
+CREATE TABLE IF NOT EXISTS secondary_it_structures (
+    id                  serial primary key,
+    structure_id        int REFERENCES structures(id) ON DELETE CASCADE,
+    institute_id        int REFERENCES institute(id) ON DELETE CASCADE
+);
+
+-- down:
+
+DROP TABLE secondary_it_structures;
+
+-- check:
+
+SELECT EXISTS(
+    SELECT *
+    FROM information_schema.tables
+    WHERE
+        table_schema = 'public' AND
+        table_name = 'secondary_it_structures'
+);

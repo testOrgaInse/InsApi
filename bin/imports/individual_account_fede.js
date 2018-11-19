@@ -26,6 +26,10 @@ async function changeCSV(data) {
     sql: `SELECT id, code FROM structures`,
     parameters: {}
   });
+  const listInstitutes = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
   data.forEach(element => {
     element.regional_delegation = listRegionalsDelegations.find(
       n => n.code === element.DR
@@ -52,7 +56,10 @@ async function changeCSV(data) {
     delete element["Numéro d'équipe"];
     element.second_team_code = element["Code équipe secondaire"];
     delete element["Code équipe secondaire"];
-    element.itmo_principal = element["ITMO principal"];
+    const institute = listInstitutes.find(
+      n => n.code === element["ITMO principal"]
+    );
+    element.itmo_principal = institute ? institute.id : null;
     delete element["ITMO principal"];
     element.agent_function = element["Fonction de l'agent"];
     delete element["Fonction de l'agent"];
