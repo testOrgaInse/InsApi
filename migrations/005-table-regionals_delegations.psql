@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS regionals_delegations (
     rh                varchar(255),
     rh_mail           varchar(255),
     rri               varchar(255),
-    rri_mail          varchar(255),
     website           varchar(255),
 
     CONSTRAINT unique_regionals_delegations_code UNIQUE (code)
