@@ -35,8 +35,8 @@ async function changeCSV(data) {
       n => n.code === element.DR
     ).id;
     delete element.DR;
-    element.structure_type = element["Tpe de structure"];
-    delete element["Tpe de structure"];
+    element.structure_type = element["Type de structure"];
+    delete element["Type de structure"];
     element.structure_code = listStructures.find(
       n => n.code === element["Code de la structure"]
     ).id;

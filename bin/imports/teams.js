@@ -81,21 +81,21 @@ async function changeCSV(data, data2) {
       ].replace(",", ".");
     }
     delete element["Chercheurs _Inserm_ETP"];
-    if (element.Cherceurs_CNRS_PP) {
+    if (element.Chercheurs_CNRS_PP) {
       //changer
-      element.nb_researchers_crns_pp = element.Cherceurs_CNRS_PP.replace(
+      element.nb_researchers_crns_pp = element.Chercheurs_CNRS_PP.replace(
         ",",
         "."
       );
     }
-    delete element.Cherceurs_CNRS_PP;
-    if (element.Cherceurs_CNRS_ETP) {
-      element.nb_researchers_crns_etp = element.Cherceurs_CNRS_ETP.replace(
+    delete element.Chercheurs_CNRS_PP;
+    if (element.Chercheurs_CNRS_ETP) {
+      element.nb_researchers_crns_etp = element.Chercheurs_CNRS_ETP.replace(
         ",",
         "."
       );
     }
-    delete element.Cherceurs_CNRS_ETP;
+    delete element.Chercheurs_CNRS_ETP;
     if (element.Chercheurs_autres_PP) {
       element.nb_researchers_other_pp = element.Chercheurs_autres_PP.replace(
         ",",
