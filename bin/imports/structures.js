@@ -5,8 +5,8 @@ const csvFilePath = "./imports/structures.csv";
 const csvFilePath2 = "./imports/structures2.csv";
 
 export const importStructures = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-  let data2 = await csv({ delimiter: [","] }).fromFile(csvFilePath2);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
+  let data2 = await csv({ delimiter: [";"] }).fromFile(csvFilePath2);
   data = await changeCSV(data, data2);
   return importData(data, 0);
 };
@@ -35,10 +35,12 @@ async function changeCSV(data, data2) {
     delete element.Intitulé_structure;
     element.number_of_certified_team = element.nb_eq_label;
     delete element.nb_eq_label;
-    element.regional_delegation = listRegionalsDelegations.find(
-      n => n.code === element.DR
-    ).id;
-    delete element.DR;
+    if (element.DR) {
+      element.regional_delegation = listRegionalsDelegations.find(
+        n => n.code === element.DR
+      ).id;
+      delete element.DR;
+    }
     element.site = element.Localisation;
     delete element.Localisation;
     element.street = element.adresse1 + " " + element.adresse2;
@@ -398,7 +400,7 @@ async function importSecondaryData({ structure_id, secondary_it }) {
 async function fusionByCode(data, data2) {
   data2.forEach(element => {
     for (let i = 0; i < data.length; i++) {
-      if (element.code == data[i].code) {
+      if (element.field1 == data[i].code) {
         data[i] = Object.assign({}, data[i], element);
       }
     }

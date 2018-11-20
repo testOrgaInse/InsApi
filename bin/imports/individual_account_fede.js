@@ -4,7 +4,7 @@ import pool from "./connexion_database";
 const csvFilePath = "./imports/individual_account_fede.csv";
 
 export const importIndividualAccountFede = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
   data = await changeCSV(data);
   return importData(data, 0);
 };
