@@ -43,8 +43,8 @@ async function changeCSV(data) {
     delete element["Code de la structure"];
     element.uinop_code = element["Code uinop"];
     delete element["Code uinop"];
-    element.structure_name = element["Intitulé de la  structure"];
-    delete element["Intitulé de la  structure"];
+    element.structure_name = element["Intitulé de la structure"];
+    delete element["Intitulé de la structure"];
     element.site = element.Site;
     delete element.Site;
     element.city = element.Ville;
@@ -107,10 +107,10 @@ async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
     sql: `INSERT INTO individual_account_fede (regional_delegation, structure_type, structure_code, uinop_code, structure_name, site, city,
-        team_number, second_team_code, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
+        team_number, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
         type_of_assigned_structure, agent_status, specialized_commission, register_date, last_connection, community)
           VALUES ($regional_delegation, $structure_type, $structure_code, $uinop_code, $structure_name, $site, $city,
-            $team_number, $second_team_code, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
+            $team_number, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
             $type_of_assigned_structure, $agent_status, $specialized_commission, $register_date, $last_connection, $community)`,
     parameters: {
       regional_delegation: data[i].regional_delegation,
@@ -121,7 +121,6 @@ async function importData(data, i) {
       site: data[i].site,
       city: data[i].city,
       team_number: data[i].team_number,
-      second_team_code: data[i].second_team_code,
       itmo_principal: data[i].itmo_principal,
       agent_function: data[i].agent_function,
       uid: data[i].uid,

@@ -10,10 +10,6 @@ export const importAccountStructuresTeams = async () => {
 };
 
 async function changeCSV(data) {
-  const listRegionalsDelegations = await pool.query({
-    sql: `SELECT id, code FROM regionals_delegations`,
-    parameters: {}
-  });
   const listTeams = await pool.query({
     sql: `SELECT id, team_number FROM teams`,
     parameters: {}
