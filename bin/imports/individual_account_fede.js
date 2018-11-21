@@ -4,7 +4,7 @@ import pool from "./connexion_database";
 const csvFilePath = "./imports/individual_account_fede.csv";
 
 export const importIndividualAccountFede = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
   data = await changeCSV(data);
   return importData(data, 0);
 };
@@ -26,21 +26,25 @@ async function changeCSV(data) {
     sql: `SELECT id, code FROM structures`,
     parameters: {}
   });
+  const listInstitutes = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
   data.forEach(element => {
     element.regional_delegation = listRegionalsDelegations.find(
       n => n.code === element.DR
     ).id;
     delete element.DR;
-    element.structure_type = element["Tpe de structure"];
-    delete element["Tpe de structure"];
+    element.structure_type = element["Type de structure"];
+    delete element["Type de structure"];
     element.structure_code = listStructures.find(
       n => n.code === element["Code de la structure"]
     ).id;
     delete element["Code de la structure"];
     element.uinop_code = element["Code uinop"];
     delete element["Code uinop"];
-    element.structure_name = element["Intitulé de la  structure"];
-    delete element["Intitulé de la  structure"];
+    element.structure_name = element["Intitulé de la structure"];
+    delete element["Intitulé de la structure"];
     element.site = element.Site;
     delete element.Site;
     element.city = element.Ville;
@@ -52,7 +56,10 @@ async function changeCSV(data) {
     delete element["Numéro d'équipe"];
     element.second_team_code = element["Code équipe secondaire"];
     delete element["Code équipe secondaire"];
-    element.itmo_principal = element["ITMO principal"];
+    const institute = listInstitutes.find(
+      n => n.code === element["ITMO principal"]
+    );
+    element.itmo_principal = institute ? institute.id : null;
     delete element["ITMO principal"];
     element.agent_function = element["Fonction de l'agent"];
     delete element["Fonction de l'agent"];
@@ -100,10 +107,10 @@ async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
     sql: `INSERT INTO individual_account_fede (regional_delegation, structure_type, structure_code, uinop_code, structure_name, site, city,
-        team_number, second_team_code, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
+        team_number, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
         type_of_assigned_structure, agent_status, specialized_commission, register_date, last_connection, community)
           VALUES ($regional_delegation, $structure_type, $structure_code, $uinop_code, $structure_name, $site, $city,
-            $team_number, $second_team_code, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
+            $team_number, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
             $type_of_assigned_structure, $agent_status, $specialized_commission, $register_date, $last_connection, $community)`,
     parameters: {
       regional_delegation: data[i].regional_delegation,
@@ -114,7 +121,6 @@ async function importData(data, i) {
       site: data[i].site,
       city: data[i].city,
       team_number: data[i].team_number,
-      second_team_code: data[i].second_team_code,
       itmo_principal: data[i].itmo_principal,
       agent_function: data[i].agent_function,
       uid: data[i].uid,

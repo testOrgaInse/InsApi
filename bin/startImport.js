@@ -1,5 +1,7 @@
 require("babel-register");
 
+const fs = require("fs");
+const { promisify } = require("util");
 const { dropTables } = require("./imports/dropTables");
 const { importCommunity } = require("./imports/community");
 const {
@@ -15,32 +17,33 @@ const {
 const {
   importIndividualAccountFede
 } = require("./imports/individual_account_fede");
-if (process.argv[2]) {
-}
+
+const writeFile = promisify(fs.writeFile);
+const appendFile = promisify(fs.appendFile);
 
 (async () => {
   try {
-    console.log("====TRUNCATE TABLE====");
+    await writeFile("logs/import.log", "DROP TABLE\n");
     await dropTables();
-    console.log("====COMMUNITY====");
+    await appendFile("logs/import.log", "IMPORT COMMUNITY\n");
     await importCommunity();
-    console.log("====REGIONALS DELEGATIONS====");
+    await appendFile("logs/import.log", "IMPORT REGIONALS DELEGATIONS\n");
     await importRegionalsDelegations();
-    console.log("====SECTION CN====");
+    await appendFile("logs/import.log", "IMPORT SECTION CN\n");
     await importSectionCn();
-    console.log("====INSTITUTE====");
+    await appendFile("logs/import.log", "IMPORT INSTITUTE\n");
     await importInstitute();
-    console.log("====STRUCTURE====");
+    await appendFile("logs/import.log", "IMPORT STRUCTURE\n");
     await importStructures();
-    console.log("====TEAM====");
+    await appendFile("logs/import.log", "IMPORT TEAM\n");
     await importTeams();
-    console.log("====ACCOUNT STRUCTURES TEAMS====");
+    await appendFile("logs/import.log", "IMPORT ACCOUNT STRUCTURES TEAMS\n");
     await importAccountStructuresTeams();
-    console.log("====INDIVIDUAL ACCOUNT FEDE====");
+    await appendFile("logs/import.log", "IMPORT INDIVIDUAL ACCOUNT FEDE\n");
     await importIndividualAccountFede();
-    console.log("====END====");
+    await appendFile("logs/import.log", "FIN DES IMPORTS\n");
     process.exit(0);
   } catch (error) {
-    console.error(error);
+    await fs.writeFile("logs/import.log", error);
   }
 })();

@@ -1,51 +1,49 @@
 version: "2"
- 
+
 services:
   redis:
     image: redis:3.2
 
   postgres-dev:
     image: postgres:10
-    volumes:
-        - ./backups:/backups
     environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: secret
-        POSTGRES_DB: insapi-dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: insapi-dev
     volumes:
-        - ./backups:/backups
-        - ./postgresql-dev:/var/lib/postgresql/data
+      - ./backups:/backups
+      - ./postgresql-dev:/var/lib/postgresql/data
     ports:
-        - 5432:5432
+      - 5432:5432
 
   adminer:
     image: adminer
     ports:
-        - 8080:8080
+      - 8080:8080
     depends_on:
-        - postgres-dev
+      - postgres-dev
 
   server:
     extends:
-        file: ./docker-compose.yml
-        service: node
+      file: ./docker-compose.yml
+      service: node
     environment:
-        NODE_ENV: development
-        http_proxy: ${http_proxy}
-        https_proxy: ${https_proxy}
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: secret
-        POSTGRES_DB: insapi-dev
-        POSTGRES_HOST: postgres-dev
+      NODE_ENV: development
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: insapi-dev
+      POSTGRES_HOST: postgres-dev
     links:
-        - redis
-        - postgres-dev
-        - maildev
+      - redis
+      - postgres-dev
+      - maildev
     ports:
-        - 3000:3000
+      - 3000:3000
     command: npm run dev
 
   maildev:
     image: djfarrelly/maildev
     ports:
-        - 1080:80
+      - 1080:80

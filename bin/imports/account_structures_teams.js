@@ -4,16 +4,12 @@ import pool from "./connexion_database";
 const csvFilePath = "./imports/account_structures_teams.csv";
 
 export const importAccountStructuresTeams = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
   data = await changeCSV(data);
   return importData(data, 0);
 };
 
 async function changeCSV(data) {
-  const listRegionalsDelegations = await pool.query({
-    sql: `SELECT id, code FROM regionals_delegations`,
-    parameters: {}
-  });
   const listTeams = await pool.query({
     sql: `SELECT id, team_number FROM teams`,
     parameters: {}
@@ -35,10 +31,13 @@ async function changeCSV(data) {
       n => n.code === element["Code Structure"]
     ).id;
     delete element["Code Structure"];
-    element.team_number = listTeams.find(
-      n => n.team_number === element["Numéro d'Equipe"]
-    ).id;
-    delete element["Numéro d'Equipe"];
+    if (element["Numéro d'Equipe"]) {
+      const team_number = (element.team_number = listTeams.find(
+        n => n.team_number === element["Numéro d'Equipe"]
+      ));
+      element.team_number = team_number ? team_number.id : null;
+      delete element["Numéro d'Equipe"];
+    }
     element.register_date = element["Date d'inscription"];
     delete element["Date d'inscription"];
     element.expiration_date = element["Date d'expiration"];

@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS individual_account_fede (
     specialized_commission              int REFERENCES section_cn(id) ON DELETE CASCADE,
     uinop_code                          varchar(255),
     structure_name                      varchar(255),
-    second_team_code                    varchar(255),
     site                                varchar(255),
     city                                varchar(255),
     itmo_principal                      varchar(255),

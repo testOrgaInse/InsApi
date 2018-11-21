@@ -5,8 +5,8 @@ const csvFilePath = "./imports/teams.csv";
 const csvFilePath2 = "./imports/teams2.csv";
 
 export const importTeams = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-  let data2 = await csv({ delimiter: [","] }).fromFile(csvFilePath2);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
+  let data2 = await csv({ delimiter: [";"] }).fromFile(csvFilePath2);
   data = await changeCSV(data, data2);
   return importData(data, 0);
 };
@@ -26,7 +26,9 @@ async function changeCSV(data, data2) {
   });
   data.forEach(element => {
     let cut = 0;
-    while (element.StructureC[cut] == "0") cut++;
+    while (element.StructureC[cut] == "0") {
+      cut++;
+    }
     const tmpStructureCode = element.structureT + element.StructureC.slice(cut);
     element.structure_code = listStructures.find(
       n => n.code === tmpStructureCode
@@ -81,21 +83,21 @@ async function changeCSV(data, data2) {
       ].replace(",", ".");
     }
     delete element["Chercheurs _Inserm_ETP"];
-    if (element.Cherceurs_CNRS_PP) {
+    if (element.Chercheurs_CNRS_PP) {
       //changer
-      element.nb_researchers_crns_pp = element.Cherceurs_CNRS_PP.replace(
+      element.nb_researchers_crns_pp = element.Chercheurs_CNRS_PP.replace(
         ",",
         "."
       );
     }
-    delete element.Cherceurs_CNRS_PP;
-    if (element.Cherceurs_CNRS_ETP) {
-      element.nb_researchers_crns_etp = element.Cherceurs_CNRS_ETP.replace(
+    delete element.Chercheurs_CNRS_PP;
+    if (element.Chercheurs_CNRS_ETP) {
+      element.nb_researchers_crns_etp = element.Chercheurs_CNRS_ETP.replace(
         ",",
         "."
       );
     }
-    delete element.Cherceurs_CNRS_ETP;
+    delete element.Chercheurs_CNRS_ETP;
     if (element.Chercheurs_autres_PP) {
       element.nb_researchers_other_pp = element.Chercheurs_autres_PP.replace(
         ",",
@@ -246,8 +248,10 @@ async function changeCSV(data, data2) {
 }
 
 async function importData(data, i) {
-  if (i >= data.length) return;
-  const teams = await pool.query({
+  if (i >= data.length) {
+    return;
+  }
+  await pool.query({
     sql: `INSERT INTO teams (structure_code, team_number, name, principal_lastname,
           principal_firstname, principal_email, principal_it, specialized_commission, total_etp_effectiv,
           nb_researchers_inserm_pp, nb_researchers_inserm_etp, nb_researchers_crns_pp, nb_researchers_crns_etp,

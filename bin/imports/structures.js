@@ -5,8 +5,8 @@ const csvFilePath = "./imports/structures.csv";
 const csvFilePath2 = "./imports/structures2.csv";
 
 export const importStructures = async () => {
-  let data = await csv({ delimiter: ["|"] }).fromFile(csvFilePath);
-  let data2 = await csv({ delimiter: [","] }).fromFile(csvFilePath2);
+  let data = await csv({ delimiter: [";"] }).fromFile(csvFilePath);
+  let data2 = await csv({ delimiter: [";"] }).fromFile(csvFilePath2);
   data = await changeCSV(data, data2);
   return importData(data, 0);
 };
@@ -35,10 +35,15 @@ async function changeCSV(data, data2) {
     delete element.Intitulé_structure;
     element.number_of_certified_team = element.nb_eq_label;
     delete element.nb_eq_label;
-    element.regional_delegation = listRegionalsDelegations.find(
-      n => n.code === element.DR
-    ).id;
-    delete element.DR;
+    if (element.DR) {
+      const regional_delegation = listRegionalsDelegations.find(
+        n => n.code === element.DR
+      );
+      element.regional_delegation = regional_delegation
+        ? regional_delegation.id
+        : null;
+      delete element.DR;
+    }
     element.site = element.Localisation;
     delete element.Localisation;
     element.street = element.adresse1 + " " + element.adresse2;
@@ -84,22 +89,31 @@ async function changeCSV(data, data2) {
     delete element["Mixité-autres_1"];
     delete element.Mixité_autres_2;
     delete element.Mixité_autres_3;
-    element.principal_it = listInstitute.find(n => n.code === element.IT1).id;
-    delete element.IT1;
-    if (element.IT2 != "") {
-      element.secondary_it = [];
-      element.secondary_it.push(element.IT2);
-      element.secondary_it.push(element.IT3);
-      element.secondary_it.push(element.IT4);
-      element.secondary_it.push(element.IT5);
+    if (element.IT1) {
+      const institute = listInstitute.find(n => n.code === element.IT1);
+      element.principal_it = institute ? institute.id : null;
+      delete element.IT1;
     }
-    delete element.IT2;
-    delete element.IT3;
-    delete element.IT4;
-    delete element.IT5;
-    element.specialized_commission = listSpecializedCommission.find(
-      n => n.code === element.CSS1
-    ).id;
+    if (element.IT2) {
+      element.secondary_it = [
+        element.IT2,
+        element.IT3,
+        element.IT4,
+        element.IT5
+      ];
+      delete element.IT2;
+      delete element.IT3;
+      delete element.IT4;
+      delete element.IT5;
+    }
+    if (element.CSS1) {
+      const specialized_commission = listSpecializedCommission.find(
+        n => n.code === element.CSS1
+      );
+      element.specialized_commission = specialized_commission
+        ? specialized_commission.id
+        : null;
+    }
     delete element.CSS1;
     delete element.CSS2;
     if (element.etp_total) {
@@ -120,21 +134,21 @@ async function changeCSV(data, data2) {
       ].replace(",", ".");
     }
     delete element["Chercheurs _Inserm_ETP"];
-    if (element.Cherceurs_CNRS_PP) {
+    if (element.Chercheurs_CNRS_PP) {
       //changer
-      element.nb_researchers_crns_pp = element.Cherceurs_CNRS_PP.replace(
+      element.nb_researchers_crns_pp = element.Chercheurs_CNRS_PP.replace(
         ",",
         "."
       );
     }
-    delete element.Cherceurs_CNRS_PP;
-    if (element.Cherceurs_CNRS_ETP) {
-      element.nb_researchers_crns_etp = element.Cherceurs_CNRS_ETP.replace(
+    delete element.Chercheurs_CNRS_PP;
+    if (element.Chercheurs_CNRS_ETP) {
+      element.nb_researchers_crns_etp = element.Chercheurs_CNRS_ETP.replace(
         ",",
         "."
       );
     }
-    delete element.Cherceurs_CNRS_ETP;
+    delete element.Chercheurs_CNRS_ETP;
     if (element.Chercheurs_autres_PP) {
       element.nb_researchers_other_pp = element.Chercheurs_autres_PP.replace(
         ",",
@@ -302,7 +316,7 @@ async function importData(data, i) {
              $nb_researchers_other_pp, $nb_researchers_other_etp, $nb_post_phd_student_pp, $nb_post_phd_student_etp, $nb_phd_student_pp, $nb_phd_student_etp, $nb_cdi_researchers_pp,
              $nb_cdi_researchers_etp,$nb_cdd_researchers_pp, $nb_cdd_researchers_etp, $nb_teacher_researchers_pp, $nb_teacher_researchers_etp, $nb_pu_ph_pp, $nb_pu_ph_etp, $nb_hosp_others_pp,
              $nb_hosp_others_etp, $nb_ir_inserm_pp, $nb_ir_inserm_etp, $nb_ir_non_inserm_pp, $nb_ir_non_inserm_etp, $nb_ita_others_pp, $nb_ita_others_etp, $nb_cdd_ir_pp,
-             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp, $community)`,
+             $nb_cdd_ir_etp, $nb_cdd_others_pp, $nb_cdd_others_etp, $nb_admin_pp, $nb_admin_etp, $community) RETURNING id`,
     parameters: {
       structure_type: data[i].structure_type,
       iunop_code: data[i].iunop_code,
@@ -328,7 +342,6 @@ async function importData(data, i) {
       cnrs_mixity: data[i].cnrs_mixity,
       other_mixity: data[i].other_mixity,
       principal_it: data[i].principal_it,
-      // secondary_it: data[i].secondary_it,
       specialized_commission: data[i].specialized_commission,
       total_etp_effectiv: data[i].total_etp_effectiv,
       nb_researchers_inserm_pp: data[i].nb_researchers_inserm_pp,
@@ -366,24 +379,31 @@ async function importData(data, i) {
       community: data[i].community
     }
   });
+  data[i].structure_id = structure[0].id;
   if (data[i].secondary_it && data[i].secondary_it[0] != "") {
-    // await importSecondaryData(data[i]);
+    await importSecondaryData(data[i]);
   }
   i++;
   await importData(data, i);
 }
 
-async function importSecondaryData(data) {
-  for (let count = 0; count < data.secondary_it.length; count++) {
-    if (data.secondary_it[count] != "") {
-      let secondary = await pool.query({
-        sql: `INSERT INTO secondary_it (structure, it, position) VALUES ($structure, $it, $position)`,
-        parameters: {
-          structure: data.code,
-          it: data.secondary_it[count],
-          position: count
-        }
-      });
+async function importSecondaryData({ structure_id, secondary_it }) {
+  const listInstitute = await pool.query({
+    sql: `SELECT id, code FROM institute`,
+    parameters: {}
+  });
+  for (let count = 0; count < secondary_it.length; count++) {
+    if (secondary_it[count].length > 0) {
+      const secondary = listInstitute.find(n => n.code === secondary_it[count]);
+      if (secondary && secondary.id) {
+        await pool.query({
+          sql: `INSERT INTO secondary_it_structures(structure_id, institute_id) VALUES ($structure_id, $institute_id)`,
+          parameters: {
+            structure_id,
+            institute_id: secondary.id
+          }
+        });
+      }
     }
   }
 }
@@ -391,7 +411,7 @@ async function importSecondaryData(data) {
 async function fusionByCode(data, data2) {
   data2.forEach(element => {
     for (let i = 0; i < data.length; i++) {
-      if (element.code == data[i].code) {
+      if (element.field1 == data[i].code) {
         data[i] = Object.assign({}, data[i], element);
       }
     }
