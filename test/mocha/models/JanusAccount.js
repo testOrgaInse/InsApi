@@ -1,13 +1,13 @@
-import JanusAccount from "../../../lib/models/JanusAccount";
+import FedeInsermAccounts from "../../../lib/models/JanusAccount";
 
-describe("model JanusAccount", function() {
-  let janusAccountQueries;
+describe("model FedeInsermAccounts", function() {
+  let fedeInsermAccountQueries;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today.getTime() + 3600 * 24 * 1000);
 
   before(function() {
-    janusAccountQueries = JanusAccount(postgres);
+    fedeInsermAccountQueries = FedeInsermAccounts(postgres);
   });
 
   describe("selectOne", function() {
@@ -28,25 +28,22 @@ describe("model JanusAccount", function() {
         "insis"
       ].map(name => fixtureLoader.createCommunity({ name, gate: name }));
 
-      const instituteCommunity = {
-        53: in2p3.id,
-        54: insu.id,
-        55: insmi.id
-      };
-
       [institute53, institute54, institute55] = yield [53, 54, 55].map(code =>
         fixtureLoader.createInstitute({
           code,
-          name: `Institute${code}`,
-          communities: [instituteCommunity[code]]
+          name: `Institute${code}`
         })
       );
 
       [cern, inist] = yield ["cern", "inist"].map(code =>
-        fixtureLoader.createUnit({
+        fixtureLoader.createStructure({
           code,
-          communities: [code === "cern" ? inc.id : inee.id],
-          institutes: [institute55.id]
+          structure_type,
+          name,
+          community,
+          pricipal_it: [institute55.id],
+          regional_delegation: "",
+          specialized_commision: ""
         })
       );
 
@@ -68,28 +65,31 @@ describe("model JanusAccount", function() {
     });
 
     it("should return one user by id", function*() {
-      assert.deepEqual(yield janusAccountQueries.selectOne({ id: user.id }), {
-        id: user.id,
-        uid: "uid",
-        firstname: "jane",
-        name: "doe",
-        mail: "jane@doe.com",
-        comment: "no comment",
-        last_connexion: today,
-        first_connexion: today,
-        cnrs: true,
-        primary_unit: inist.id,
-        primary_unit_communities: [inee.id],
-        additional_units: [cern.id],
-        primary_institute: institute54.id,
-        primary_institute_communities: [insu.id],
-        additional_institutes: [institute53.id],
-        communities: [insb.id, inshs.id],
-        all_communities: [insu.id, inee.id, insb.id, inshs.id],
-        favorite_domain: insb.name,
-        active: true,
-        favourite_resources: null
-      });
+      assert.deepEqual(
+        yield fedeInsermAccountQueries.selectOne({ id: user.id }),
+        {
+          id: user.id,
+          uid: "uid",
+          firstname: "jane",
+          name: "doe",
+          mail: "jane@doe.com",
+          comment: "no comment",
+          last_connexion: today,
+          first_connexion: today,
+          cnrs: true,
+          primary_unit: inist.id,
+          primary_unit_communities: [inee.id],
+          additional_units: [cern.id],
+          primary_institute: institute54.id,
+          primary_institute_communities: [insu.id],
+          additional_institutes: [institute53.id],
+          communities: [insb.id, inshs.id],
+          all_communities: [insu.id, inee.id, insb.id, inshs.id],
+          favorite_domain: insb.name,
+          active: true,
+          favourite_resources: null
+        }
+      );
     });
 
     after(function*() {
@@ -190,7 +190,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should return one user by id", function*() {
-      assert.deepEqual(yield janusAccountQueries.selectPage(), [
+      assert.deepEqual(yield fedeInsermAccountQueries.selectPage(), [
         {
           id: jane.id,
           totalcount: "3",
@@ -271,7 +271,7 @@ describe("model JanusAccount", function() {
   describe("upsertOnePerUid", function() {
     it("should create a new janusAccount if none exists with the same code", function*() {
       const primaryInstitute = yield fixtureLoader.createInstitute();
-      const user = yield janusAccountQueries.upsertOnePerUid({
+      const user = yield fedeInsermAccountQueries.upsertOnePerUid({
         uid: "john.doe",
         name: "doe",
         firstname: "john",
@@ -315,7 +315,7 @@ describe("model JanusAccount", function() {
         primary_institute: primaryInstitute.id
       });
 
-      const user = yield janusAccountQueries.upsertOnePerUid({
+      const user = yield fedeInsermAccountQueries.upsertOnePerUid({
         uid: "john.doe",
         name: "doe",
         firstname: "johnny",
@@ -364,7 +364,7 @@ describe("model JanusAccount", function() {
         primary_institute: primaryInstitute.id
       });
 
-      const user = yield janusAccountQueries.upsertOnePerUid({
+      const user = yield fedeInsermAccountQueries.upsertOnePerUid({
         uid: "john.doe",
         name: "doe",
         firstname: undefined,
@@ -427,7 +427,7 @@ describe("model JanusAccount", function() {
     it("should throw an error if trying to add a community which does not exists and abort modification", function*() {
       let error;
       try {
-        yield janusAccountQueries.updateCommunities(
+        yield fedeInsermAccountQueries.updateCommunities(
           ["nemo", inshs.id],
           janusAccount.id
         );
@@ -457,7 +457,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should add given new community", function*() {
-      yield janusAccountQueries.updateCommunities(
+      yield fedeInsermAccountQueries.updateCommunities(
         [insb.id, inc.id, inshs.id],
         janusAccount.id
       );
@@ -487,7 +487,10 @@ describe("model JanusAccount", function() {
     });
 
     it("should remove missing community", function*() {
-      yield janusAccountQueries.updateCommunities([insb.id], janusAccount.id);
+      yield fedeInsermAccountQueries.updateCommunities(
+        [insb.id],
+        janusAccount.id
+      );
 
       const janusAccountCommunities = yield postgres.queries({
         sql:
@@ -504,7 +507,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should update janus_account_community index", function*() {
-      yield janusAccountQueries.updateCommunities(
+      yield fedeInsermAccountQueries.updateCommunities(
         [inc.id, insb.id],
         janusAccount.id
       );
@@ -558,7 +561,7 @@ describe("model JanusAccount", function() {
     it("should throw an error if trying to add an institute which does not exists and abort modification", function*() {
       let error;
       try {
-        yield janusAccountQueries.updateAdditionalInstitutes(
+        yield fedeInsermAccountQueries.updateAdditionalInstitutes(
           [0, institute55.id],
           janusAccount.id
         );
@@ -588,7 +591,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should add given new institute", function*() {
-      yield janusAccountQueries.updateAdditionalInstitutes(
+      yield fedeInsermAccountQueries.updateAdditionalInstitutes(
         [institute53.id, institute54.id, institute55.id],
         janusAccount.id
       );
@@ -618,7 +621,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should remove missing institute", function*() {
-      yield janusAccountQueries.updateAdditionalInstitutes(
+      yield fedeInsermAccountQueries.updateAdditionalInstitutes(
         [institute53.id],
         janusAccount.id
       );
@@ -638,7 +641,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should update janus_account_institute index", function*() {
-      yield janusAccountQueries.updateAdditionalInstitutes(
+      yield fedeInsermAccountQueries.updateAdditionalInstitutes(
         [institute54.id, institute53.id],
         janusAccount.id
       );
@@ -688,7 +691,7 @@ describe("model JanusAccount", function() {
     it("should throw an error if trying to add a unit which does not exists and abort modification", function*() {
       let error;
       try {
-        yield janusAccountQueries.updateAdditionalUnits(
+        yield fedeInsermAccountQueries.updateAdditionalUnits(
           [0, cnrs.id],
           janusAccount.id
         );
@@ -718,7 +721,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should add given new units", function*() {
-      yield janusAccountQueries.updateAdditionalUnits(
+      yield fedeInsermAccountQueries.updateAdditionalUnits(
         [cern.id, inist.id, cnrs.id],
         janusAccount.id
       );
@@ -748,7 +751,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should remove missing units", function*() {
-      yield janusAccountQueries.updateAdditionalUnits(
+      yield fedeInsermAccountQueries.updateAdditionalUnits(
         [cern.id],
         janusAccount.id
       );
@@ -768,7 +771,7 @@ describe("model JanusAccount", function() {
     });
 
     it("should update janus_account_unit index", function*() {
-      yield janusAccountQueries.updateAdditionalUnits(
+      yield fedeInsermAccountQueries.updateAdditionalUnits(
         [inist.id, cern.id],
         janusAccount.id
       );
@@ -856,7 +859,7 @@ describe("model JanusAccount", function() {
 
     it("should return groups for ez-ticket", function*() {
       assert.deepEqual(
-        yield janusAccountQueries.selectEzTicketInfoForId(user.id),
+        yield fedeInsermAccountQueries.selectEzTicketInfoForId(user.id),
         {
           username: `${user.mail}_O_OTHER_I_54_OU_inist`,
           groups: ["insu", "inee", "reaxys", "insb", "inshs"]

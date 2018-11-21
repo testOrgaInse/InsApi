@@ -2,7 +2,7 @@ import jwt from "koa-jwt";
 import { auth } from "config";
 
 import JanusAccount from "../../../lib/models/JanusAccount";
-import Unit from "../../../lib/models/Unit";
+import Structure from "../../../lib/models/Structures";
 import Institute from "../../../lib/models/Institute";
 
 function* getJanusAccountIdFromUid(uid) {
@@ -26,7 +26,7 @@ describe("POST /ebsco/login_renater", function() {
   before(function() {
     janusAccountQueries = JanusAccount(postgres);
     instituteQueries = Institute(postgres);
-    unitQueries = Unit(postgres);
+    unitQueries = Structure(postgres);
   });
 
   beforeEach(function*() {

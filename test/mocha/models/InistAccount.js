@@ -1,10 +1,10 @@
-import InistAccount from "../../../lib/models/InistAccount";
+import StructuresTeamsAccounts from "../../../lib/models/StructuresTeamsAccounts";
 
-describe("model InistAccount", function() {
-  let inistAccountQueries;
+describe("model StructuresTeamsAccounts", function() {
+  let structuresTeamsAccountsQueries;
 
   before(function() {
-    inistAccountQueries = InistAccount(postgres);
+    structuresTeamsAccountsQueries = StructuresTeamsAccounts(postgres);
   });
 
   describe("selectOne", function() {
@@ -49,27 +49,21 @@ describe("model InistAccount", function() {
       );
 
       [cern] = yield ["cern", "inist"].map(code =>
-        fixtureLoader.createUnit({
+        fixtureLoader.createStructure({
           code,
-          communities: [code === "cern" ? inc.id : inee.id],
+          community: [code === "cern" ? inc.id : inee.id],
           institutes: [institute55.id]
         })
       );
 
-      user = yield fixtureLoader.createInistAccount({
-        username: "jane_doe",
+      user = yield fixtureLoader.createStructureTeamAccount({
+        login: "jane_doe",
         password: "secret",
-        name: "doe",
-        firstname: "jane",
-        mail: "jane@doe.mail",
-        phone: "0606060606",
-        dr: "dr54",
-        communities: [inshs.id, insb.id],
-        main_institute: institute53.id,
-        subscription_date: "2010-12-12",
+        community: "INSERM",
+        structure_code: "",
+        team_number: "",
+        register_date: "2010-12-12",
         expiration_date: "2018-12-12",
-        main_unit: cern.id,
-        units: [],
         comment: "a comment"
       });
     });
