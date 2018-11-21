@@ -15,14 +15,13 @@ async function importData(data, i) {
   if (data[i]["Code"]) {
     await pool.query({
       sql: `INSERT INTO regionals_delegations 
-      (name, code, address, phone, dr_mail, director_name, director_mail, rh_name, rh_mail, rri_name, rri_mail, website)
-       VALUES ($name, $code, $address, $phone, $dr_mail, $director_name, $director_mail, $rh_name, $rh_mail, $rri_name, $rri_mail, $website)`,
+      (name, code, address, phone, director_name, director_mail, rh_name, rh_mail, rri_name, rri_mail, website)
+       VALUES ($name, $code, $address, $phone, $director_name, $director_mail, $rh_name, $rh_mail, $rri_name, $rri_mail, $website)`,
       parameters: {
         name: data[i]["Nom"],
         code: data[i]["Code"],
         address: data[i]["Adresse"],
         phone: data[i]["Téléphone"],
-        dr_mail: data[i]["Mail_DR"],
         director_name: data[i]["Directeur_nom"],
         director_mail: data[i]["Mail_directeur"],
         rh_name: data[i]["RH_nom"],

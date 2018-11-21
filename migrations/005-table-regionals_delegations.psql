@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS regionals_delegations (
     code                 varchar(255) NOT NULL,
     address              varchar(255),
     phone                varchar(255),
-    dr_mail              varchar(255),
     director_name        varchar(255),
     director_mail        varchar(255),
     rh_name              varchar(255),
