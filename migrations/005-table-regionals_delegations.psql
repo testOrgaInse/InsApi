@@ -1,18 +1,19 @@
 -- up:
 
 CREATE TABLE IF NOT EXISTS regionals_delegations (
-    id                serial primary key,
-    name              varchar(255) NOT NULL,
-    code              varchar(255) NOT NULL,
-    address           varchar(255),
-    phone             varchar(255),
-    mail              varchar(255),
-    director          varchar(255),
-    director_mail     varchar(255),
-    rh                varchar(255),
-    rh_mail           varchar(255),
-    rri               varchar(255),
-    website           varchar(255),
+    id                   serial primary key,
+    name                 varchar(255) NOT NULL,
+    code                 varchar(255) NOT NULL,
+    address              varchar(255),
+    phone                varchar(255),
+    dr_mail              varchar(255),
+    director_name        varchar(255),
+    director_mail        varchar(255),
+    rh_name              varchar(255),
+    rh_mail              varchar(255),
+    rri_name             varchar(255),
+    rri_mail              varchar(255),
+    website              varchar(255),
 
     CONSTRAINT unique_regionals_delegations_code UNIQUE (code)
 );

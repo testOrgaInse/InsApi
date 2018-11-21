@@ -36,9 +36,12 @@ async function changeCSV(data, data2) {
     element.number_of_certified_team = element.nb_eq_label;
     delete element.nb_eq_label;
     if (element.DR) {
-      element.regional_delegation = listRegionalsDelegations.find(
+      const regional_delegation = listRegionalsDelegations.find(
         n => n.code === element.DR
-      ).id;
+      );
+      element.regional_delegation = regional_delegation
+        ? regional_delegation.id
+        : null;
       delete element.DR;
     }
     element.site = element.Localisation;
@@ -86,8 +89,11 @@ async function changeCSV(data, data2) {
     delete element["Mixité-autres_1"];
     delete element.Mixité_autres_2;
     delete element.Mixité_autres_3;
-    element.principal_it = listInstitute.find(n => n.code === element.IT1).id;
-    delete element.IT1;
+    if (element.IT1) {
+      const institute = listInstitute.find(n => n.code === element.IT1);
+      element.principal_it = institute ? institute.id : null;
+      delete element.IT1;
+    }
     if (element.IT2) {
       element.secondary_it = [
         element.IT2,
@@ -100,9 +106,14 @@ async function changeCSV(data, data2) {
       delete element.IT4;
       delete element.IT5;
     }
-    element.specialized_commission = listSpecializedCommission.find(
-      n => n.code === element.CSS1
-    ).id;
+    if (element.CSS1) {
+      const specialized_commission = listSpecializedCommission.find(
+        n => n.code === element.CSS1
+      );
+      element.specialized_commission = specialized_commission
+        ? specialized_commission.id
+        : null;
+    }
     delete element.CSS1;
     delete element.CSS2;
     if (element.etp_total) {
