@@ -60,7 +60,7 @@ describe("POST /ebsco/login", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("insapi_token=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -92,7 +92,7 @@ describe("POST /ebsco/login", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("insapi_token=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -120,7 +120,7 @@ describe("POST /ebsco/login", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("insapi_token=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });

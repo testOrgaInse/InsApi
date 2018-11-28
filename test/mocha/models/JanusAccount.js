@@ -1,4 +1,4 @@
-import FedeInsermAccounts from "../../../lib/models/JanusAccount";
+import FedeInsermAccounts from "../../../lib/models/FedeInsermAccounts";
 
 describe("model FedeInsermAccounts", function() {
   let fedeInsermAccountQueries;

@@ -9,7 +9,7 @@ describe("model Structure", function() {
   });
 
   describe("selectOne", function() {
-    it("should return one unistructure by id", function*() {
+    it("should return one structure by id", function*() {
       const community = yield fixtureLoader.createCommunity({
         name: "vie",
         gate: "insb"
@@ -32,23 +32,139 @@ describe("model Structure", function() {
 
       const structure = yield fixtureLoader.createStructure({
         structure_type: "CIC",
+        iunop_code: "",
         code: "biology",
         name: "BIOMAN",
-        community: community.name,
-        principal_it: institute.id,
+        number_of_certified_team: 0,
         regional_delegation: rd.id,
-        specialized_commission: section.id
+        principal_it: institute.id,
+        specialized_commission: section.id,
+        community: community.name,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_individual_account: 0,
+        nb_structure_account: 0,
+        nb_team_account: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        secondary_it: [],
+        comment: "A comment."
       });
 
       assert.deepEqual(yield structureQueries.selectOne(structure.id), {
         id: structure.id,
+        structure_type: "CIC",
+        iunop_code: "",
         code: "biology",
         name: "BIOMAN",
-        structure_type: "CIC",
-        community: community.name,
-        principal_it: institute.id,
+        number_of_certified_team: 0,
         regional_delegation: rd.id,
-        specialized_commission: section.id
+        principal_it: institute.id,
+        specialized_commission: section.id,
+        community: community.name,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_individual_account: 0,
+        nb_structure_account: 0,
+        nb_team_account: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        secondary_it: [],
+        comment: "A comment."
       });
     });
 
@@ -56,444 +172,822 @@ describe("model Structure", function() {
       yield fixtureLoader.clear();
     });
   });
+
+  describe("selectPage", function() {
+    let biology,
+      chemestry,
+      humanity,
+      inserm,
+      inshs,
+      insb,
+      insu,
+      in2p3,
+      rd,
+      section,
+      team_biology,
+      team_chemestry,
+      team_humanity;
+    before(function*() {
+      inserm = yield fixtureLoader.createCommunity({
+        name: "INSERM",
+        gate: "insb"
+      });
+
+      section = yield fixtureLoader.createSectionCN({
+        code: "John",
+        name: "Wick"
+      });
+
+      [inshs, insb, insu, in2p3] = yield [
+        fixtureLoader.createInstitute({ name: "inshs", code: "DS54" }),
+        fixtureLoader.createInstitute({ name: "insb", code: "DS56" }),
+        fixtureLoader.createInstitute({ name: "insu", code: "DS55" }),
+        fixtureLoader.createInstitute({ name: "in2p3", code: "DS57" })
+      ];
+
+      rd = yield fixtureLoader.createRegionalsDelegations({
+        name: "Patrick",
+        code: "Sebastien"
+      });
+
+      chemestry = yield fixtureLoader.createStructure({
+        structure_type: "CIC",
+        iunop_code: "",
+        regional_delegation: rd.id,
+        name: "CHEMAN",
+        code: "chemestry",
+        community: inserm.name,
+        principal_it: insb.id,
+        secondary_it: [inshs.id],
+        specialized_commission: section.id,
+        number_of_certified_team: 0,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_team_account: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        comment: "A comment."
+      });
+      biology = yield fixtureLoader.createStructure({
+        structure_type: "CIC",
+        iunop_code: "",
+        name: "BIOMAN",
+        code: "biology",
+        regional_delegation: rd.id,
+        community: inserm.name,
+        principal_it: insb.id,
+        specialized_commission: section.id,
+        number_of_certified_team: 0,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_team_account: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        secondary_it: [],
+        comment: "A comment."
+      });
+      humanity = yield fixtureLoader.createStructure({
+        structure_type: "CIC",
+        iunop_code: "",
+        name: "HUMAN",
+        code: "humanity",
+        regional_delegation: rd.id,
+        community: inserm.name,
+        principal_it: inshs.id,
+        secondary_it: [insu.id, in2p3.id],
+        specialized_commission: section.id,
+        number_of_certified_team: 0,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_team_account: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        comment: "A comment."
+      });
+
+      team_chemestry = yield fixtureLoader.createTeam({
+        structure_code: chemestry.id,
+        team_number: "CIC401-1",
+        name: "CHEMBOYS",
+        principal_it: insb.id,
+        specialized_commission: section.id
+      });
+
+      team_biology = yield fixtureLoader.createTeam({
+        structure_code: biology.id,
+        team_number: "CIC401-2",
+        name: "BIOBOYS",
+        principal_it: insb.id,
+        specialized_commission: section.id
+      });
+
+      team_humanity = yield fixtureLoader.createTeam({
+        structure_code: humanity.id,
+        team_number: "CIC401-3",
+        name: "HUMANBOYS",
+        principal_it: inshs.id,
+        specialized_commission: section.id
+      });
+
+      yield [
+        fixtureLoader.createStructureTeamAccount({
+          login: "1",
+          password: "123mdp",
+          structure_code: chemestry.id,
+          team_number: team_chemestry.id
+        }),
+        fixtureLoader.createStructureTeamAccount({
+          login: "2",
+          password: "123mdp",
+          structure_code: chemestry.id,
+          team_number: team_chemestry.id
+        }),
+        fixtureLoader.createStructureTeamAccount({
+          login: "3",
+          password: "123mdp",
+          structure_code: biology.id,
+          team_number: team_biology.id
+        }),
+        fixtureLoader.createStructureTeamAccount({
+          login: "4",
+          password: "123mdp",
+          structure_code: humanity.id,
+          team_number: team_humanity.id
+        })
+      ];
+
+      console.log("createIndividualAccount");
+      yield [
+        fixtureLoader.createIndividualAccount({
+          uid: "1",
+          firstname: "Jean-Marie",
+          lastname: "Lepen",
+          structure_code: chemestry.id,
+          community: inserm.name,
+          team_number: team_chemestry.id,
+          regional_delegation: rd.id,
+          specialized_commission: section.id
+        }),
+        fixtureLoader.createIndividualAccount({
+          uid: "2",
+          firstname: "Jacques",
+          lastname: "Chirac",
+          structure_code: biology.id,
+          community: inserm.name,
+          team_number: team_biology.id,
+          regional_delegation: rd.id,
+          specialized_commission: section.id
+        }),
+        fixtureLoader.createIndividualAccount({
+          uid: "3",
+          firstname: "Francois",
+          lastname: "Hollande",
+          structure_code: biology.id,
+          community: inserm.name,
+          team_number: team_biology.id,
+          regional_delegation: rd.id,
+          specialized_commission: section.id
+        }),
+        fixtureLoader.createIndividualAccount({
+          uid: "4",
+          firstname: "Nicolas",
+          lastname: "Sarkozy",
+          structure_code: humanity.id,
+          community: inserm.name,
+          team_number: team_humanity.id,
+          regional_delegation: rd.id,
+          specialized_commission: section.id
+        })
+      ];
+    });
+
+    it("should return one structure by id", function*() {
+      assert.deepEqual(yield structureQueries.selectPage(), [
+        {
+          id: chemestry.id,
+          iunop_code: "",
+          structure_type: "CIC",
+          regional_delegation: rd.id,
+          name: "CHEMAN",
+          code: "chemestry",
+          community: inserm.name,
+          principal_it: insb.id,
+          specialized_commission: section.id,
+          number_of_certified_team: 0,
+          site: "",
+          street: "",
+          address_supplement: "",
+          postal_code: "",
+          city: "",
+          country: "",
+          director_lastname: "",
+          director_firstname: "",
+          director_email: "",
+          email: "",
+          dc_lastname: "",
+          dc_firstname: "",
+          dc_phone: "",
+          dc_email: "",
+          mixt_university: "",
+          cnrs_mixity: "",
+          other_mixity: "",
+          total_etp_effectiv: 0,
+          nb_individual_account: 1,
+          nb_structure_account: 0,
+          nb_team_account: 0,
+          nb_researchers_inserm_pp: 0,
+          nb_researchers_inserm_etp: 0,
+          nb_researchers_crns_pp: 0,
+          nb_researchers_crns_etp: 0,
+          nb_researchers_other_pp: 0,
+          nb_researchers_other_etp: 0,
+          nb_post_phd_student_pp: 0,
+          nb_post_phd_student_etp: 0,
+          nb_phd_student_pp: 0,
+          nb_phd_student_etp: 0,
+          nb_cdi_researchers_pp: 0,
+          nb_cdi_researchers_etp: 0,
+          nb_cdd_researchers_pp: 0,
+          nb_cdd_researchers_etp: 0,
+          nb_teacher_researchers_pp: 0,
+          nb_teacher_researchers_etp: 0,
+          nb_pu_ph_pp: 0,
+          nb_pu_ph_etp: 0,
+          nb_hosp_others_pp: 0,
+          nb_hosp_others_etp: 0,
+          nb_ir_inserm_pp: 0,
+          nb_ir_inserm_etp: 0,
+          nb_ir_non_inserm_pp: 0,
+          nb_ir_non_inserm_etp: 0,
+          nb_ita_others_pp: 0,
+          nb_ita_others_etp: 0,
+          nb_cdd_ir_pp: 0,
+          nb_cdd_ir_etp: 0,
+          nb_cdd_others_pp: 0,
+          nb_cdd_others_etp: 0,
+          nb_admin_pp: 0,
+          nb_admin_etp: 0,
+          active: true,
+          comment: "A comment.",
+          totalcount: "3"
+        },
+        {
+          id: biology.id,
+          iunop_code: "",
+          structure_type: "CIC",
+          name: "BIOMAN",
+          code: "biology",
+          regional_delegation: rd.id,
+          community: inserm.name,
+          principal_it: insb.id,
+          specialized_commission: section.id,
+          number_of_certified_team: 0,
+          site: "",
+          street: "",
+          address_supplement: "",
+          postal_code: "",
+          city: "",
+          country: "",
+          director_lastname: "",
+          director_firstname: "",
+          director_email: "",
+          email: "",
+          dc_lastname: "",
+          dc_firstname: "",
+          dc_phone: "",
+          dc_email: "",
+          mixt_university: "",
+          cnrs_mixity: "",
+          other_mixity: "",
+          total_etp_effectiv: 0,
+          nb_individual_account: 2,
+          nb_structure_account: 0,
+          nb_team_account: 0,
+          nb_researchers_inserm_pp: 0,
+          nb_researchers_inserm_etp: 0,
+          nb_researchers_crns_pp: 0,
+          nb_researchers_crns_etp: 0,
+          nb_researchers_other_pp: 0,
+          nb_researchers_other_etp: 0,
+          nb_post_phd_student_pp: 0,
+          nb_post_phd_student_etp: 0,
+          nb_phd_student_pp: 0,
+          nb_phd_student_etp: 0,
+          nb_cdi_researchers_pp: 0,
+          nb_cdi_researchers_etp: 0,
+          nb_cdd_researchers_pp: 0,
+          nb_cdd_researchers_etp: 0,
+          nb_teacher_researchers_pp: 0,
+          nb_teacher_researchers_etp: 0,
+          nb_pu_ph_pp: 0,
+          nb_pu_ph_etp: 0,
+          nb_hosp_others_pp: 0,
+          nb_hosp_others_etp: 0,
+          nb_ir_inserm_pp: 0,
+          nb_ir_inserm_etp: 0,
+          nb_ir_non_inserm_pp: 0,
+          nb_ir_non_inserm_etp: 0,
+          nb_ita_others_pp: 0,
+          nb_ita_others_etp: 0,
+          nb_cdd_ir_pp: 0,
+          nb_cdd_ir_etp: 0,
+          nb_cdd_others_pp: 0,
+          nb_cdd_others_etp: 0,
+          nb_admin_pp: 0,
+          nb_admin_etp: 0,
+          active: true,
+          comment: "A comment.",
+          totalcount: "3"
+        },
+        {
+          id: humanity.id,
+          iunop_code: "",
+          structure_type: "CIC",
+          name: "HUMAN",
+          code: "humanity",
+          regional_delegation: rd.id,
+          community: inserm.name,
+          principal_it: inshs.id,
+          specialized_commission: section.id,
+          number_of_certified_team: 0,
+          site: "",
+          street: "",
+          address_supplement: "",
+          postal_code: "",
+          city: "",
+          country: "",
+          director_lastname: "",
+          director_firstname: "",
+          director_email: "",
+          email: "",
+          dc_lastname: "",
+          dc_firstname: "",
+          dc_phone: "",
+          dc_email: "",
+          mixt_university: "",
+          cnrs_mixity: "",
+          other_mixity: "",
+          total_etp_effectiv: 0,
+          nb_individual_account: 1,
+          nb_structure_account: 0,
+          nb_team_account: 0,
+          nb_researchers_inserm_pp: 0,
+          nb_researchers_inserm_etp: 0,
+          nb_researchers_crns_pp: 0,
+          nb_researchers_crns_etp: 0,
+          nb_researchers_other_pp: 0,
+          nb_researchers_other_etp: 0,
+          nb_post_phd_student_pp: 0,
+          nb_post_phd_student_etp: 0,
+          nb_phd_student_pp: 0,
+          nb_phd_student_etp: 0,
+          nb_cdi_researchers_pp: 0,
+          nb_cdi_researchers_etp: 0,
+          nb_cdd_researchers_pp: 0,
+          nb_cdd_researchers_etp: 0,
+          nb_teacher_researchers_pp: 0,
+          nb_teacher_researchers_etp: 0,
+          nb_pu_ph_pp: 0,
+          nb_pu_ph_etp: 0,
+          nb_hosp_others_pp: 0,
+          nb_hosp_others_etp: 0,
+          nb_ir_inserm_pp: 0,
+          nb_ir_inserm_etp: 0,
+          nb_ir_non_inserm_pp: 0,
+          nb_ir_non_inserm_etp: 0,
+          nb_ita_others_pp: 0,
+          nb_ita_others_etp: 0,
+          nb_cdd_ir_pp: 0,
+          nb_cdd_ir_etp: 0,
+          nb_cdd_others_pp: 0,
+          nb_cdd_others_etp: 0,
+          nb_admin_pp: 0,
+          nb_admin_etp: 0,
+          active: true,
+          comment: "A comment.",
+          totalcount: "3"
+        }
+      ]);
+    });
+
+    after(function*() {
+      yield fixtureLoader.clear();
+    });
+  });
+
+  describe("upsertOnePerCode", function() {
+    it("should create a new structure if none exists with the same code", function*() {
+      const community = yield fixtureLoader.createCommunity({
+        name: "vie",
+        gate: "insb"
+      });
+
+      const section = yield fixtureLoader.createSectionCN({
+        code: "",
+        name: ""
+      });
+
+      const institute = yield fixtureLoader.createInstitute({
+        name: "dgds",
+        code: "ds99"
+      });
+
+      const rd = yield fixtureLoader.createRegionalsDelegations({
+        name: "Patrick",
+        code: "Sebastien"
+      });
+
+      const structureToUpsert = {
+        structure_type: "CIC",
+        iunop_code: "",
+        code: "biology",
+        name: "BIOMAN",
+        number_of_certified_team: 0,
+        regional_delegation: rd.id,
+        principal_it: institute.id,
+        specialized_commission: section.id,
+        community: community.name,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        // nb_individual_account: 0,
+        // nb_structure_account: 0,
+        // nb_team_account: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        // secondary_it: [],
+        comment: "some comment"
+      };
+
+      const structure = yield structureQueries.upsertOnePerCode(
+        structureToUpsert
+      );
+      assert.deepEqual(structure, {
+        ...structureToUpsert,
+        id: structure.id
+      });
+
+      const insertedStructure = yield postgres.queryOne({
+        sql: "SELECT * from structures WHERE code=$code",
+        parameters: { code: "biology" }
+      });
+      assert.deepEqual(insertedStructure, structure);
+    });
+
+    it("should update existing structure with the same code", function*() {
+      const community = yield fixtureLoader.createCommunity({
+        name: "vie",
+        gate: "insb"
+      });
+
+      const section = yield fixtureLoader.createSectionCN({
+        code: "",
+        name: ""
+      });
+
+      const institute = yield fixtureLoader.createInstitute({
+        name: "dgds",
+        code: "ds99"
+      });
+
+      const rd = yield fixtureLoader.createRegionalsDelegations({
+        name: "Patrick",
+        code: "Sebastien"
+      });
+
+      const structureToUpsert = {
+        structure_type: "CIC",
+        iunop_code: "",
+        code: "biology",
+        name: "BIOMAN",
+        number_of_certified_team: 0,
+        regional_delegation: rd.id,
+        principal_it: institute.id,
+        specialized_commission: section.id,
+        community: community.name,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        comment: "A DAMN NEW comment."
+      };
+      const previousStructure = yield fixtureLoader.createStructure({
+        structure_type: "CIC",
+        iunop_code: "",
+        code: "biology",
+        name: "BIOMAN",
+        number_of_certified_team: 0,
+        regional_delegation: rd.id,
+        principal_it: institute.id,
+        specialized_commission: section.id,
+        community: community.name,
+        site: "",
+        street: "",
+        address_supplement: "",
+        postal_code: "",
+        city: "",
+        country: "",
+        director_lastname: "",
+        director_firstname: "",
+        director_email: "",
+        email: "",
+        dc_lastname: "",
+        dc_firstname: "",
+        dc_phone: "",
+        dc_email: "",
+        mixt_university: "",
+        cnrs_mixity: "",
+        other_mixity: "",
+        total_etp_effectiv: 0,
+        nb_researchers_inserm_pp: 0,
+        nb_researchers_inserm_etp: 0,
+        nb_researchers_crns_pp: 0,
+        nb_researchers_crns_etp: 0,
+        nb_researchers_other_pp: 0,
+        nb_researchers_other_etp: 0,
+        nb_post_phd_student_pp: 0,
+        nb_post_phd_student_etp: 0,
+        nb_phd_student_pp: 0,
+        nb_phd_student_etp: 0,
+        nb_cdi_researchers_pp: 0,
+        nb_cdi_researchers_etp: 0,
+        nb_cdd_researchers_pp: 0,
+        nb_cdd_researchers_etp: 0,
+        nb_teacher_researchers_pp: 0,
+        nb_teacher_researchers_etp: 0,
+        nb_pu_ph_pp: 0,
+        nb_pu_ph_etp: 0,
+        nb_hosp_others_pp: 0,
+        nb_hosp_others_etp: 0,
+        nb_ir_inserm_pp: 0,
+        nb_ir_inserm_etp: 0,
+        nb_ir_non_inserm_pp: 0,
+        nb_ir_non_inserm_etp: 0,
+        nb_ita_others_pp: 0,
+        nb_ita_others_etp: 0,
+        nb_cdd_ir_pp: 0,
+        nb_cdd_ir_etp: 0,
+        nb_cdd_others_pp: 0,
+        nb_cdd_others_etp: 0,
+        nb_admin_pp: 0,
+        nb_admin_etp: 0,
+        active: true,
+        comment: "some comment"
+      });
+      const structure = yield structureQueries.upsertOnePerCode(
+        structureToUpsert
+      );
+      assert.deepEqual(structure, {
+        ...structureToUpsert,
+        id: structure.id
+      });
+      const updatedStructure = yield postgres.queryOne({
+        sql: "SELECT * from structures WHERE id=$id",
+        parameters: { id: previousStructure.id }
+      });
+      assert.deepEqual(updatedStructure, structure);
+      assert.notDeepEqual(updatedStructure, previousStructure);
+    });
+
+    afterEach(function*() {
+      yield fixtureLoader.clear();
+    });
+  });
 });
-//   describe("selectPage", function() {
-//     let biology,
-//       chemestry,
-//       humanity,
-//       vie,
-//       shs,
-//       universe,
-//       nuclear,
-//       inshs,
-//       insb,
-//       insu,
-//       in2p3,
-//       section;
-//     before(function*() {
-//       vie = yield fixtureLoader.createCommunity({
-//         name: "vie",
-//         gate: "insb"
-//       });
-//       shs = yield fixtureLoader.createCommunity({
-//         name: "shs",
-//         gate: "inshs"
-//       });
-//       universe = yield fixtureLoader.createCommunity({
-//         name: "universe",
-//         gate: "insu"
-//       });
-//       nuclear = yield fixtureLoader.createCommunity({
-//         name: "nuclear",
-//         gate: "in2p3"
-//       });
-
-//       section = yield fixtureLoader.createSectionCN();
-
-//       [inshs, insb, insu, in2p3] = yield [
-//         fixtureLoader.createInstitute({ name: "inshs", code: "DS54" }),
-//         fixtureLoader.createInstitute({ name: "insb", code: "DS56" }),
-//         fixtureLoader.createInstitute({ name: "insu", code: "DS55" }),
-//         fixtureLoader.createInstitute({ name: "in2p3", code: "DS57" })
-//       ];
-
-//       chemestry = yield fixtureLoader.createUnit({
-//         code: "chemestry",
-//         communities: [vie.id, shs.id],
-//         main_institute: insb.id,
-//         institutes: [inshs.id],
-//         sections_cn: [section.id]
-//       });
-//       biology = yield fixtureLoader.createUnit({
-//         code: "biology",
-//         communities: [vie.id, nuclear.id],
-//         main_institute: insb.id,
-//         institutes: [in2p3.id]
-//       });
-//       humanity = yield fixtureLoader.createUnit({
-//         code: "humanity",
-//         communities: [universe.id, nuclear.id],
-//         main_institute: inshs.id,
-//         institutes: [insu.id, in2p3.id],
-//         sections_cn: [section.id]
-//       });
-
-//       yield [
-//         fixtureLoader.createInistAccount({
-//           username: "1",
-//           main_unit: chemestry.id
-//         }),
-//         fixtureLoader.createInistAccount({
-//           username: "2",
-//           main_unit: chemestry.id
-//         }),
-//         fixtureLoader.createInistAccount({
-//           username: "3",
-//           main_unit: biology.id
-//         }),
-//         fixtureLoader.createInistAccount({
-//           username: "4",
-//           main_unit: humanity.id
-//         })
-//       ];
-
-//       yield [
-//         fixtureLoader.createJanusAccount({
-//           uid: "1",
-//           primary_unit: chemestry.id
-//         }),
-//         fixtureLoader.createJanusAccount({
-//           uid: "2",
-//           primary_unit: biology.id
-//         }),
-//         fixtureLoader.createJanusAccount({
-//           uid: "3",
-//           primary_unit: biology.id
-//         }),
-//         fixtureLoader.createJanusAccount({
-//           uid: "4",
-//           primary_unit: humanity.id
-//         })
-//       ];
-//     });
-
-//     it("should return one unit by id", function*() {
-//       assert.deepEqual(yield unitQueries.selectPage(), [
-//         {
-//           id: chemestry.id,
-//           totalcount: "3",
-//           code: "chemestry",
-//           name: null,
-//           body: null,
-//           building: null,
-//           cd_mail: null,
-//           cd_phone: null,
-//           ci_mail: null,
-//           ci_phone: null,
-//           correspondant_documentaire: null,
-//           correspondant_informatique: null,
-//           country: null,
-//           director_firstname: null,
-//           director_mail: null,
-//           director_name: null,
-//           nb_doctorant: null,
-//           nb_post_doctorant: null,
-//           nb_researcher_cnrs: null,
-//           nb_researcher_nocnrs: null,
-//           postal_code: null,
-//           post_office_box: null,
-//           street: null,
-//           town: null,
-//           unit_dr: null,
-//           comment: null,
-//           communities: [vie.id, shs.id],
-//           main_institute: insb.id,
-//           institutes: [inshs.id],
-//           nb_inist_account: 2,
-//           nb_janus_account: 1,
-//           sections_cn: [section.id],
-//           implantation: null,
-//           active: true
-//         },
-//         {
-//           id: biology.id,
-//           totalcount: "3",
-//           code: "biology",
-//           name: null,
-//           body: null,
-//           building: null,
-//           cd_mail: null,
-//           cd_phone: null,
-//           ci_mail: null,
-//           ci_phone: null,
-//           correspondant_documentaire: null,
-//           correspondant_informatique: null,
-//           country: null,
-//           director_firstname: null,
-//           director_mail: null,
-//           director_name: null,
-//           nb_doctorant: null,
-//           nb_post_doctorant: null,
-//           nb_researcher_cnrs: null,
-//           nb_researcher_nocnrs: null,
-//           postal_code: null,
-//           post_office_box: null,
-//           street: null,
-//           town: null,
-//           unit_dr: null,
-//           comment: null,
-//           communities: [vie.id, nuclear.id],
-//           main_institute: insb.id,
-//           institutes: [in2p3.id],
-//           nb_inist_account: 1,
-//           nb_janus_account: 2,
-//           sections_cn: [],
-//           implantation: null,
-//           active: true
-//         },
-//         {
-//           id: humanity.id,
-//           totalcount: "3",
-//           code: "humanity",
-//           name: null,
-//           body: null,
-//           building: null,
-//           cd_mail: null,
-//           cd_phone: null,
-//           ci_mail: null,
-//           ci_phone: null,
-//           correspondant_documentaire: null,
-//           correspondant_informatique: null,
-//           country: null,
-//           director_firstname: null,
-//           director_mail: null,
-//           director_name: null,
-//           nb_doctorant: null,
-//           nb_post_doctorant: null,
-//           nb_researcher_cnrs: null,
-//           nb_researcher_nocnrs: null,
-//           postal_code: null,
-//           post_office_box: null,
-//           street: null,
-//           town: null,
-//           unit_dr: null,
-//           comment: null,
-//           communities: [universe.id, nuclear.id],
-//           main_institute: inshs.id,
-//           institutes: [insu.id, in2p3.id],
-//           nb_inist_account: 1,
-//           nb_janus_account: 1,
-//           sections_cn: [section.id],
-//           implantation: null,
-//           active: true
-//         }
-//       ]);
-//     });
-
-//     after(function*() {
-//       yield fixtureLoader.clear();
-//     });
-//   });
-
-//   describe("updateOne", function() {
-//     let unit, insb, inc, inshs;
-
-//     beforeEach(function*() {
-//       [insb, inc, inshs] = yield ["insb", "inc", "inshs"].map(name =>
-//         fixtureLoader.createCommunity({ name })
-//       );
-
-//       unit = yield fixtureLoader.createUnit({
-//         code: "biology",
-//         communities: [insb.id, inc.id]
-//       });
-//     });
-
-//     it("should throw an error if trying to add a community which does not exists and abort modification", function*() {
-//       let error;
-//       try {
-//         yield unitQueries.updateOne(unit.id, {
-//           communities: ["nemo", inshs.id]
-//         });
-//       } catch (e) {
-//         error = e.message;
-//       }
-
-//       assert.equal(error, "Communities nemo does not exists");
-
-//       const unitCommunities = yield postgres.query({
-//         sql: "SELECT * FROM unit_community WHERE unit_id=$id",
-//         parameters: { id: unit.id }
-//       });
-//       assert.deepEqual(unitCommunities, [
-//         { unit_id: unit.id, community_id: insb.id, index: 0 },
-//         { unit_id: unit.id, community_id: inc.id, index: 1 }
-//       ]);
-//     });
-
-//     it("should add given new community", function*() {
-//       yield unitQueries.updateOne(unit.id, {
-//         communities: [insb.id, inc.id, inshs.id]
-//       });
-
-//       const unitCommunities = yield postgres.query({
-//         sql: "SELECT * FROM unit_community WHERE unit_id=$id",
-//         parameters: { id: unit.id }
-//       });
-//       assert.deepEqual(unitCommunities, [
-//         { unit_id: unit.id, community_id: insb.id, index: 0 },
-//         { unit_id: unit.id, community_id: inc.id, index: 1 },
-//         { unit_id: unit.id, community_id: inshs.id, index: 2 }
-//       ]);
-//     });
-
-//     it("should remove missing community", function*() {
-//       yield unitQueries.updateOne(unit.id, { communities: [insb.id] });
-
-//       const unitCommunities = yield postgres.query({
-//         sql: "SELECT * FROM unit_community WHERE unit_id=$id",
-//         parameters: { id: unit.id }
-//       });
-//       assert.deepEqual(unitCommunities, [
-//         { unit_id: unit.id, community_id: insb.id, index: 0 }
-//       ]);
-//     });
-
-//     afterEach(function*() {
-//       yield fixtureLoader.clear();
-//     });
-//   });
-
-//   describe("insertOne", function() {
-//     let insb, inc;
-
-//     beforeEach(function*() {
-//       [insb, inc] = yield ["insb", "inc"].map(name =>
-//         fixtureLoader.createCommunity({ name })
-//       );
-//     });
-
-//     it("should add given communities if they exists", function*() {
-//       const unit = yield unitQueries.insertOne({
-//         code: "biology",
-//         communities: [inc.id, insb.id]
-//       });
-
-//       const unitCommunities = yield communityQueries.selectByUnitId(unit.id);
-//       assert.deepEqual(
-//         unitCommunities,
-//         [inc, insb].map((community, index) => ({
-//           ...community,
-//           totalcount: "2",
-//           index,
-//           unit_id: unit.id
-//         }))
-//       );
-//     });
-
-//     it("should throw an error if trying to insert an unit with community that do not exists", function*() {
-//       let error;
-//       try {
-//         yield unitQueries.insertOne({
-//           code: "biology",
-//           communities: [insb.id, "nemo"]
-//         });
-//       } catch (e) {
-//         error = e;
-//       }
-//       assert.equal(error.message, "Communities nemo does not exists");
-
-//       const insertedunit = yield postgres.queryOne({
-//         sql: "SELECT * from unit WHERE code=$code",
-//         parameters: { code: "biology" }
-//       });
-//       assert.isUndefined(insertedunit);
-//     });
-
-//     afterEach(function*() {
-//       yield fixtureLoader.clear();
-//     });
-//   });
-
-//   describe("upsertOnePerCode", function() {
-//     it("should create a new unit if none exists with the same code", function*() {
-//       const unitToUpsert = {
-//         name: null,
-//         code: "biology",
-//         body: null,
-//         building: null,
-//         cd_mail: null,
-//         cd_phone: null,
-//         ci_mail: null,
-//         ci_phone: null,
-//         correspondant_documentaire: null,
-//         correspondant_informatique: null,
-//         country: null,
-//         director_firstname: null,
-//         director_mail: null,
-//         director_name: null,
-//         nb_doctorant: 7,
-//         nb_post_doctorant: 5,
-//         nb_researcher_cnrs: 4,
-//         nb_researcher_nocnrs: 0,
-//         postal_code: null,
-//         post_office_box: null,
-//         street: null,
-//         town: null,
-//         unit_dr: null,
-//         main_institute: null,
-//         comment: "some comment",
-//         implantation: null,
-//         active: true
-//       };
-
-//       const unit = yield unitQueries.upsertOnePerCode(unitToUpsert);
-//       assert.deepEqual(unit, {
-//         ...unitToUpsert,
-//         id: unit.id
-//       });
-
-//       const insertedUnit = yield postgres.queryOne({
-//         sql: "SELECT * from unit WHERE code=$code",
-//         parameters: { code: "biology" }
-//       });
-//       assert.deepEqual(insertedUnit, unit);
-//     });
-
-//     it("should update existing institute with the same code", function*() {
-//       const unitToUpsert = {
-//         name: null,
-//         code: "biology",
-//         body: null,
-//         building: null,
-//         cd_mail: null,
-//         cd_phone: null,
-//         ci_mail: null,
-//         ci_phone: null,
-//         correspondant_documentaire: null,
-//         correspondant_informatique: null,
-//         country: null,
-//         director_firstname: null,
-//         director_mail: null,
-//         director_name: null,
-//         nb_doctorant: 7,
-//         nb_post_doctorant: 5,
-//         nb_researcher_cnrs: 4,
-//         nb_researcher_nocnrs: 0,
-//         postal_code: null,
-//         post_office_box: null,
-//         street: null,
-//         town: null,
-//         unit_dr: null,
-//         main_institute: null,
-//         comment: "updated comment",
-//         implantation: null,
-//         active: true
-//       };
-
-//       const previousUnit = yield fixtureLoader.createUnit({
-//         code: "biology",
-//         comment: "some comment"
-//       });
-//       const unit = yield unitQueries.upsertOnePerCode(unitToUpsert);
-//       assert.deepEqual(unit, {
-//         id: unit.id,
-//         ...unitToUpsert
-//       });
-
-//       const updatedUnit = yield postgres.queryOne({
-//         sql: "SELECT * from unit WHERE id=$id",
-//         parameters: { id: previousUnit.id }
-//       });
-//       assert.deepEqual(updatedUnit, unit);
-//       assert.notDeepEqual(updatedUnit, previousUnit);
-//     });
-
-//     afterEach(function*() {
-//       yield fixtureLoader.clear();
-//     });
-//   });
-
 //   describe("selectByIds", function() {
 //     let cern, inist;
 

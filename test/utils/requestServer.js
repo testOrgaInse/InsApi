@@ -34,7 +34,7 @@ export const get = function get(
   cookieToken = globalCookieToken
 ) {
   const jar = request.jar();
-  const cookie = request.cookie(`bibapi_token=${cookieToken}`);
+  const cookie = request.cookie(`insapi_token=${cookieToken}`);
   jar.setCookie(cookie, host);
 
   return request({
@@ -58,7 +58,7 @@ export const DELETE = function DELETE(
   cookieToken = globalCookieToken
 ) {
   const jar = request.jar();
-  const cookie = request.cookie(`bibapi_token=${cookieToken}`);
+  const cookie = request.cookie(`insapi_token=${cookieToken}`);
   jar.setCookie(cookie, host);
 
   return request({
@@ -81,7 +81,7 @@ export const post = function post(
   cookieToken = globalCookieToken
 ) {
   const jar = request.jar();
-  const cookie = request.cookie(`bibapi_token=${cookieToken}`);
+  const cookie = request.cookie(`insapi_token=${cookieToken}`);
   jar.setCookie(cookie, host);
 
   return request({

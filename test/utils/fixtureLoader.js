@@ -4,6 +4,7 @@ import AdminUser from "../../lib/models/AdminUser";
 import Community from "../../lib/models/Community";
 import Institute from "../../lib/models/Institute";
 import Structure from "../../lib/models/Structures";
+import Team from "../../lib/models/Teams";
 // import Database from "../../lib/models/Database";
 import SectionCN from "../../lib/models/SectionCN";
 import RegionalsDelegations from "../../lib/models/RegionalsDelegations";
@@ -11,10 +12,11 @@ import RegionalsDelegations from "../../lib/models/RegionalsDelegations";
 export default function(postgres) {
   const adminUserQueries = AdminUser(postgres);
   const communityQueries = Community(postgres);
-  const FedeInsermAccountQueries = FedeInsermAccounts(postgres);
-  const StructuresTeamsAccountQueries = StructuresTeamsAccount(postgres);
+  const fedeInsermAccountQueries = FedeInsermAccounts(postgres);
+  const structuresTeamsAccountQueries = StructuresTeamsAccount(postgres);
   const instituteQueries = Institute(postgres);
   const structureQueries = Structure(postgres);
+  const teamQueries = Team(postgres);
   // const databaseQueries = Database(postgres);
   const sectionCNQueries = SectionCN(postgres);
   const regionalsDelegationsQueries = RegionalsDelegations(postgres);
@@ -38,7 +40,7 @@ export default function(postgres) {
   function* createIndividualAccount(data) {
     const defaultIndividualAccount = {};
 
-    const IndividualAccount = yield FedeInsermAccountQueries.insertOne({
+    const IndividualAccount = yield fedeInsermAccountQueries.insertOne({
       ...defaultIndividualAccount,
       ...data
     });
@@ -53,7 +55,7 @@ export default function(postgres) {
       password: "secret"
     };
 
-    const structureTeamAccount = yield StructuresTeamsAccountQueries.insertOne({
+    const structureTeamAccount = yield structuresTeamsAccountQueries.insertOne({
       ...defaultStructureTeamAccount,
       ...data
     });
@@ -84,6 +86,17 @@ export default function(postgres) {
     };
     return yield structureQueries.insertOne({
       ...defaultStructure,
+      ...data
+    });
+  }
+
+  function* createTeam(data) {
+    const defaultTeam = {
+      team_number: "CIC401-1",
+      name: "MODULE INNOVATION TECHNOLOGIQUES"
+    };
+    return yield teamQueries.insertOne({
+      ...defaultTeam,
       ...data
     });
   }
@@ -162,6 +175,7 @@ export default function(postgres) {
     createCommunity,
     createInstitute,
     createStructure,
+    createTeam,
     createSectionCN,
     createRegionalsDelegations,
     clear
