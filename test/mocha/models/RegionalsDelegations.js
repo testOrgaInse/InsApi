@@ -8,63 +8,24 @@ describe("model RegionalsDelegations", function() {
   });
 
   describe("Authenticate", function() {
-    let regionalsDelegations;
-
-    before(function*() {
-      regionalsDelegations = yield fixtureLoader.createRegionalsDelegations({
-        name: "john",
-        director: "lennon",
-        code: "secret"
-      });
-    });
-
-    it("should return user if given good name", function*() {
-      let result = yield adminUserQueries.selectOne({
-        name: regionalsDelegations.name
-      });
-      assert.equal(result.username, "john");
-    });
-
-    it("should return false if given wrong name", function*() {
-      let result = yield adminUserQueries.selectOne({
-        name: "jesus"
-      });
-
-      assert.isNull(result);
+    it("should return regionalsDelegations if given good id", function*() {
+      const regionalsDelegations = yield fixtureLoader.createRegionalsDelegations(
+        {
+          name: "Patrick",
+          code: "Sebastien"
+        }
+      );
+      console.log("check result");
+      console.log(regionalsDelegations);
+      let result = yield regionalsDelegationsQueries.SelectById(
+        regionalsDelegations.id
+      );
+      delete result[0].totalcount;
+      console.log(result[0]);
+      assert.equal(result[0].id, regionalsDelegations.id);
     });
 
     after(function*() {
-      yield fixtureLoader.clear();
-    });
-  });
-
-  describe("update", function() {
-    let regionalsDelegations;
-
-    before(function*() {
-      regionalsDelegations = yield fixtureLoader.createRegionalsDelegations({
-        name: "john",
-        director: "lennon",
-        code: "secret"
-      });
-    });
-
-    it("should update regionalsDelegations", function*() {
-      yield adminUserQueries.updateOne(regionalsDelegations.id, {
-        name: "lucas"
-      });
-
-      const updatedUser = yield regionalsDelegations.selectOne({
-        name: "lucas"
-      });
-
-      assert.deepEqual(updatedUser, {
-        ...adminUser,
-        name: "lucas"
-      });
-    });
-
-    afterEach(function*() {
       yield fixtureLoader.clear();
     });
   });

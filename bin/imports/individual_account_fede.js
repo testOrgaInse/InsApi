@@ -54,7 +54,10 @@ async function changeCSV(data) {
     );
     element.team_number = teams ? teams.id : null;
     delete element["Numéro d'équipe"];
-    element.second_team_code = element["Code équipe secondaire"];
+    const second_team = listTeams.find(
+      n => n.secondary_team_code === element["Code équipe secondaire"]
+    );
+    element.secondary_team_code = second_team ? second_team.id : null;
     delete element["Code équipe secondaire"];
     const institute = listInstitutes.find(
       n => n.code === element["ITMO principal"]
@@ -107,10 +110,10 @@ async function importData(data, i) {
   if (i >= data.length) return;
   const teams = await pool.query({
     sql: `INSERT INTO individual_account_fede (regional_delegation, structure_type, structure_code, uinop_code, structure_name, site, city,
-        team_number, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
+        team_number, secondary_team_code, itmo_principal, agent_function, uid, lastname, firstname, inserm_email, email, orcid_number, researcher_id, membership,
         type_of_assigned_structure, agent_status, specialized_commission, register_date, last_connection, community)
           VALUES ($regional_delegation, $structure_type, $structure_code, $uinop_code, $structure_name, $site, $city,
-            $team_number, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
+            $team_number, $secondary_team_code, $itmo_principal, $agent_function, $uid, $lastname, $firstname, $inserm_email, $email, $orcid_number, $researcher_id, $membership,
             $type_of_assigned_structure, $agent_status, $specialized_commission, $register_date, $last_connection, $community)`,
     parameters: {
       regional_delegation: data[i].regional_delegation,
@@ -121,6 +124,7 @@ async function importData(data, i) {
       site: data[i].site,
       city: data[i].city,
       team_number: data[i].team_number,
+      secondary_team_code: data[i].secondary_team_code,
       itmo_principal: data[i].itmo_principal,
       agent_function: data[i].agent_function,
       uid: data[i].uid,

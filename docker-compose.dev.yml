@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: insapi-dev
     volumes:
       - ./backups:/backups
-      - ./postgresql-dev:/var/lib/postgresql/data
+      - ../postgresql-dev:/var/lib/postgresql/data
     ports:
       - 5432:5432
 

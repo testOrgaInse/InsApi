@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS teams (
     comment                                 varchar(65535),
 
 
-    CONSTRAINT unique_team_name UNIQUE (team_number),
+    CONSTRAINT unique_team_number UNIQUE (team_number),
     CONSTRAINT unique_team_id UNIQUE (id)
 );
 

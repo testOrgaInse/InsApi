@@ -1,26 +1,24 @@
-import JanusAccount from "../../lib/models/JanusAccount";
-import InistAccount from "../../lib/models/InistAccount";
+import FedeInsermAccounts from "../../lib/models/FedeInsermAccounts";
+import StructuresTeamsAccount from "../../lib/models/StructuresTeamsAccounts";
 import AdminUser from "../../lib/models/AdminUser";
 import Community from "../../lib/models/Community";
 import Institute from "../../lib/models/Institute";
-import Unit from "../../lib/models/Unit";
-import Database from "../../lib/models/Database";
-import History from "../../lib/models/History";
+import Structure from "../../lib/models/Structures";
+import Team from "../../lib/models/Teams";
+// import Database from "../../lib/models/Database";
 import SectionCN from "../../lib/models/SectionCN";
-import Revue from "../../lib/models/Revue";
 import RegionalsDelegations from "../../lib/models/RegionalsDelegations";
 
 export default function(postgres) {
   const adminUserQueries = AdminUser(postgres);
   const communityQueries = Community(postgres);
-  const janusAccountQueries = JanusAccount(postgres);
-  const inistAccountQueries = InistAccount(postgres);
+  const fedeInsermAccountQueries = FedeInsermAccounts(postgres);
+  const structuresTeamsAccountQueries = StructuresTeamsAccount(postgres);
   const instituteQueries = Institute(postgres);
-  const unitQueries = Unit(postgres);
-  const databaseQueries = Database(postgres);
-  const historyQueries = History(postgres);
+  const structureQueries = Structure(postgres);
+  const teamQueries = Team(postgres);
+  // const databaseQueries = Database(postgres);
   const sectionCNQueries = SectionCN(postgres);
-  const revueQueries = Revue(postgres);
   const regionalsDelegationsQueries = RegionalsDelegations(postgres);
 
   function* createAdminUser(data) {
@@ -29,11 +27,8 @@ export default function(postgres) {
 
   function* createCommunity(data) {
     const defaultCommunity = {
-      name: "vie",
-      gate: "insb",
-      user_id: "vieUserId",
-      password: "viePassword",
-      profile: "profile_vie"
+      name: "INSERM",
+      gate: "insb"
     };
 
     return yield communityQueries.insertOne({
@@ -42,32 +37,31 @@ export default function(postgres) {
     });
   }
 
-  function* createJanusAccount(data) {
-    const defaultJanusAccount = {};
+  function* createIndividualAccount(data) {
+    const defaultIndividualAccount = {};
 
-    const janusAccount = yield janusAccountQueries.insertOne({
-      ...defaultJanusAccount,
+    const IndividualAccount = yield fedeInsermAccountQueries.insertOne({
+      ...defaultIndividualAccount,
       ...data
     });
 
     return {
-      ...janusAccount,
-      password: data.password
+      ...IndividualAccount
     };
   }
 
-  function* createInistAccount(data) {
-    const defaultInistAccount = {
+  function* createStructureTeamAccount(data) {
+    const defaultStructureTeamAccount = {
       password: "secret"
     };
 
-    const inistAccount = yield inistAccountQueries.insertOne({
-      ...defaultInistAccount,
+    const structureTeamAccount = yield structuresTeamsAccountQueries.insertOne({
+      ...defaultStructureTeamAccount,
       ...data
     });
 
     return {
-      ...inistAccount,
+      ...structureTeamAccount,
       password: data.password
     };
   }
@@ -75,8 +69,7 @@ export default function(postgres) {
   function* createInstitute(data) {
     const defaultInstitute = {
       code: "53",
-      name: "Institut des sciences biologique",
-      communities: []
+      name: "Institut des sciences biologique"
     };
     return yield instituteQueries.insertOne({
       ...defaultInstitute,
@@ -84,13 +77,26 @@ export default function(postgres) {
     });
   }
 
-  function* createUnit(data) {
-    const defaultUnit = {
-      code: "Unité pluriel",
-      communities: []
+  function* createStructure(data) {
+    const defaultStructure = {
+      code: "CIC1401",
+      structure_type: "CIC",
+      name: "CIC BORDEAUX",
+      community: "INSERM"
     };
-    return yield unitQueries.insertOne({
-      ...defaultUnit,
+    return yield structureQueries.insertOne({
+      ...defaultStructure,
+      ...data
+    });
+  }
+
+  function* createTeam(data) {
+    const defaultTeam = {
+      team_number: "CIC401-1",
+      name: "MODULE INNOVATION TECHNOLOGIQUES"
+    };
+    return yield teamQueries.insertOne({
+      ...defaultTeam,
       ...data
     });
   }
@@ -103,21 +109,21 @@ export default function(postgres) {
     });
   }
 
-  function* createDatabase(data) {
-    const defaultDatabase = {
-      name_fr: "réseau du ciel",
-      name_en: "skynet",
-      text_fr: "français",
-      text_en: "english",
-      url_fr: "http://www.url.fr",
-      url_en: "http://www.url.en",
-      communities: []
-    };
-    return yield databaseQueries.insertOne({
-      ...defaultDatabase,
-      ...data
-    });
-  }
+  // function* createDatabase(data) {
+  //   const defaultDatabase = {
+  //     name_fr: "réseau du ciel",
+  //     name_en: "skynet",
+  //     text_fr: "français",
+  //     text_en: "english",
+  //     url_fr: "http://www.url.fr",
+  //     url_en: "http://www.url.en",
+  //     community: "INSERM"
+  //   };
+  //   return yield databaseQueries.insertOne({
+  //     ...defaultDatabase,
+  //     ...data
+  //   });
+  // }
 
   function* createSectionCN(data) {
     const defaultSectionCN = {
@@ -150,28 +156,27 @@ export default function(postgres) {
   function* clear() {
     yield postgres.query({ sql: "DELETE FROM admin_user" });
     yield postgres.query({ sql: "DELETE FROM community CASCADE" });
-    yield postgres.query({ sql: "DELETE FROM janus_account CASCADE" });
-    yield postgres.query({ sql: "DELETE FROM inist_account CASCADE" });
+    yield postgres.query({
+      sql: "DELETE FROM individual_account_fede CASCADE"
+    });
+    yield postgres.query({
+      sql: "DELETE FROM account_structures_teams CASCADE"
+    });
     yield postgres.query({ sql: "DELETE FROM institute CASCADE" });
-    yield postgres.query({ sql: "DELETE FROM unit CASCADE" });
-    yield postgres.query({ sql: "DELETE FROM database CASCADE" });
-    yield postgres.query({ sql: "DELETE FROM history CASCADE" });
+    yield postgres.query({ sql: "DELETE FROM structures CASCADE" });
     yield postgres.query({ sql: "DELETE FROM section_cn CASCADE" });
-    yield postgres.query({ sql: "DELETE FROM revue CASCADE" });
     yield postgres.query({ sql: "DELETE FROM regionals_delegations CASCADE" });
   }
 
   return {
     createAdminUser,
-    createJanusAccount,
-    createInistAccount,
+    createIndividualAccount,
+    createStructureTeamAccount,
     createCommunity,
     createInstitute,
-    createUnit,
-    createDatabase,
-    createHistory,
+    createStructure,
+    createTeam,
     createSectionCN,
-    createRevue,
     createRegionalsDelegations,
     clear
   };

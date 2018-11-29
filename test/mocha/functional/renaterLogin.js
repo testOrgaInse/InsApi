@@ -2,7 +2,7 @@ import jwt from "koa-jwt";
 import { auth } from "config";
 
 import JanusAccount from "../../../lib/models/JanusAccount";
-import Unit from "../../../lib/models/Unit";
+import Structure from "../../../lib/models/Structures";
 import Institute from "../../../lib/models/Institute";
 
 function* getJanusAccountIdFromUid(uid) {
@@ -26,7 +26,7 @@ describe("POST /ebsco/login_renater", function() {
   before(function() {
     janusAccountQueries = JanusAccount(postgres);
     instituteQueries = Institute(postgres);
-    unitQueries = Unit(postgres);
+    unitQueries = Structure(postgres);
   });
 
   beforeEach(function*() {
@@ -81,7 +81,7 @@ describe("POST /ebsco/login_renater", function() {
     apiServer.start();
   });
 
-  it("should set bibapi_token cookie and save header token in redis corresponding to janusAccount with username equal to header uid(janusAccountVie)", function*() {
+  it("should set  cookie and save header token in redis corresponding to janusAccount with username equal to header uid(janusAccountVie)", function*() {
     const header = {
       uid: janusAccountVie.uid,
       sn: janusAccountVie.name,
@@ -105,7 +105,7 @@ describe("POST /ebsco/login_renater", function() {
     };
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -142,7 +142,7 @@ describe("POST /ebsco/login_renater", function() {
     };
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -153,7 +153,7 @@ describe("POST /ebsco/login_renater", function() {
     assert.equal(response.statusCode, 302);
   });
 
-  it("should set bibapi_token cookie and save header token in redis corresponding to user with username equal to header uid(janusAccountShs)", function*() {
+  it("should set  cookie and save header token in redis corresponding to user with username equal to header uid(janusAccountShs)", function*() {
     const header = {
       uid: janusAccountShs.uid,
       sn: janusAccountShs.name,
@@ -178,7 +178,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -190,7 +190,7 @@ describe("POST /ebsco/login_renater", function() {
     assert.include(response.body, "http://bib.cnrs.fr");
   });
 
-  it("should set bibapi_token cookie and save headerToken in redis corresponding to user with username equal to header uid(user)", function*() {
+  it("should set  cookie and save headerToken in redis corresponding to user with username equal to header uid(user)", function*() {
     const header = {
       uid: janusAccount.uid,
       sn: janusAccount.name,
@@ -215,7 +215,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -255,7 +255,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -305,7 +305,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -359,7 +359,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -409,7 +409,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -458,7 +458,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
@@ -503,7 +503,7 @@ describe("POST /ebsco/login_renater", function() {
 
     const cookieToken = jwt.decode(
       response.headers["set-cookie"][0]
-        .replace("bibapi_token=", "")
+        .replace("=", "")
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
