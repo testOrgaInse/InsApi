@@ -31,15 +31,19 @@ async function changeCSV(data) {
     parameters: {}
   });
   data.forEach(element => {
-    element.regional_delegation = listRegionalsDelegations.find(
+    const regional_delegation = listRegionalsDelegations.find(
       n => n.code === element.DR
-    ).id;
+    );
+    element.regional_delegation = regional_delegation
+      ? regional_delegation.id
+      : null;
     delete element.DR;
     element.structure_type = element["Type de structure"];
     delete element["Type de structure"];
-    element.structure_code = listStructures.find(
+    const structure_code = listRegionalsDelegations.find(
       n => n.code === element["Code de la structure"]
-    ).id;
+    );
+    element.structure_code = structure_code ? structure_code.id : null;
     delete element["Code de la structure"];
     element.uinop_code = element["Code uinop"];
     delete element["Code uinop"];
@@ -54,10 +58,7 @@ async function changeCSV(data) {
     );
     element.team_number = teams ? teams.id : null;
     delete element["Numéro d'équipe"];
-    const second_team = listTeams.find(
-      n => n.secondary_team_code === element["Code équipe secondaire"]
-    );
-    element.secondary_team_code = second_team ? second_team.id : null;
+    element.secondary_team_code = element["Code équipe secondaire"];
     delete element["Code équipe secondaire"];
     const institute = listInstitutes.find(
       n => n.code === element["ITMO principal"]
@@ -87,11 +88,16 @@ async function changeCSV(data) {
     delete element["Type structure d'affectation"];
     element.agent_status = element["Statut de l'agent"];
     delete element["Statut de l'agent"];
-    if (element["CSS1"] != "")
-      element.specialized_commission = listSpecializedCommission.find(
+    if (element.CSS1.length > 0) {
+      const specialized_commission = listSpecializedCommission.find(
         n => n.code === element.CSS1
-      ).id;
-    delete element.CSS1; //CSS2
+      );
+      element.specialized_commission = specialized_commission
+        ? specialized_commission.id
+        : null;
+      delete element.CSS1;
+    }
+
     element.register_date = element["Première connexion"];
     delete element["Première connexion"];
     element.last_connection = element["Dernière connexion"];

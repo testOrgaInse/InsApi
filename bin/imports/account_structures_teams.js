@@ -19,6 +19,9 @@ async function changeCSV(data) {
     parameters: {}
   });
   data.forEach(element => {
+    if (!element.Identifiant) {
+      return;
+    }
     element.login = element.Identifiant;
     delete element.Identifiant;
     element.password = element["Mot de passe"];
@@ -27,17 +30,16 @@ async function changeCSV(data) {
     delete element["Type de code"];
     element.structure_type = element["Type de structure"];
     delete element["Type de structure"];
-    element.structure_code = listStructures.find(
+    const structure_code = listStructures.find(
       n => n.code === element["Code Structure"]
-    ).id;
+    );
+    element.structure_code = structure_code ? structure_code.id : null;
     delete element["Code Structure"];
-    if (element["Numéro d'Equipe"]) {
-      const team_number = (element.team_number = listTeams.find(
-        n => n.team_number === element["Numéro d'Equipe"]
-      ));
-      element.team_number = team_number ? team_number.id : null;
-      delete element["Numéro d'Equipe"];
-    }
+    const team_number = (element.team_number = listTeams.find(
+      n => n.team_number === element["Numéro d'Equipe"]
+    ));
+    element.team_number = team_number ? team_number.id : null;
+    delete element["Numéro d'Equipe"];
     element.register_date = element["Date d'inscription"];
     delete element["Date d'inscription"];
     element.expiration_date = element["Date d'expiration"];
@@ -53,8 +55,8 @@ async function changeCSV(data) {
 }
 
 async function importData(data, i) {
-  if (i >= data.length) return;
-  const teams = await pool.query({
+  if (i >= data.length || !data) return;
+  await pool.query({
     sql: `INSERT INTO account_structures_teams (login, password, type_of_code, structure_type, structure_code, team_number, register_date, community, expiration_date)
           VALUES ($login, $password, $type_of_code, $structure_type, $structure_code, $team_number, $register_date, $community, $expiration_date)`,
     parameters: {
