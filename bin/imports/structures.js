@@ -293,7 +293,7 @@ async function changeCSV(data, data2) {
       element.nb_admin_etp = element.Admin_ETP.replace(",", ".");
     }
     delete element.Admin_ETP;
-    element.community = "INSERM";
+    element.community = "proxy";
   });
   data = await fusionByCode(data, data2);
   return data;

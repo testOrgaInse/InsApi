@@ -49,7 +49,7 @@ async function changeCSV(data) {
     )
       element.expiration_date = null;
     delete element["Date d'expiration"];
-    element.community = "INSERM";
+    element.community = "proxy";
   });
   return data;
 }

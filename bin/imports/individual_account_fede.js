@@ -107,7 +107,7 @@ async function changeCSV(data) {
     )
       element.last_connection = null;
     delete element["Dernière connexion"];
-    element.community = "INSERM";
+    element.community = "proxy";
   });
   return data;
 }

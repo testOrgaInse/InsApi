@@ -189,7 +189,7 @@ describe("model Structure", function() {
       team_humanity;
     before(function*() {
       inserm = yield fixtureLoader.createCommunity({
-        name: "INSERM",
+        name: "proxy",
         gate: "insb"
       });
 

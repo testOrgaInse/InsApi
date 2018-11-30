@@ -59,7 +59,7 @@ describe("model StructuresTeamsAccounts", function() {
       user = yield fixtureLoader.createStructureTeamAccount({
         login: "jane_doe",
         password: "secret",
-        community: "INSERM",
+        community: "proxy",
         structure_code: "",
         team_number: "",
         register_date: "2010-12-12",

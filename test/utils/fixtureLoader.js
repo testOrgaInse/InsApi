@@ -27,7 +27,7 @@ export default function(postgres) {
 
   function* createCommunity(data) {
     const defaultCommunity = {
-      name: "INSERM",
+      name: "proxy",
       gate: "insb"
     };
 
@@ -82,7 +82,7 @@ export default function(postgres) {
       code: "CIC1401",
       structure_type: "CIC",
       name: "CIC BORDEAUX",
-      community: "INSERM"
+      community: "proxy"
     };
     return yield structureQueries.insertOne({
       ...defaultStructure,
@@ -117,7 +117,7 @@ export default function(postgres) {
   //     text_en: "english",
   //     url_fr: "http://www.url.fr",
   //     url_en: "http://www.url.en",
-  //     community: "INSERM"
+  //     community: "proxy"
   //   };
   //   return yield databaseQueries.insertOne({
   //     ...defaultDatabase,
