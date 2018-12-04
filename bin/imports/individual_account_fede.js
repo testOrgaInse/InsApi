@@ -38,16 +38,16 @@ async function changeCSV(data) {
       ? regional_delegation.id
       : null;
     delete element.DR;
-    element.structure_type = element["Type de structure"];
+    element.structure_type = element["Tpe de structure"];
     delete element["Type de structure"];
-    const structure_code = listRegionalsDelegations.find(
+    const structure_code = listStructures.find(
       n => n.code === element["Code de la structure"]
     );
     element.structure_code = structure_code ? structure_code.id : null;
     delete element["Code de la structure"];
     element.uinop_code = element["Code uinop"];
     delete element["Code uinop"];
-    element.structure_name = element["Intitulé de la structure"];
+    element.structure_name = element["Intitulé de la  structure"];
     delete element["Intitulé de la structure"];
     element.site = element.Site;
     delete element.Site;

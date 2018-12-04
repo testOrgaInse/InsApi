@@ -2,7 +2,7 @@
 
 for file in imports/*
 do
-    encoding=`file -I $file | awk -F "=" '{print $NF}'`
+    encoding=`file -i $file | awk -F "=" '{print $NF}'`
     if [ "$encoding" != "utf-8" ]; then
         iconv -f iso-8859-1 -t utf-8 "$file" > "$file.new" && mv -f "$file.new" "$file"
     fi
