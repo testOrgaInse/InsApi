@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS individual_account_fede (
     active                              BOOLEAN DEFAULT TRUE,
     comment                             varchar(65535),
 
-    CONSTRAINT individual_account_fede_id UNIQUE (id)
+    CONSTRAINT individual_account_fede_id UNIQUE (id),
+    CONSTRAINT individual_account_fede_uid UNIQUE (uid)
 );
 
 -- down:
