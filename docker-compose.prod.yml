@@ -20,7 +20,7 @@ services:
     image: vsnexus.intra.inist.fr:8083/insermbiblio/insapi:${insapi_version}
     volumes:
       - ./logs:/app/logs
-      - /applis/insapi/home/InsApi/imports:/app/imports
+      - ./imports:/app/imports
     environment:
       NODE_ENV: ${NODE_ENV}
       http_proxy: ${http_proxy}
