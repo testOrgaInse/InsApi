@@ -1,9 +1,6 @@
 version: "2"
 
 services:
-  redis:
-    image: redis:3.2
-
   postgres-dev:
     image: postgres:10
     environment:
@@ -36,7 +33,6 @@ services:
       POSTGRES_DB: insapi-dev
       POSTGRES_HOST: postgres-dev
     links:
-      - redis
       - postgres-dev
       - maildev
     ports:

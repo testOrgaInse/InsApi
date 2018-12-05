@@ -7,7 +7,6 @@ import { httpLogger } from "./lib/services/logger";
 import qs from "koa-qs";
 
 import controller from "./lib/controller";
-import getRedisClient from "./lib/utils/getRedisClient";
 import { PgPool } from "co-postgres-queries";
 
 const { user, password, host, port, database } = config.postgres;
@@ -45,14 +44,6 @@ app.use(function* logHttp(next) {
   yield next;
   this.httpLog.status = this.status;
   httpLogger.info(this.request.url, this.httpLog);
-});
-
-app.use(function*(next) {
-  this.redis = getRedisClient();
-  yield this.redis.selectAsync(env === "test" ? 2 : 1);
-
-  yield next;
-  this.redis.quit();
 });
 
 app.use(function*(next) {

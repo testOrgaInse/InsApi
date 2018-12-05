@@ -1,10 +1,6 @@
 version: "2"
 
 services:
-  redis:
-    image: redis:3.2
-    restart: always
-
   postgres-prod:
     image: postgres:10
     restart: always
@@ -37,7 +33,6 @@ services:
       MAIL_SERVER_HOST: ${MAIL_SERVER_HOST}
       MAIL_SERVER_PORT: ${MAIL_SERVER_PORT}
     links:
-      - redis
       - postgres-prod
     ports:
       - 3000:3000

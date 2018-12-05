@@ -81,152 +81,6 @@ describe("POST /ebsco/login_renater", function() {
     apiServer.start();
   });
 
-  it("should set  cookie and save header token in redis corresponding to janusAccount with username equal to header uid(janusAccountVie)", function*() {
-    const header = {
-      uid: janusAccountVie.uid,
-      sn: janusAccountVie.name,
-      givenname: janusAccountVie.firstname,
-      mail: janusAccountVie.mail,
-      cookie: "pll_language=fr; _shibsession_123=456"
-    };
-    const response = yield request.get(
-      "/ebsco/login_renater?origin=http://bib.cnrs.fr",
-      header
-    );
-
-    const tokenData = {
-      id: janusAccountVie.id,
-      shib: "_shibsession_123=456",
-      username: `${janusAccountVie.firstname} ${janusAccountVie.name}`,
-      domains: ["vie", "reaxys"],
-      origin: "janus",
-      exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
-      favorite_domain: "vie"
-    };
-    const cookieToken = jwt.decode(
-      response.headers["set-cookie"][0]
-        .replace("=", "")
-        .replace("; path=/; httponly", "")
-    );
-    assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
-    assert.include(response.body, "http://bib.cnrs.fr");
-    assert.equal(response.statusCode, 302);
-  });
-
-  it("should set correct favorite domain if specified", function*() {
-    const header = {
-      uid: janusAccountFavoriteDomain.uid,
-      sn: janusAccountFavoriteDomain.name,
-      givenname: janusAccountFavoriteDomain.firstname,
-      mail: janusAccountFavoriteDomain.mail,
-      cookie: "pll_language=fr; _shibsession_123=456"
-    };
-    const response = yield request.get(
-      "/ebsco/login_renater?origin=http://bib.cnrs.fr",
-      header
-    );
-
-    const tokenData = {
-      id: janusAccountFavoriteDomain.id,
-      shib: "_shibsession_123=456",
-      username: `${janusAccountFavoriteDomain.firstname} ${
-        janusAccountFavoriteDomain.name
-      }`,
-      domains: ["vie", "shs"],
-      origin: "janus",
-      exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
-      favorite_domain: "shs"
-    };
-    const cookieToken = jwt.decode(
-      response.headers["set-cookie"][0]
-        .replace("=", "")
-        .replace("; path=/; httponly", "")
-    );
-    assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
-    assert.include(response.body, "http://bib.cnrs.fr");
-    assert.equal(response.statusCode, 302);
-  });
-
-  it("should set  cookie and save header token in redis corresponding to user with username equal to header uid(janusAccountShs)", function*() {
-    const header = {
-      uid: janusAccountShs.uid,
-      sn: janusAccountShs.name,
-      givenname: janusAccountShs.firstname,
-      mail: janusAccountShs.mail,
-      cookie: "pll_language=fr; _shibsession_123=456"
-    };
-    const response = yield request.get(
-      "/ebsco/login_renater?origin=http://bib.cnrs.fr",
-      header
-    );
-
-    const tokenData = {
-      id: janusAccountShs.id,
-      shib: "_shibsession_123=456",
-      username: `${janusAccountShs.firstname} ${janusAccountShs.name}`,
-      domains: ["shs", "reaxys"],
-      origin: "janus",
-      exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
-      favorite_domain: "shs"
-    };
-
-    const cookieToken = jwt.decode(
-      response.headers["set-cookie"][0]
-        .replace("=", "")
-        .replace("; path=/; httponly", "")
-    );
-    assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
-    assert.equal(response.statusCode, 302);
-    assert.include(response.body, "http://bib.cnrs.fr");
-  });
-
-  it("should set  cookie and save headerToken in redis corresponding to user with username equal to header uid(user)", function*() {
-    const header = {
-      uid: janusAccount.uid,
-      sn: janusAccount.name,
-      givenname: janusAccount.firstname,
-      mail: janusAccount.mail,
-      cookie: "pll_language=fr; _shibsession_123=456"
-    };
-    const response = yield request.get(
-      "/ebsco/login_renater?origin=http://bib.cnrs.fr",
-      header
-    );
-
-    const tokenData = {
-      id: janusAccount.id,
-      shib: "_shibsession_123=456",
-      username: `${janusAccount.firstname} ${janusAccount.name}`,
-      domains: ["vie", "shs", "reaxys"],
-      origin: "janus",
-      exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
-      favorite_domain: "vie"
-    };
-
-    const cookieToken = jwt.decode(
-      response.headers["set-cookie"][0]
-        .replace("=", "")
-        .replace("; path=/; httponly", "")
-    );
-    assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
-    assert.equal(response.statusCode, 302);
-    assert.include(response.body, "http://bib.cnrs.fr");
-  });
-
   it("should return cookie token with session for shs if called with header.refscientificoffice 54 and no user correspond to uid and create corresponding user", function*() {
     const header = {
       uid: "will",
@@ -259,9 +113,6 @@ describe("POST /ebsco/login_renater", function() {
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
 
     assert.equal(response.statusCode, 302);
     assert.include(response.body, "http://bib.cnrs.fr");
@@ -309,9 +160,6 @@ describe("POST /ebsco/login_renater", function() {
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
 
     assert.equal(response.statusCode, 302);
     assert.include(response.body, "http://bib.cnrs.fr");
@@ -364,9 +212,6 @@ describe("POST /ebsco/login_renater", function() {
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
 
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
     const newInstitute = yield instituteQueries.selectOneByCode({
       code: "66"
     });
@@ -414,9 +259,6 @@ describe("POST /ebsco/login_renater", function() {
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
 
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
     assert.equal(response.statusCode, 302);
     const newUnit = yield unitQueries.selectOneByCode({
       code: "Marmelab Unit"
@@ -463,9 +305,6 @@ describe("POST /ebsco/login_renater", function() {
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
 
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
-
     const updatedUser = yield janusAccountQueries.selectOneByUid({
       uid: janusAccount.uid
     });
@@ -507,9 +346,6 @@ describe("POST /ebsco/login_renater", function() {
         .replace("; path=/; httponly", "")
     );
     assert.deepEqual(cookieToken, { ...tokenData, iat: cookieToken.iat });
-
-    const redisToken = jwt.decode(yield redis.getAsync("_shibsession_123=456"));
-    assert.deepEqual(redisToken, { ...tokenData, iat: redisToken.iat });
 
     assert.equal(response.statusCode, 302);
     assert.include(response.body, "http://bib.cnrs.fr");

@@ -16,12 +16,9 @@ describe("Retry GET /ebsco/:domainName/article/search", function() {
       uid: "vie",
       communities: [vie.id]
     });
-
-    yield redis.hsetAsync("vie", "authToken", "auth-token-for-vie");
   });
 
   beforeEach(function*() {
-    yield redis.hsetAsync("vie", "vie", "session-token-for-vie-0");
     ebscoCall = [];
 
     apiServer.router.post(
@@ -232,11 +229,6 @@ describe("Retry GET /ebsco/:domainName/article/search", function() {
       response.body,
       "Could not connect to ebsco api. Please try again. If the problem persist contact us."
     );
-    const [authToken, sessionToken] = yield redis.hmgetAsync(
-      "vie",
-      "authToken",
-      "vie"
-    );
     assert.isNull(authToken);
     assert.isNull(sessionToken);
   });
@@ -247,7 +239,6 @@ describe("Retry GET /ebsco/:domainName/article/search", function() {
   });
 
   after(function*() {
-    redis.flushdb();
     yield fixtureLoader.clear();
   });
 });
