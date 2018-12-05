@@ -16,10 +16,6 @@ module.exports = {
   EzProxy: {
     ticketSecret: process.env.ticket_secret
   },
-  redis: {
-    port: 6379,
-    host: "redis"
-  },
   postgres: {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS individual_account_fede (
     regional_delegation                 int REFERENCES regionals_delegations(id) ON DELETE CASCADE,
     specialized_commission              int REFERENCES section_cn(id) ON DELETE CASCADE,
     itmo_principal                      int REFERENCES institute(id) ON DELETE CASCADE,
-    secondary_team_code                 int REFERENCES teams(id) ON DELETE CASCADE,
+    secondary_team_code                 varchar(255),
     uinop_code                          varchar(255),
     structure_name                      varchar(255),
     site                                varchar(255),
@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS individual_account_fede (
     active                              BOOLEAN DEFAULT TRUE,
     comment                             varchar(65535),
 
-    CONSTRAINT individual_account_fede_id UNIQUE (id)
+    CONSTRAINT individual_account_fede_id UNIQUE (id),
+    CONSTRAINT individual_account_fede_uid UNIQUE (uid)
 );
 
 -- down:

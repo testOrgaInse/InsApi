@@ -108,7 +108,7 @@ connect-postgres-prod: ## connect to postgres for prod environment
 	docker exec -it insapi_postgres-prod_1 psql -d insapi-prod -U insapi
 
 import-all: ## import data for all table
-	./bin/change_encoding.sh && docker exec -it insapi_server_1 node ./bin/startImport.js
+	./bin/change_encoding && docker exec -it insapi_server_1 node ./bin/startImport.js
 
 show-api-log: # display docker log
 	docker logs insapi_server_1

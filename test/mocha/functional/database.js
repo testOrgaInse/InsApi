@@ -66,11 +66,6 @@ describe("GET /ebsco/database", function() {
     };
   });
 
-  it("should return username, domains from cookie_token and header_token saved in redis in cookie_token shib key and delete it from redis", function*() {
-    const response = yield request.get("/ebsco/databases");
-    assert.deepEqual(JSON.parse(response.body), [marmelab, cnrs, inist, insb]);
-  });
-
   after(function*() {
     yield fixtureLoader.clear();
   });

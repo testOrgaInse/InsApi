@@ -29,13 +29,6 @@ describe("GET /ebsco/:domainName/article/retrieve/:term/:dbId/:an", function() {
       uid: "jane",
       communities: [shs.id]
     });
-
-    yield redis.hsetAsync("vie", "authToken", "auth-token-vie");
-    yield redis.hsetAsync("vie", "john", "session-token-vie");
-
-    yield redis.hsetAsync("shs", "authToken", "auth-token-shs");
-    yield redis.hsetAsync("shs", "john", "session-token-shs");
-    yield redis.hsetAsync("shs", "jane", "session-token-shs");
   });
 
   beforeEach(function() {
@@ -161,7 +154,6 @@ describe("GET /ebsco/:domainName/article/retrieve/:term/:dbId/:an", function() {
   });
 
   after(function*() {
-    redis.flushdb();
     yield fixtureLoader.clear();
   });
 });

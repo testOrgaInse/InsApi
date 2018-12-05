@@ -9,9 +9,9 @@ describe("model Community", function() {
 
   describe("selectOneByNameINSERM", function() {
     it("should return each community with INSERM as name", function*() {
-      const community = yield fixtureLoader.createCommunity({ name: "INSERM" });
+      const community = yield fixtureLoader.createCommunity({ name: "proxy" });
       assert.deepEqual(
-        yield communityQueries.selectOneByName("INSERM"),
+        yield communityQueries.selectOneByName("proxy"),
         community
       );
     });
@@ -22,7 +22,7 @@ describe("model Community", function() {
   });
   // Useless ?
   // describe("selectOneByName", function() {
-  //   it("should return community for given name INSERM", function*() {
+  //   it("should return community for given name proxy", function*() {
   //     const inshs = yield fixtureLoader.createCommunity({
   //       name: "inshs"
   //     });
@@ -36,14 +36,14 @@ describe("model Community", function() {
 
   // describe("selectByIndividualAccountIdQuery", function() {
   //   it("should return community of user", function*() {
-  //     const community = yield fixtureLoader.createCommunity({ name: "INSERM" });
+  //     const community = yield fixtureLoader.createCommunity({ name: "proxy" });
   //     const john = yield fixtureLoader.createIndividualAccount({
   //       uid: "john",
-  //       community: "INSERM"
+  //       community: "proxy"
   //     });
   //     const jane = yield fixtureLoader.createIndividualAccount({
   //       uid: "jane",
-  //       community: "INSERM"
+  //       community: "proxy"
   //     });
   //     assert.deepEqual(
   //       yield communityQueries.selectByIndividualAccountId(john.id),

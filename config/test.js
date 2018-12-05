@@ -15,10 +15,6 @@ module.exports = {
     ticketSecret: "secret"
   },
   logs: false,
-  redis: {
-    port: 6379,
-    host: "redis-test"
-  },
   mailServer: {
     host: "maildev-test",
     port: 25
