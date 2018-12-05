@@ -13,7 +13,7 @@ describe("model Institute", function() {
         name: "biology",
         code: "insb"
       });
-      const instituteOne = yield instituteQueries.selectBy(institute.name);
+      const instituteOne = yield instituteQueries.selectBy(institute.id);
       delete instituteOne[0].totalcount;
       assert.deepEqual(instituteOne[0], institute);
     });
