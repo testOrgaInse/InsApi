@@ -1,7 +1,4 @@
 module.exports = {
-  ebsco: {
-    host: "https://eds-api.ebscohost.com"
-  },
   auth: {
     headerSecret: "secret1",
     cookieSecret: "secret2",
@@ -11,7 +8,6 @@ module.exports = {
   EzProxy: {
     ticketSecret: "ez-proxy-secret"
   },
-  debugEbscoResult: true,
   fakeLogin: true,
   mailServer: {
     host: process.env.MAILDEV_1_PORT_25_TCP_ADDR,

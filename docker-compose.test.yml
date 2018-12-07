@@ -9,7 +9,7 @@ services:
       POSTGRES_DB: insapi-test
     volumes:
       - ./backups:/backups
-      - ../postgresql-dev:/var/lib/postgresql/data
+      - ../postgresql-test:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
