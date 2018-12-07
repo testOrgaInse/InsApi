@@ -13,7 +13,7 @@ services:
       - /applis/insapi/home/postgresql:/var/lib/postgresql/data
 
   server:
-    image: vsnexus.intra.inist.fr:8083/insermbiblio/insapi:${insapi_version}
+    image: vsnexus-registry.intra.inist.fr:8083/insermbiblio/insapi:${insapi_version}
     volumes:
       - ./logs:/app/logs
       - ./imports:/app/imports
