@@ -15,13 +15,10 @@ describe("model RegionalsDelegations", function() {
           code: "Sebastien"
         }
       );
-      console.log("check result");
-      console.log(regionalsDelegations);
       let result = yield regionalsDelegationsQueries.SelectById(
         regionalsDelegations.id
       );
       delete result[0].totalcount;
-      console.log(result[0]);
       assert.equal(result[0].id, regionalsDelegations.id);
     });
 

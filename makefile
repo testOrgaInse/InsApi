@@ -91,9 +91,9 @@ stop: ## stop all insapi docker image
 
 build: ## args: <version> build insermbiblio/insapi:<version> docker image default <version> to latest
 ifdef COMMAND_ARGS
-	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/insermbiblio/insapi:$(COMMAND_ARGS)' .
+	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus-registry.intra.inist.fr:8083/insermbiblio/insapi:$(COMMAND_ARGS)' .
 else
-	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus.intra.inist.fr:8083/insermbiblio/insapi:latest' .
+	docker build --no-cache --build-arg http_proxy --build-arg https_proxy -t 'vsnexus-registry.intra.inist.fr:8083/insermbiblio/insapi:latest' .
 endif
 
 update: stop cleanup-docker install build
