@@ -5,3 +5,5 @@ backups/*
 .DS_STORE
 postgresql-dev/*
 postgresql-dev/
+
+imports/
