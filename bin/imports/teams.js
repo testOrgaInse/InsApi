@@ -29,7 +29,7 @@ async function changeCSV(data, data2) {
     while (element.StructureC[cut] == "0") {
       cut++;
     }
-    const tmpStructureCode = element.structureT + element.StructureC.slice(cut);
+    const tmpStructureCode = element.StructureT + element.StructureC.slice(cut);
     element.structure_code = listStructures.find(
       n => n.code === tmpStructureCode
     ).id;
