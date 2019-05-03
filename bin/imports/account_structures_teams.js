@@ -22,31 +22,31 @@ async function changeCSV(data) {
     if (element && element.Identifiant) {
       element.login = element.Identifiant;
       delete element.Identifiant;
-      element.password = element["Mot de passe"];
-      delete element["Mot de passe"];
-      element.type_of_code = element["Type de code"];
-      delete element["Type de code"];
-      element.structure_type = element["Type de structure"];
-      delete element["Type de structure"];
+      element.password = element["Mot_de_passe"];
+      delete element["Mot_de_passe"];
+      element.type_of_code = element["Type_de_code"];
+      delete element["Type_de_code"];
+      element.structure_type = element["Type_de_structure"];
+      delete element["Type_de_structure"];
       const structure_code = listStructures.find(
-        n => n.code === element["Code Structure"]
+        n => n.code === element["Code_structure"]
       );
       element.structure_code = structure_code ? structure_code.id : null;
-      delete element["Code Structure"];
+      delete element["Code_structure"];
       const team_number = (element.team_number = listTeams.find(
-        n => n.team_number === element["Numéro d'Equipe"]
+        n => n.team_number === element["Numero_equipe"]
       ));
       element.team_number = team_number ? team_number.id : null;
-      delete element["Numéro d'Equipe"];
-      element.register_date = element["Date d'inscription"];
-      delete element["Date d'inscription"];
-      element.expiration_date = element["Date d'expiration"];
+      delete element["Numero_equipe"];
+      element.register_date = element["Date_inscription"];
+      delete element["Date_inscription"];
+      element.expiration_date = element["Date_expiration"];
       if (
-        element["Date d'expiration"] == "" ||
-        element["Date d'expiration"] == "0000-00-00"
+        element["Date_expiration"] == "" ||
+        element["Date_expiration"] == "0000-00-00"
       )
         element.expiration_date = null;
-      delete element["Date d'expiration"];
+      delete element["Date_expiration"];
       element.community = "proxy";
     }
   });

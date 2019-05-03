@@ -36,53 +36,53 @@ async function changeCSV(data, data2) {
     delete element.StructureT;
     delete element.StructureC;
     cut = 0;
-    while (element.N0_équipe[cut] == "0") cut++;
-    element.team_number = tmpStructureCode + "-" + element.N0_équipe.slice(cut);
-    delete element.N0_équipe;
-    element.name = element["Intitulé équipe"];
-    delete element["Intitulé équipe"];
-    element.principal_lastname = element.Responsable_équipe_nom;
-    delete element.Responsable_équipe_nom;
-    element.principal_firstname = element.Responsable_équipe_prénom;
-    delete element.Responsable_équipe_prénom;
-    element.principal_email = element.Responsable_équipe_courriel;
-    delete element.Responsable_équipe_courriel;
-    if (element["IT_principal équipe"]) {
+    while (element.Numero_equipe[cut] == "0") cut++;
+    element.team_number =
+      tmpStructureCode + "-" + element.Numero_equipe.slice(cut);
+    delete element.Numero_equipe;
+    element.name = element["Intitule_equipe"];
+    delete element["Intitule_equipe"];
+    element.principal_lastname = element.Responsable_equipe_nom;
+    delete element.Responsable_equipe_nom;
+    element.principal_firstname = element.Responsable_equipe_prenom;
+    delete element.Responsable_equipe_prenom;
+    element.principal_email = element.Responsable_equipe_courriel;
+    delete element.Responsable_equipe_courriel;
+    if (element["IT_principal_equipe"]) {
       element.principal_it = listInstitute.find(
-        n => n.code === element["IT_principal équipe"]
+        n => n.code === element["IT_principal_equipe"]
       ).id;
     } else {
       element.principal_it = null;
     }
-    delete element["IT_principal équipe"];
-    if (element["CSS_équipe 1"] != "") {
+    delete element["IT_principal_equipe"];
+    if (element["CSS_equipe_1"] != "") {
       element.specialized_commission = listSpecializedCommission.find(
-        n => n.code === element["CSS_équipe 1"]
+        n => n.code === element["CSS_equipe_1"]
       ).id;
     }
-    // element["CSS_équipe 1"] + "-" + element["CSS_équipe 2"];
-    delete element["CSS_équipe 1"];
-    delete element["CSS_équipe 2"];
+    delete element["CSS_equipe_1"];
+    delete element["CSS_equipe_2"];
   });
   data2.forEach(element => {
-    element.team_number = element.field1;
-    delete element.field1;
-    if (element.etp_total) {
-      element.total_etp_effectiv = element.etp_total.replace(",", ".");
+    element.team_number = element.Code_equipe;
+    delete element.Code_equipe;
+    if (element.ETP_total) {
+      element.total_etp_effectiv = element.ETP_total.replace(",", ".");
     }
-    delete element.etp_total;
-    if (element["Chercheurs _Inserm_PP"]) {
+    delete element.ETP_total;
+    if (element["Chercheurs_INSERM_PP"]) {
       element.nb_researchers_inserm_pp = element[
-        "Chercheurs _Inserm_PP"
+        "Chercheurs_INSERM_PP"
       ].replace(",", ".");
     }
-    delete element["Chercheurs _Inserm_PP"];
-    if (element["Chercheurs _Inserm_ETP"]) {
+    delete element["Chercheurs_INSERM_PP"];
+    if (element["Chercheurs_INSERM_ETP"]) {
       element.nb_researchers_inserm_etp = element[
-        "Chercheurs _Inserm_ETP"
+        "Chercheurs_INSERM_ETP"
       ].replace(",", ".");
     }
-    delete element["Chercheurs _Inserm_ETP"];
+    delete element["Chercheurs_INSERM_ETP"];
     if (element.Chercheurs_CNRS_PP) {
       //changer
       element.nb_researchers_crns_pp = element.Chercheurs_CNRS_PP.replace(
@@ -112,20 +112,20 @@ async function changeCSV(data, data2) {
       );
     }
     delete element.Chercheurs_autres_ETP;
-    if (element["Post-Doctorants_PP"]) {
-      element.nb_post_phd_student_pp = element["Post-Doctorants_PP"].replace(
+    if (element["Post-doctorants_PP"]) {
+      element.nb_post_phd_student_pp = element["Post-doctorants_PP"].replace(
         ",",
         "."
       );
     }
-    delete element["Post-Doctorants_PP"];
-    if (element["Post-Doctorants_ETP"]) {
-      element.nb_post_phd_student_etp = element["Post-Doctorants_ETP"].replace(
+    delete element["Post-doctorants_PP"];
+    if (element["Post-doctorants_ETP"]) {
+      element.nb_post_phd_student_etp = element["Post-doctorants_ETP"].replace(
         ",",
         "."
       );
     }
-    delete element["Post-Doctorants_ETP"];
+    delete element["Post-doctorants_ETP"];
     if (element.Doctorants_PP) {
       element.nb_phd_student_pp = element.Doctorants_PP.replace(",", ".");
     }
@@ -134,47 +134,47 @@ async function changeCSV(data, data2) {
       element.nb_phd_student_etp = element.Doctorants_ETP.replace(",", ".");
     }
     delete element.Doctorants_ETP;
-    if (element.CDI_Chercheurs_PP) {
-      element.nb_cdi_researchers_pp = element.CDI_Chercheurs_PP.replace(
+    if (element.CDI_chercheurs_PP) {
+      element.nb_cdi_researchers_pp = element.CDI_chercheurs_PP.replace(
         ",",
         "."
       );
     }
-    delete element.CDI_Chercheurs_PP;
-    if (element.CDI_Chercheurs_ETP) {
-      element.nb_cdi_researchers_etp = element.CDI_Chercheurs_ETP.replace(
+    delete element.CDI_chercheurs_PP;
+    if (element.CDI_chercheurs_ETP) {
+      element.nb_cdi_researchers_etp = element.CDI_chercheurs_ETP.replace(
         ",",
         "."
       );
     }
-    delete element.CDI_Chercheurs_ETP;
-    if (element.CDD_Chercheurs_PP) {
-      element.nb_cdd_researchers_pp = element.CDD_Chercheurs_PP.replace(
+    delete element.CDI_chercheurs_ETP;
+    if (element.CDD_chercheurs_PP) {
+      element.nb_cdd_researchers_pp = element.CDD_chercheurs_PP.replace(
         ",",
         "."
       );
     }
-    delete element.CDD_Chercheurs_PP;
-    if (element.CDD_Chercheurs_ETP) {
-      element.nb_cdd_researchers_etp = element.CDD_Chercheurs_ETP.replace(
+    delete element.CDD_chercheurs_PP;
+    if (element.CDD_chercheurs_ETP) {
+      element.nb_cdd_researchers_etp = element.CDD_chercheurs_ETP.replace(
         ",",
         "."
       );
     }
-    delete element.CDD_Chercheurs_ETP;
-    if (element["Ens-Chercheurs_PP"]) {
-      element.nb_teacher_researchers_pp = element["Ens-Chercheurs_PP"].replace(
+    delete element.CDD_chercheurs_ETP;
+    if (element["Ens-chercheurs_PP"]) {
+      element.nb_teacher_researchers_pp = element["Ens-chercheurs_PP"].replace(
         ",",
         "."
       );
     }
-    delete element["Ens-Chercheurs_PP"];
-    if (element["Ens-Chercheurs_ETP"]) {
+    delete element["Ens-chercheurs_PP"];
+    if (element["Ens-chercheurs_ETP"]) {
       element.nb_teacher_researchers_etp = element[
-        "Ens-Chercheurs_ETP"
+        "Ens-chercheurs_ETP"
       ].replace(",", ".");
     }
-    delete element["Ens-Chercheurs_ETP"];
+    delete element["Ens-chercheurs_ETP"];
     if (element["PU-PH_PP"]) {
       element.nb_pu_ph_pp = element["PU-PH_PP"].replace(",", ".");
     }
@@ -183,41 +183,41 @@ async function changeCSV(data, data2) {
       element.nb_pu_ph_etp = element["PU-PH_ETP"].replace(",", ".");
     }
     delete element["PU-PH_ETP"];
-    if (element["Hosp-Autres_PP"]) {
-      element.nb_hosp_others_pp = element["Hosp-Autres_PP"].replace(",", ".");
+    if (element["Hosp_autres_PP"]) {
+      element.nb_hosp_others_pp = element["Hosp_autres_PP"].replace(",", ".");
     }
-    delete element["Hosp-Autres_PP"];
-    if (element["Hosp-Autres_ETP"]) {
-      element.nb_hosp_others_etp = element["Hosp-Autres_ETP"].replace(",", ".");
+    delete element["Hosp_autres_PP"];
+    if (element["Hosp_autres_ETP"]) {
+      element.nb_hosp_others_etp = element["Hosp_autres_ETP"].replace(",", ".");
     }
-    delete element["Hosp-Autres_ETP"];
-    if (element.IR_Inserm_PP) {
-      element.nb_ir_inserm_pp = element.IR_Inserm_PP.replace(",", ".");
+    delete element["Hosp_autres_ETP"];
+    if (element.IR_INSERM_PP) {
+      element.nb_ir_inserm_pp = element.IR_INSERM_PP.replace(",", ".");
     }
-    delete element.IR_Inserm_PP;
-    if (element.IR_Inserm_ETP) {
-      element.nb_ir_inserm_etp = element.IR_Inserm_ETP.replace(",", ".");
+    delete element.IR_INSERM_PP;
+    if (element.IR_INSERM_ETP) {
+      element.nb_ir_inserm_etp = element.IR_INSERM_ETP.replace(",", ".");
     }
-    delete element.IR_Inserm_ETP;
-    if (element.IR_non_Inserm_PP) {
-      element.nb_ir_non_inserm_pp = element.IR_non_Inserm_PP.replace(",", ".");
+    delete element.IR_INSERM_ETP;
+    if (element.IR_non_INSERM_PP) {
+      element.nb_ir_non_inserm_pp = element.IR_non_INSERM_PP.replace(",", ".");
     }
-    delete element.IR_non_Inserm_PP;
-    if (element.IR_non_Inserm_ETP) {
-      element.nb_ir_non_inserm_etp = element.IR_non_Inserm_ETP.replace(
+    delete element.IR_non_INSERM_PP;
+    if (element.IR_non_INSERM_ETP) {
+      element.nb_ir_non_inserm_etp = element.IR_non_INSERM_ETP.replace(
         ",",
         "."
       );
     }
-    delete element.IR_non_Inserm_ETP;
-    if (element["IngT _PP"]) {
-      element.nb_ita_others_pp = element["IngT _PP"].replace(",", ".");
+    delete element.IR_non_INSERM_ETP;
+    if (element["IngT_PP"]) {
+      element.nb_ita_others_pp = element["IngT_PP"].replace(",", ".");
     }
-    delete element["IngT _PP"];
-    if (element["IngT _ETP"]) {
-      element.nb_ita_others_etp = element["IngT _ETP"].replace(",", ".");
+    delete element["IngT_PP"];
+    if (element["IngT_ETP"]) {
+      element.nb_ita_others_etp = element["IngT_ETP"].replace(",", ".");
     }
-    delete element["IngT _ETP"];
+    delete element["IngT_ETP"];
     if (element.CDD_IR_PP) {
       element.nb_cdd_ir_pp = element.CDD_IR_PP.replace(",", ".");
     }
@@ -226,14 +226,14 @@ async function changeCSV(data, data2) {
       element.nb_cdd_ir_etp = element.CDD_IR_ETP.replace(",", ".");
     }
     delete element.CDD_IR_ETP;
-    if (element.CDD_Autres_PP) {
-      element.nb_cdd_others_pp = element.CDD_Autres_PP.replace(",", ".");
+    if (element.CDD_autres_PP) {
+      element.nb_cdd_others_pp = element.CDD_autres_PP.replace(",", ".");
     }
-    delete element.CDD_Autres_PP;
-    if (element.CDD_Autres_ETP) {
-      element.nb_cdd_others_etp = element.CDD_Autres_ETP.replace(",", ".");
+    delete element.CDD_autres_PP;
+    if (element.CDD_autres_ETP) {
+      element.nb_cdd_others_etp = element.CDD_autres_ETP.replace(",", ".");
     }
-    delete element.CDD_Autres_ETP;
+    delete element.CDD_autres_ETP;
     if (element.Admin_PP) {
       element.nb_admin_pp = element.Admin_PP.replace(",", ".");
     }
