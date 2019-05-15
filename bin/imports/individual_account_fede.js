@@ -57,12 +57,11 @@ async function changeCSV(data) {
     );
     element.team_number = teams ? teams.id : null;
     delete element["Numero_equipe"];
-    delete element["Code_equipe_secondaire"];
-    const secondary_team_code = listStructures.find(
-      n => n.code === element["Code_equipe_secondaire"]
+    const secondary_team_code = listTeams.find(
+      n => n.team_number === element["Code_equipe_secondaire"]
     );
     element.secondary_team_code = secondary_team_code
-      ? secondary_team_code.id
+      ? secondary_team_code.team_number
       : null;
     const institute = listInstitutes.find(
       n => n.code === element["ITMO_principal"]
@@ -75,8 +74,8 @@ async function changeCSV(data) {
     delete element.UID;
     element.lastname = element.Nom;
     delete element.Nom;
-    element.firstname = element.Prénom;
-    delete element.Prénom;
+    element.firstname = element.Prenom;
+    delete element.Prenom;
     element.inserm_email = element["Courriel_INSERM"];
     delete element["Courriel_INSERM"];
     element.email = element["Courriel_usuel"];

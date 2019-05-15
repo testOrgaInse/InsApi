@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for file in imports/*
+for file in `ls imports/*.csv`
 do
     encoding=`file -i $file | awk -F "=" '{print $NF}'`
     if [ "$encoding" != "utf-8" ]; then
