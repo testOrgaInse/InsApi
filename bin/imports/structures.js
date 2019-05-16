@@ -408,7 +408,7 @@ async function importSecondaryData({ structure_id, secondary_it }) {
 async function fusionByCode(data, data2) {
   data2.forEach(element => {
     for (let i = 0; i < data.length; i++) {
-      if (element.field1 == data[i].code) {
+      if (element.Code_structure == data[i].code) {
         data[i] = Object.assign({}, data[i], element);
       }
     }

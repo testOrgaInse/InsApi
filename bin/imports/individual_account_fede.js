@@ -61,7 +61,7 @@ async function changeCSV(data) {
       n => n.team_number === element["Code_equipe_secondaire"]
     );
     element.secondary_team_code = secondary_team_code
-      ? secondary_team_code.team_number
+      ? secondary_team_code.id
       : null;
     const institute = listInstitutes.find(
       n => n.code === element["ITMO_principal"]
