@@ -163,20 +163,20 @@ async function changeCSV(data, data2) {
       );
     }
     delete element.Chercheurs_autres_ETP;
-    if (element["Post-Doctorants_PP"]) {
-      element.nb_post_phd_student_pp = element["Post-Doctorants_PP"].replace(
+    if (element["Post_doctorants_PP"]) {
+      element.nb_post_phd_student_pp = element["Post_doctorants_PP"].replace(
         ",",
         "."
       );
     }
-    delete element["Post-Doctorants_PP"];
-    if (element["Post-Doctorants_ETP"]) {
-      element.nb_post_phd_student_etp = element["Post-Doctorants_ETP"].replace(
+    delete element["Post_doctorants_PP"];
+    if (element["Post_doctorants_ETP"]) {
+      element.nb_post_phd_student_etp = element["Post_doctorants_ETP"].replace(
         ",",
         "."
       );
     }
-    delete element["Post-Doctorants_ETP"];
+    delete element["Post_doctorants_ETP"];
     if (element.Doctorants_PP) {
       element.nb_phd_student_pp = element.Doctorants_PP.replace(",", ".");
     }
@@ -213,27 +213,27 @@ async function changeCSV(data, data2) {
       );
     }
     delete element.CDD_chercheurs_ETP;
-    if (element["Ens-chercheurs_PP"]) {
-      element.nb_teacher_researchers_pp = element["Ens-chercheurs_PP"].replace(
+    if (element["Ens_chercheurs_PP"]) {
+      element.nb_teacher_researchers_pp = element["Ens_chercheurs_PP"].replace(
         ",",
         "."
       );
     }
-    delete element["Ens-chercheurs_PP"];
-    if (element["Ens-chercheurs_ETP"]) {
+    delete element["Ens_chercheurs_PP"];
+    if (element["Ens_chercheurs_ETP"]) {
       element.nb_teacher_researchers_etp = element[
-        "Ens-chercheurs_ETP"
+        "Ens_chercheurs_ETP"
       ].replace(",", ".");
     }
-    delete element["Ens-chercheurs_ETP"];
-    if (element["PU-PH_PP"]) {
-      element.nb_pu_ph_pp = element["PU-PH_PP"].replace(",", ".");
+    delete element["Ens_chercheurs_ETP"];
+    if (element["PU_PH_PP"]) {
+      element.nb_pu_ph_pp = element["PU_PH_PP"].replace(",", ".");
     }
-    delete element["PU-PH_PP"];
-    if (element["PU-PH_ETP"]) {
-      element.nb_pu_ph_etp = element["PU-PH_ETP"].replace(",", ".");
+    delete element["PU_PH_PP"];
+    if (element["PU_PH_ETP"]) {
+      element.nb_pu_ph_etp = element["PU_PH_ETP"].replace(",", ".");
     }
-    delete element["PU-PH_ETP"];
+    delete element["PU_PH_ETP"];
     if (element["Hosp_autres_PP"]) {
       element.nb_hosp_others_pp = element["Hosp_autres_PP"].replace(",", ".");
     }
