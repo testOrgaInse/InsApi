@@ -38,60 +38,58 @@ async function changeCSV(data) {
       ? regional_delegation.id
       : null;
     delete element.DR;
-    element.structure_type = element["Tpe de structure"];
-    delete element["Type de structure"];
+    element.structure_type = element["Type_de_structure"];
+    delete element["Type_de_structure"];
     const structure_code = listStructures.find(
-      n => n.code === element["Code de la structure"]
+      n => n.code === element["Code_de_structure"]
     );
     element.structure_code = structure_code ? structure_code.id : null;
-    delete element["Code de la structure"];
-    element.uinop_code = element["Code uinop"];
-    delete element["Code uinop"];
-    delete element["Intitulé de la structure"];
+    delete element["Code_de_structure"];
+    element.uinop_code = element["Code_uinop"];
+    delete element["Code_uinop"];
+    delete element["Intitule_structure"];
     element.site = element.Site;
     delete element.Site;
     element.city = element.Ville;
     delete element.Ville;
     const teams = listTeams.find(
-      n => n.team_number === element["Numéro d'équipe"]
+      n => n.team_number === element["Numero_equipe"]
     );
     element.team_number = teams ? teams.id : null;
-    delete element["Numéro d'équipe"];
-    delete element["Code équipe secondaire"];
-    const secondary_team_code = listStructures.find(
-      n => n.code === element["Code équipe secondaire"]
+    delete element["Numero_equipe"];
+    const secondary_team_code = listTeams.find(
+      n => n.team_number === element["Code_equipe_secondaire"]
     );
     element.secondary_team_code = secondary_team_code
       ? secondary_team_code.id
       : null;
     const institute = listInstitutes.find(
-      n => n.code === element["ITMO principal"]
+      n => n.code === element["ITMO_principal"]
     );
     element.itmo_principal = institute ? institute.id : null;
-    delete element["ITMO principal"];
-    element.agent_function = element["Fonction de l'agent"];
-    delete element["Fonction de l'agent"];
+    delete element["ITMO_principal"];
+    element.agent_function = element["Fonction_agent"];
+    delete element["Fonction_agent"];
     element.uid = element.UID;
     delete element.UID;
     element.lastname = element.Nom;
     delete element.Nom;
-    element.firstname = element.Prénom;
-    delete element.Prénom;
-    element.inserm_email = element["Courriel Inserm"];
-    delete element["Courriel Inserm"];
-    element.email = element["Courriel usuel"];
-    delete element["Courriel usuel"];
-    element.orcid_number = element["Numéro ORCID"];
-    delete element["Numéro ORCID"];
-    element.researcher_id = element["Numéro ID researcher"];
-    delete element["Numéro ID researcher"];
+    element.firstname = element.Prenom;
+    delete element.Prenom;
+    element.inserm_email = element["Courriel_INSERM"];
+    delete element["Courriel_INSERM"];
+    element.email = element["Courriel_usuel"];
+    delete element["Courriel_usuel"];
+    element.orcid_number = element["Numero_ORCID"];
+    delete element["Numero_ORCID"];
+    element.researcher_id = element["Numero_ID_researcher"];
+    delete element["Numero_ID_researcher"];
     element.membership = element.Appartenance;
     delete element.Appartenance;
-    element.type_of_assigned_structure =
-      element["Type structure d'affectation"];
-    delete element["Type structure d'affectation"];
-    element.agent_status = element["Statut de l'agent"];
-    delete element["Statut de l'agent"];
+    element.type_of_assigned_structure = element["Affectation"];
+    delete element["Affectation"];
+    element.agent_status = element["Statut_agent"];
+    delete element["Statut_agent"];
     if (element.CSS1.length > 0) {
       const specialized_commission = listSpecializedCommission.find(
         n => n.code === element.CSS1
@@ -102,15 +100,15 @@ async function changeCSV(data) {
       delete element.CSS1;
     }
 
-    element.register_date = element["Première connexion"];
-    delete element["Première connexion"];
-    element.last_connection = element["Dernière connexion"];
+    element.register_date = element["Premiere_connexion"];
+    delete element["Premiere_connexion"];
+    element.last_connection = element["Derniere_connexion"];
     if (
-      element["Dernière connexion"] == "" ||
-      element["Dernière connexion"] == "0000-00-00"
+      element["Derniere_connexion"] == "" ||
+      element["Derniere_connexion"] == "0000-00-00"
     )
       element.last_connection = null;
-    delete element["Dernière connexion"];
+    delete element["Derniere_connexion"];
     element.community = "proxy";
   });
   return data;
